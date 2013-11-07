@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Route Creation Tool</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="button_stop_tracking_text">Stop Registration</string>
+    <string name="button_start_tracking_text">Start Registration</string>
+    <string name="title_activity_route_tracking">RouteTrackingActivity</string>
+
+</resources>
