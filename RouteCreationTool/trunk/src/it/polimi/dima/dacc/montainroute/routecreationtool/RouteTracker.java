@@ -18,20 +18,31 @@ public class RouteTracker {
 	private boolean updateUI;
 	private List<LatLng> pendingUpdates;
 
+	private LocationManager locManager;
+	private int minUpdateTimeMillis;
+	private int minUpdateDistanceMeters;
+
 	public RouteTracker(Context context, RouteTrackerUpdateListener listener) {
 		this.listener = listener;
 		this.updateUI = true;
 		this.pendingUpdates = new ArrayList<LatLng>();
 
-		LocationManager locMan = (LocationManager) context
-				.getSystemService(Context.LOCATION_SERVICE);
-
-		int minTimeMillis = 10000;
-		int minDistanceMeters = 20;
-
-		locMan.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				minTimeMillis, minDistanceMeters, locationListener);
+		// TODO load from res
+		minUpdateTimeMillis = 10000;
+		minUpdateDistanceMeters = 20;
+		String svcName = Context.LOCATION_SERVICE;
+		locManager = (LocationManager) context.getSystemService(svcName);
 	}
+
+	public void startTracking() {
+		String provider = LocationManager.GPS_PROVIDER;
+		locManager.requestLocationUpdates(provider, minUpdateTimeMillis,
+				minUpdateDistanceMeters, locationListener);
+	}
+
+	public void stopTracking() {
+		locManager.removeUpdates(locationListener);
+	};
 
 	public void pauseUpdates() {
 		Log.d("ROUTE_TRACKER", "Updates paused.");

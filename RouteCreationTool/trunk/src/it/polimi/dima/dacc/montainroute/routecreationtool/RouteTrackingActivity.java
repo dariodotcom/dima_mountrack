@@ -29,6 +29,7 @@ public class RouteTrackingActivity extends Activity implements
 		public void onClick(View v) {
 			Intent result = new Intent().putExtra(RESULT_KEY, pointList);
 			setResult(RESULT_OK, result);
+			tracker.stopTracking();
 			finish();
 		}
 	};
@@ -38,8 +39,6 @@ public class RouteTrackingActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_tracking);
-
-		tracker = new RouteTracker(this, this);
 
 		if (savedInstanceState == null) {
 			pointList = new ArrayList<LatLng>();
@@ -51,10 +50,15 @@ public class RouteTrackingActivity extends Activity implements
 		Button stopTrackingButton = (Button) findViewById(R.id.button_stop_tracking);
 		stopTrackingButton.setOnClickListener(endActivity);
 
+		// Append adapter to list view
 		ListView listView = (ListView) findViewById(R.id.point_listview);
-		pointAdapter = new LatLngArrayAdapter(this,
-				android.R.layout.simple_list_item_1, pointList);
+		int listViewElemId = android.R.layout.simple_list_item_1;
+		pointAdapter = new LatLngArrayAdapter(this, listViewElemId, pointList);
 		listView.setAdapter(pointAdapter);
+
+		// Start tracking user position
+		tracker = new RouteTracker(this, this);
+		tracker.startTracking();
 	}
 
 	@Override
