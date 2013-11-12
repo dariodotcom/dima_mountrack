@@ -11,6 +11,11 @@ public class Point implements Serializable {
 	private double latitude;
 	private double longitude;
 
+	public Point(LatLng source) {
+		this.latitude = source.latitude;
+		this.longitude = source.longitude;
+	}
+
 	public Point(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
