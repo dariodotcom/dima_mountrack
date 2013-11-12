@@ -1,5 +1,6 @@
 package it.polimi.dima.dacc.mountainroute.commons.connector;
 
+import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
@@ -11,8 +12,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class JsonParser {
 
@@ -35,7 +34,7 @@ public class JsonParser {
 
 			String id = obj.getString(ROUTE_ID);
 			String name = obj.getString(ROUTE_NAME);
-			List<LatLng> points = parsePointList(obj.getJSONArray(ROUTE_POINT));
+			List<Point> points = parsePointList(obj.getJSONArray(ROUTE_POINT));
 			int duration = obj.getInt(ROUTE_DURATION);
 			Route r = new Route(id, name, points, duration);
 			logger.d("Parsed route: " + r);
@@ -69,15 +68,15 @@ public class JsonParser {
 		}
 	}
 
-	private static List<LatLng> parsePointList(JSONArray array) {
-		List<LatLng> result = new ArrayList<LatLng>();
+	private static List<Point> parsePointList(JSONArray array) {
+		List<Point> result = new ArrayList<Point>();
 
 		for (int i = 0; i < array.length(); i++) {
 			try {
 				JSONObject obj = array.getJSONObject(i);
 				double lat = obj.getDouble(POINT_LATITUDE);
 				double lng = obj.getDouble(POINT_LONGITUDE);
-				result.add(new LatLng(lat, lng));
+				result.add(new Point(lat, lng));
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}

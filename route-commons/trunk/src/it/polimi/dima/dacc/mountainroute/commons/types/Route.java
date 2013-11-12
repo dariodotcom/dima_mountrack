@@ -3,18 +3,16 @@ package it.polimi.dima.dacc.mountainroute.commons.types;
 import java.io.Serializable;
 import java.util.List;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class Route implements Serializable {
 
 	private static final long serialVersionUID = 7113317019108624384L;
 
 	private String name;
 	private String id;
-	private List<LatLng> route;
+	private List<Point> route;
 	private int duration;
 
-	public Route(String id, String name, List<LatLng> route, int duration) {
+	public Route(String id, String name, List<Point> route, int duration) {
 		this.id = id;
 		this.name = name;
 		this.route = route;
@@ -29,7 +27,7 @@ public class Route implements Serializable {
 		return name;
 	}
 
-	public List<LatLng> getRoute() {
+	public List<Point> getRoute() {
 		return route;
 	}
 

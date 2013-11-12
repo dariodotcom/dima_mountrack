@@ -108,6 +108,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 			break;
 		case ID:
 			result = new QueryResult(JsonParser.parseRoute(json), query);
+			break;
 		default:
 			throw new RuntimeException("Not yet implemented");
 		}

@@ -1,7 +1,10 @@
 package it.polimi.dima.dacc.mountainroute.commons.presentation;
 
+import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class RouteLineController {
 
 	public RouteLineController(Polyline traversed, Polyline pending,
 			Route route, float completeIndex) {
-		List<LatLng> points = route.getRoute();
+		List<LatLng> points = convertPointList(route.getRoute());
 		this.pending = pending;
 		this.traversed = traversed;
 		this.currentEdge = (int) Math.floor(completeIndex);
@@ -98,5 +101,14 @@ public class RouteLineController {
 		double lat = p1.latitude + coeff * (p2.latitude - p1.latitude);
 		double lng = p1.longitude + coeff * (p2.longitude - p1.longitude);
 		return new LatLng(lat, lng);
+	}
+
+	private List<LatLng> convertPointList(List<Point> input) {
+		List<LatLng> output = new ArrayList<LatLng>();
+		for (Point p : input) {
+			output.add(p.toLatLng());
+		}
+
+		return output;
 	}
 }
