@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroute.commons.connector;
 
+import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 	private final String sourceUrl = "http://dima-dacc-mountainroute.appspot.com/routes/";
 	private ResultCallback callback;
+	private Logger logger = new Logger("STORAGE_CLIENT");
 
 	public StorageClient(ResultCallback callback) {
 		this.callback = callback;
@@ -25,12 +28,12 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 	@Override
 	protected QueryResult doInBackground(Query... params) {
-		if(params.length != 1){
+		if (params.length != 1) {
 			throw new RuntimeException("Please provide exactly ONE query");
 		}
-		
+
 		Query q = params[0];
-		
+
 		// Execute just the first query.
 		InputStream in = establishConnection(q);
 		String json = getContent(in);
@@ -59,6 +62,8 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 			throw new RuntimeException("Not implemented");
 		}
 
+		logger.d("Request url:" + urlBuilder.toString());
+
 		try {
 			HttpResponse response = httpClient.execute(request);
 			return response.getEntity().getContent();
@@ -85,7 +90,9 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 			}
 
 			reader.close();
-			return content.toString();
+			String json = content.toString();
+			logger.d("downloaded json: " + json);
+			return json;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -105,6 +112,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 			throw new RuntimeException("Not yet implemented");
 		}
 
+		logger.d("Parsing complete");
 		return result;
 	}
 

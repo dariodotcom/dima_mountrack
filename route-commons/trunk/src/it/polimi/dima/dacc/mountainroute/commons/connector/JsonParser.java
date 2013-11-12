@@ -3,6 +3,7 @@ package it.polimi.dima.dacc.mountainroute.commons.connector;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
+import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,13 @@ import com.google.android.gms.maps.model.LatLng;
 public class JsonParser {
 
 	private static final String ROUTE_NAME = "name";
-	private static final String ROUTE_DURATION = "duration";
+	private static final String ROUTE_DURATION = "traversalTime";
 	private static final String ROUTE_POINT = "points";
 	private static final String ROUTE_ID = "id";
 	private static final String POINT_LATITUDE = "latitude";
 	private static final String POINT_LONGITUDE = "longitude";
+
+	private static Logger logger = new Logger("JSON_PARSER");
 
 	private JsonParser() {
 
@@ -34,7 +37,9 @@ public class JsonParser {
 			String name = obj.getString(ROUTE_NAME);
 			List<LatLng> points = parsePointList(obj.getJSONArray(ROUTE_POINT));
 			int duration = obj.getInt(ROUTE_DURATION);
-			return new Route(id, name, points, duration);
+			Route r = new Route(id, name, points, duration);
+			logger.d("Parsed route: " + r);
+			return r;
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
@@ -56,6 +61,7 @@ public class JsonParser {
 				result.addRouteDescription(new RouteDescription(id, name));
 			}
 
+			logger.d("Parsed list: " + result);
 			return result;
 
 		} catch (JSONException e) {
