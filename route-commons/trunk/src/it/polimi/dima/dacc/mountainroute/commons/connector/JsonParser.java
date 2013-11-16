@@ -4,7 +4,6 @@ import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
-import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,73 +14,123 @@ import org.json.JSONObject;
 
 public class JsonParser {
 
-	private static final String ROUTE_NAME = "name";
-	private static final String ROUTE_DURATION = "traversalTime";
-	private static final String ROUTE_POINT = "points";
-	private static final String ROUTE_ID = "id";
-	private static final String POINT_LATITUDE = "latitude";
-	private static final String POINT_LONGITUDE = "longitude";
+	public static final class ParsePoint {
+		private static final String LATITUDE = "latitude";
+		private static final String LONGITUDE = "longitude";
 
-	private static Logger logger = new Logger("JSON_PARSER");
+		private ParsePoint() {
 
-	private JsonParser() {
-
-	}
-
-	public static Route parseRoute(String json) {
-		try {
-			JSONObject obj = new JSONObject(json);
-
-			String id = obj.getString(ROUTE_ID);
-			String name = obj.getString(ROUTE_NAME);
-			List<Point> points = parsePointList(obj.getJSONArray(ROUTE_POINT));
-			int duration = obj.getInt(ROUTE_DURATION);
-			Route r = new Route(id, name, points, duration);
-			logger.d("Parsed route: " + r);
-			return r;
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
 		}
 
-	}
-
-	public static RouteDescriptionList parseRouteList(String json) {
-		RouteDescriptionList result = new RouteDescriptionList();
-
-		try {
-			JSONArray array = new JSONArray(json);
-
-			for (int i = 0; i < array.length(); i++) {
-
-				JSONObject obj = array.getJSONObject(i);
-
-				String id = obj.getString(ROUTE_ID);
-				String name = obj.getString(ROUTE_NAME);
-				result.addRouteDescription(new RouteDescription(id, name));
-			}
-
-			logger.d("Parsed list: " + result);
-			return result;
-
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static List<Point> parsePointList(JSONArray array) {
-		List<Point> result = new ArrayList<Point>();
-
-		for (int i = 0; i < array.length(); i++) {
+		public static Point fromJson(JSONObject obj) {
 			try {
-				JSONObject obj = array.getJSONObject(i);
-				double lat = obj.getDouble(POINT_LATITUDE);
-				double lng = obj.getDouble(POINT_LONGITUDE);
-				result.add(new Point(lat, lng));
+				double lat = obj.getDouble(LATITUDE);
+				double lng = obj.getDouble(LONGITUDE);
+				return new Point(lat, lng);
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}
 		}
 
-		return result;
+		public static String toJson(Point p) {
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put(LATITUDE, p.getLatitude());
+				obj.put(LONGITUDE, p.getLongitude());
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+			return obj.toString();
+		}
+	}
+
+	public static final class ParseRoute {
+		private static final String NAME = "name";
+		private static final String DURATION = "traversalTime";
+		private static final String POINTS = "points";
+		private static final String ID = "id";
+
+		private ParseRoute() {
+		}
+
+		public static Route fromJson(String json) {
+			try {
+				JSONObject obj = new JSONObject(json);
+
+				String id = obj.getString(ID);
+				String name = obj.getString(NAME);
+				List<Point> points = pointListFromJson(obj.getJSONArray(POINTS));
+				int duration = obj.getInt(DURATION);
+
+				return new Route(id, name, points, duration);
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		public static String toJson(Route r) {
+			try {
+				JSONObject obj = new JSONObject();
+				obj.put(NAME, r.getName());
+				obj.put(POINTS, pointListToJson(r.getRoute()));
+				obj.put(DURATION, r.getDuration());
+
+				return obj.toString();
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		private static List<Point> pointListFromJson(JSONArray array) {
+			List<Point> result = new ArrayList<Point>();
+			try {
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject pt = array.getJSONObject(i);
+					result.add(JsonParser.ParsePoint.fromJson(pt));
+				}
+
+				return result;
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		private static JSONArray pointListToJson(List<Point> input) {
+			JSONArray array = new JSONArray();
+			for (Point p : input) {
+				array.put(ParsePoint.toJson(p));
+			}
+			return array;
+		}
+	}
+
+	public static final class ParseRouteList {
+		private static final String NAME = "name";
+		private static final String ID = "id";
+
+		private ParseRouteList() {
+		}
+
+		public static RouteDescriptionList fromJson(String json) {
+			RouteDescriptionList result = new RouteDescriptionList();
+
+			try {
+				JSONArray array = new JSONArray(json);
+
+				for (int i = 0; i < array.length(); i++) {
+
+					JSONObject obj = array.getJSONObject(i);
+
+					String id = obj.getString(ID);
+					String name = obj.getString(NAME);
+					result.addRouteDescription(new RouteDescription(id, name));
+				}
+
+				return result;
+
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }

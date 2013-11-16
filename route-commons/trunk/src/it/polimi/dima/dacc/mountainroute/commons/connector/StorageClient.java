@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroute.commons.connector;
 
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
 import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
 
 import java.io.BufferedReader;
@@ -10,7 +12,6 @@ import java.io.InputStreamReader;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -18,7 +19,6 @@ import android.os.AsyncTask;
 
 public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
-	private final String sourceUrl = "http://dima-dacc-mountainroute.appspot.com/routes/";
 	private ResultCallback callback;
 	private Logger logger = new Logger("STORAGE_CLIENT");
 
@@ -47,22 +47,9 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 	private InputStream establishConnection(Query query) {
 		HttpClient httpClient = new DefaultHttpClient();
-		StringBuilder urlBuilder = new StringBuilder(sourceUrl);
-		HttpRequestBase request;
+		HttpRequestBase request = query.getRequest();
 
-		switch (query.getType()) {
-		case AVAILABLE:
-			request = new HttpGet(urlBuilder.toString());
-			break;
-		case ID:
-			urlBuilder.append(query.getParam());
-			request = new HttpGet(urlBuilder.toString());
-			break;
-		default:
-			throw new RuntimeException("Not implemented");
-		}
-
-		logger.d("Request url:" + urlBuilder.toString());
+		logger.d("Request url:" + request.getURI());
 
 		try {
 			HttpResponse response = httpClient.execute(request);
@@ -104,10 +91,12 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 		switch (query.getType()) {
 		case AVAILABLE:
-			result = new QueryResult(JsonParser.parseRouteList(json), query);
+			result = new QueryResult(JsonParser.ParseRouteList.fromJson(json),
+					query);
 			break;
 		case ID:
-			result = new QueryResult(JsonParser.parseRoute(json), query);
+			result = new QueryResult(JsonParser.ParseRoute.fromJson(json),
+					query);
 			break;
 		default:
 			throw new RuntimeException("Not yet implemented");

@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroute.commons.connector;
+package it.polimi.dima.dacc.mountainroute.commons.connector.query;
 
 public class QueryResult {
 	private Object result;
