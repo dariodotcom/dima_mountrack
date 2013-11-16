@@ -1,5 +1,6 @@
 package it.polimi.dima.dacc.montainroute.routecreationtool;
 
+import it.polimi.dima.dacc.montainroute.creation.R;
 import java.util.ArrayList;
 
 import com.google.android.gms.maps.model.LatLng;
