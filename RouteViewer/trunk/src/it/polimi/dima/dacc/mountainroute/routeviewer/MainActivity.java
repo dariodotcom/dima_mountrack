@@ -1,10 +1,12 @@
 package it.polimi.dima.dacc.mountainroute.routeviewer;
 
-import it.polimi.dima.dacc.mountainroute.commons.connector.Query;
-import it.polimi.dima.dacc.mountainroute.commons.connector.Query.QueryType;
-import it.polimi.dima.dacc.mountainroute.commons.connector.QueryResult;
 import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient;
 import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient.ResultCallback;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.AvailableRoutesQuery;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query.QueryType;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.RouteQuery;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
@@ -47,7 +49,7 @@ public class MainActivity extends Activity implements ResultCallback {
 		routeListView.setOnItemClickListener(this.routeClickListener);
 
 		// Start query to retrieve element
-		Query q = new Query(QueryType.AVAILABLE, null);
+		Query q = new AvailableRoutesQuery();
 		new StorageClient(this).execute(q);
 	}
 
@@ -99,7 +101,7 @@ public class MainActivity extends Activity implements ResultCallback {
 
 			String id = routeList.get(index).getId();
 
-			Query q = new Query(QueryType.ID, id);
+			Query q = new RouteQuery(id);
 			new StorageClient(MainActivity.this).execute(q);
 		}
 	};
