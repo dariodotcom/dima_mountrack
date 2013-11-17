@@ -9,6 +9,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 
+import android.util.Log;
+
 public class CreateRouteQuery extends Query {
 
 	private Route route;
@@ -19,9 +21,11 @@ public class CreateRouteQuery extends Query {
 
 	@Override
 	protected HttpRequestBase createRequest() {
-		String url = ENDPOINT_URL + "create";
+		String url = ENDPOINT_URL;
 		HttpPost request = new HttpPost(url);
+		request.setHeader("content-type", "application/json");
 		String json = JsonParser.ParseRoute.toJson(route);
+		Log.d("creator", json);
 		try {
 			request.setEntity(new StringEntity(json));
 		} catch (UnsupportedEncodingException e) {

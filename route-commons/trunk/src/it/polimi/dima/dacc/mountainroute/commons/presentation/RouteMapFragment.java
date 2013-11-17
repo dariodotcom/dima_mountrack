@@ -69,7 +69,9 @@ public class RouteMapFragment extends MapFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// Save state in bundle
-		outState.putFloat(INDEX_KEY, traversedIndex);
+		if (traversedIndex != null) {
+			outState.putFloat(INDEX_KEY, traversedIndex);
+		}
 		outState.putSerializable(ROUTE_KEY, route);
 		log.d("Instance data saved.");
 	}

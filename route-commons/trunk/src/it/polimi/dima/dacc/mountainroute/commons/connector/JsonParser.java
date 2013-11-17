@@ -32,7 +32,7 @@ public class JsonParser {
 			}
 		}
 
-		public static String toJson(Point p) {
+		public static JSONObject toJson(Point p) {
 			JSONObject obj = new JSONObject();
 			try {
 				obj.put(LATITUDE, p.getLatitude());
@@ -40,7 +40,7 @@ public class JsonParser {
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}
-			return obj.toString();
+			return obj;
 		}
 	}
 
