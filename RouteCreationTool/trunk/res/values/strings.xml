@@ -7,5 +7,11 @@
     <string name="button_stop_tracking_text">Stop Registration</string>
     <string name="button_start_tracking_text">Start Registration</string>
     <string name="title_activity_route_tracking">RouteTrackingActivity</string>
+    <string name="title_activity_route_saver">RouteSaver</string>
+
+    <!-- Route saver -->
+    <string name="name_text_label">Name</string>
+    <string name="duration_text_label">Duration (mins)</string>
+    <string name="save_button_text">Save</string>
 
 </resources>
