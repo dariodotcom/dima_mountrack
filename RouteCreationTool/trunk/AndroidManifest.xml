@@ -16,17 +16,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="it.polimi.dima.dacc.montainroute.routecreationtool.MainActivity"
+            android:name="it.polimi.dima.dacc.montainroute.creation.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="it.polimi.dima.dacc.montainroute.routecreationtool.RouteTrackingActivity"
+            android:name="it.polimi.dima.dacc.montainroute.creation.tracking.RouteTrackingActivity"
             android:label="@string/title_activity_route_tracking" >
+        </activity>
+        <activity
+            android:name="it.polimi.dima.dacc.montainroute.creation.saver.RouteSaverActivity"
+            android:label="@string/title_activity_route_saver" >
         </activity>
     </application>
 
