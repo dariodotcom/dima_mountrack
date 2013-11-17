@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.montainroute.routecreationtool;
+package it.polimi.dima.dacc.montainroute.creation;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import it.polimi.dima.dacc.montainroute.creation.R;
+import it.polimi.dima.dacc.montainroute.creation.saver.RouteSaverActivity;
+import it.polimi.dima.dacc.montainroute.creation.tracking.RouteTrackingActivity;
 
 public class MainActivity extends Activity {
 
@@ -26,6 +28,20 @@ public class MainActivity extends Activity {
 				startActivityForResult(intent, TRACKING_ACTIVITY);
 			}
 		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == TRACKING_ACTIVITY && resultCode == RESULT_OK) {
+			TrackedPoints points = (TrackedPoints) data
+					.getSerializableExtra(RouteTrackingActivity.RESULT_KEY);
+			Intent intent = new Intent(this, RouteSaverActivity.class);
+			intent.putExtra(RouteSaverActivity.TRACKED_POINTS_KEY, points);
+			startActivity(intent);
+		}
 	}
 
 	@Override

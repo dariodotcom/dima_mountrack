@@ -1,4 +1,6 @@
-package it.polimi.dima.dacc.montainroute.routecreationtool;
+package it.polimi.dima.dacc.montainroute.creation.tracking;
+
+import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class RouteTracker {
 
 	private RouteTrackerUpdateListener listener;
 	private boolean updateUI;
-	private List<LatLng> pendingUpdates;
+	private List<Point> pendingUpdates;
 
 	private LocationManager locManager;
 	private int minUpdateTimeMillis;
@@ -25,7 +27,7 @@ public class RouteTracker {
 	public RouteTracker(Context context, RouteTrackerUpdateListener listener) {
 		this.listener = listener;
 		this.updateUI = true;
-		this.pendingUpdates = new ArrayList<LatLng>();
+		this.pendingUpdates = new ArrayList<Point>();
 
 		// TODO load from res
 		minUpdateTimeMillis = 10000;
@@ -49,10 +51,10 @@ public class RouteTracker {
 		updateUI = false;
 	}
 
-	public List<LatLng> resumeUpdates() {
+	public List<Point> resumeUpdates() {
 		updateUI = true;
-		List<LatLng> updates = pendingUpdates;
-		pendingUpdates = new ArrayList<LatLng>();
+		List<Point> updates = pendingUpdates;
+		pendingUpdates = new ArrayList<Point>();
 
 		Log.d("ROUTE_TRACKER", "Pending updates delivered.");
 		return updates;
@@ -77,8 +79,9 @@ public class RouteTracker {
 
 		@Override
 		public void onLocationChanged(Location loc) {
-			LatLng point = new LatLng(loc.getLatitude(), loc.getLongitude());
-
+			LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+			Point point = new Point(latLng);
+			
 			Log.d("ROUTE_TRACKER", "New location: " + point);
 
 			if (updateUI) {
@@ -92,7 +95,7 @@ public class RouteTracker {
 		}
 	};
 
-	private void queuePendingUpdate(LatLng point) {
+	private void queuePendingUpdate(Point point) {
 		pendingUpdates.add(point);
 	}
 

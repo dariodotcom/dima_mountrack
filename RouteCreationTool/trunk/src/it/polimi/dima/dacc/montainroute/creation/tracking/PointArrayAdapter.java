@@ -1,8 +1,8 @@
-package it.polimi.dima.dacc.montainroute.routecreationtool;
+package it.polimi.dima.dacc.montainroute.creation.tracking;
+
+import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 
 import java.util.List;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class LatLngArrayAdapter extends ArrayAdapter<LatLng> {
+public class PointArrayAdapter extends ArrayAdapter<Point> {
 	int resource;
 
-	public LatLngArrayAdapter(Context context, int _resource, List<LatLng> items) {
+	public PointArrayAdapter(Context context, int _resource, List<Point> items) {
 		super(context, _resource, items);
 		resource = _resource;
 	}
@@ -36,10 +36,9 @@ public class LatLngArrayAdapter extends ArrayAdapter<LatLng> {
 			newView = (LinearLayout) convertView;
 		}
 
-		LatLng point = getItem(position);
+		Point point = getItem(position);
 		TextView textView = (TextView) newView.findViewById(android.R.id.text1);
-		textView.setText(String.format("(%s,%s)", point.latitude,
-				point.longitude));
+		textView.setText(point.toString());
 
 		return newView;
 	}
