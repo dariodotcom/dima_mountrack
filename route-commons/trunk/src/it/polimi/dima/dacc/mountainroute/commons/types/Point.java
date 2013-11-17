@@ -32,4 +32,9 @@ public class Point implements Serializable {
 	public LatLng toLatLng() {
 		return new LatLng(latitude, longitude);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("(%s,%s)", latitude, longitude);
+	}
 }
