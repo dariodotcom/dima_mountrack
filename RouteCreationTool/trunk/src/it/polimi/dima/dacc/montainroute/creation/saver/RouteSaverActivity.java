@@ -2,6 +2,11 @@ package it.polimi.dima.dacc.montainroute.creation.saver;
 
 import it.polimi.dima.dacc.montainroute.creation.R;
 import it.polimi.dima.dacc.montainroute.creation.TrackedPoints;
+import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient;
+import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient.ResultCallback;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.CreateRouteQuery;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
+import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,7 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class RouteSaverActivity extends Activity {
+public class RouteSaverActivity extends Activity implements ResultCallback {
 
 	public final static String TRACKED_POINTS_KEY = "TRACKED_POINTS_KEY";
 	private final static String CREATION_KEY = "CREATION_KEY";
@@ -28,7 +33,9 @@ public class RouteSaverActivity extends Activity {
 			Route r = RouteSaverActivity.this.creationState.createRoute();
 			Button self = (Button) v;
 			self.setEnabled(false);
-			Log.d("route-creator", "creating route " + r);
+
+			Query q = new CreateRouteQuery(r);
+			new StorageClient(RouteSaverActivity.this).execute(q);
 		}
 	};
 
@@ -100,6 +107,13 @@ public class RouteSaverActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putSerializable(CREATION_KEY, creationState);
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onResult(QueryResult result) {
+		Log.d("saver","route saved");
+		setResult(RESULT_OK);
+		finish();
 	}
 
 }

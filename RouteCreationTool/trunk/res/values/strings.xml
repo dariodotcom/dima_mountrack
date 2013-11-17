@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="button_stop_tracking_text">Stop Registration</string>
     <string name="button_start_tracking_text">Start Registration</string>
+    <string name="button_restart_tracking_text">Start Over</string>
     <string name="title_activity_route_tracking">RouteTrackingActivity</string>
     <string name="title_activity_route_saver">RouteSaver</string>
 
