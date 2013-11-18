@@ -1,12 +1,12 @@
 package it.polimi.dima.dacc.montainroute.creation.saver;
 
 import it.polimi.dima.dacc.montainroute.creation.R;
-import it.polimi.dima.dacc.montainroute.creation.TrackedPoints;
 import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient;
 import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient.ResultCallback;
 import it.polimi.dima.dacc.mountainroute.commons.connector.query.CreateRouteQuery;
 import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
 import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,12 +18,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ViewSwitcher;
 
 public class RouteSaverActivity extends Activity implements ResultCallback {
 
 	public final static String TRACKED_POINTS_KEY = "TRACKED_POINTS_KEY";
 	private final static String CREATION_KEY = "CREATION_KEY";
 
+	private ViewSwitcher switcher;
 	private CreationState creationState;
 
 	private OnClickListener saveListener = new OnClickListener() {
@@ -31,8 +33,8 @@ public class RouteSaverActivity extends Activity implements ResultCallback {
 		@Override
 		public void onClick(View v) {
 			Route r = RouteSaverActivity.this.creationState.createRoute();
-			Button self = (Button) v;
-			self.setEnabled(false);
+
+			switcher.showNext();
 
 			Query q = new CreateRouteQuery(r);
 			new StorageClient(RouteSaverActivity.this).execute(q);
@@ -77,12 +79,14 @@ public class RouteSaverActivity extends Activity implements ResultCallback {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_route_saver);
 
+		this.switcher = (ViewSwitcher) findViewById(R.id.save_switcher);
+		
 		if (savedState != null) {
 			creationState = (CreationState) savedState
 					.getSerializable(CREATION_KEY);
 		} else {
-			TrackedPoints points = (TrackedPoints) getIntent()
-					.getSerializableExtra(TRACKED_POINTS_KEY);
+			PointList points = (PointList) getIntent()
+					.getParcelableExtra(TRACKED_POINTS_KEY);
 			this.creationState = new CreationState(points);
 		}
 

@@ -1,9 +1,6 @@
 package it.polimi.dima.dacc.montainroute.creation.tracking;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
-
-import java.util.ArrayList;
-import java.util.List;
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -18,7 +15,7 @@ public class RouteTracker {
 
 	private RouteTrackerUpdateListener listener;
 	private boolean updateUI;
-	private List<Point> pendingUpdates;
+	private PointList pendingUpdates;
 
 	private LocationManager locManager;
 	private int minUpdateTimeMillis;
@@ -27,7 +24,7 @@ public class RouteTracker {
 	public RouteTracker(Context context, RouteTrackerUpdateListener listener) {
 		this.listener = listener;
 		this.updateUI = true;
-		this.pendingUpdates = new ArrayList<Point>();
+		this.pendingUpdates = new PointList();
 
 		// TODO load from res
 		minUpdateTimeMillis = 10000;
@@ -51,10 +48,14 @@ public class RouteTracker {
 		updateUI = false;
 	}
 
-	public List<Point> resumeUpdates() {
+	public boolean isUpdatingUI() {
+		return updateUI;
+	}
+
+	public PointList resumeUpdates() {
 		updateUI = true;
-		List<Point> updates = pendingUpdates;
-		pendingUpdates = new ArrayList<Point>();
+		PointList updates = pendingUpdates;
+		pendingUpdates = new PointList();
 
 		Log.d("ROUTE_TRACKER", "Pending updates delivered.");
 		return updates;
@@ -80,22 +81,21 @@ public class RouteTracker {
 		@Override
 		public void onLocationChanged(Location loc) {
 			LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-			Point point = new Point(latLng);
-			
-			Log.d("ROUTE_TRACKER", "New location: " + point);
+
+			Log.d("ROUTE_TRACKER", "New location: " + latLng);
 
 			if (updateUI) {
 				Log.d("ROUTE_TRACKER", "UI Updated");
-				listener.onPointTracked(point);
+				listener.onPointTracked(latLng);
 			} else {
 				Log.d("ROUTE_TRACKER", "Update queued");
-				queuePendingUpdate(point);
+				queuePendingUpdate(latLng);
 			}
 
 		}
 	};
 
-	private void queuePendingUpdate(Point point) {
+	private void queuePendingUpdate(LatLng point) {
 		pendingUpdates.add(point);
 	}
 

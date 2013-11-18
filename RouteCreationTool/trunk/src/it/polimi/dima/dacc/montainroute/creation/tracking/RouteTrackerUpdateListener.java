@@ -1,9 +1,9 @@
 package it.polimi.dima.dacc.montainroute.creation.tracking;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
+import com.google.android.gms.maps.model.LatLng;
 
 public interface RouteTrackerUpdateListener {
 
-	public void onPointTracked(Point point);
+	public void onPointTracked(LatLng point);
 
 }

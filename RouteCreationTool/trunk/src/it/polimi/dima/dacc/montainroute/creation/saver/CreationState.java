@@ -1,24 +1,23 @@
 package it.polimi.dima.dacc.montainroute.creation.saver;
 
-import it.polimi.dima.dacc.montainroute.creation.TrackedPoints;
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class CreationState implements Serializable {
 
 	private static final long serialVersionUID = -2322487256873277585L;
 	private String name;
 	private Integer duration;
-	private List<Point> points;
+	private PointList points;
 
-	public CreationState(TrackedPoints points) {
+	public CreationState(PointList points) {
 		if (points == null) {
 			throw new RuntimeException("Points must not be null");
 		}
-		this.points = points.getPoints();
+		
+		this.points = points;
 	}
 
 	public void setName(String name) {

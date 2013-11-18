@@ -1,11 +1,10 @@
 package it.polimi.dima.dacc.montainroute.creation.tracking;
 
-import java.util.List;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.montainroute.creation.R;
-import it.polimi.dima.dacc.montainroute.creation.TrackedPoints;
 import it.polimi.dima.dacc.mountainroute.commons.presentation.StaticRouteFragment;
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 
 public class RouteTrackingActivity extends Activity implements
 		RouteTrackerUpdateListener {
@@ -23,7 +21,7 @@ public class RouteTrackingActivity extends Activity implements
 	private static final String POINT_LIST = "POINT_LIST";
 	public static final String RESULT_KEY = "RESULT_KEY";
 
-	private TrackedPoints trackedPoints;
+	private PointList trackedPoints;
 	private RouteTracker tracker;
 	private StaticRouteFragment fragment;
 
@@ -42,19 +40,21 @@ public class RouteTrackingActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_tracking);
 
+		this.fragment = (StaticRouteFragment) getFragmentManager()
+				.findFragmentById(R.id.static_route);
+
 		if (savedInstanceState == null) {
-			trackedPoints = new TrackedPoints();
+			trackedPoints = new PointList();
+			fragment.setPath(trackedPoints);
 		} else {
-			trackedPoints = (TrackedPoints) savedInstanceState
-					.getSerializable(POINT_LIST);
+			trackedPoints = (PointList) savedInstanceState
+					.getParcelable(POINT_LIST);
+			fragment.setPath(trackedPoints);
+			fragment.notifyPathChanged();
 		}
 
 		Button stopTrackingButton = (Button) findViewById(R.id.button_stop_tracking);
 		stopTrackingButton.setOnClickListener(endActivity);
-
-		//
-		this.fragment = (StaticRouteFragment) getFragmentManager()
-				.findFragmentById(R.id.static_route);
 
 		// Start tracking user position
 		tracker = new RouteTracker(this, this);
@@ -69,9 +69,9 @@ public class RouteTrackingActivity extends Activity implements
 	}
 
 	@Override
-	public void onPointTracked(Point point) {
+	public void onPointTracked(LatLng point) {
 		trackedPoints.add(point);
-		this.fragment.addPoint(point);
+		fragment.notifyPathChanged();
 	}
 
 	@Override
@@ -83,15 +83,18 @@ public class RouteTrackingActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		List<Point> updatesList = tracker.resumeUpdates();
-		this.trackedPoints.addAll(updatesList);
-		this.fragment.addAll(updatesList);
+
+		if (!tracker.isUpdatingUI()) {
+			PointList updates = tracker.resumeUpdates();
+			this.trackedPoints.addAll(updates);
+			this.fragment.notifyPathChanged();
+		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(POINT_LIST, trackedPoints);
+		outState.putParcelable(POINT_LIST, trackedPoints);
 	}
 
 }

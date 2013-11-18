@@ -14,5 +14,6 @@
     <string name="name_text_label">Name</string>
     <string name="duration_text_label">Duration (mins)</string>
     <string name="save_button_text">Save</string>
+    <string name="saving_route_text">Saving route&#8230;</string>
 
 </resources>
