@@ -1,8 +1,12 @@
 package it.polimi.dima.dacc.montainroute.creation.tracking;
 
+import java.util.List;
+
 import it.polimi.dima.dacc.montainroute.creation.R;
 import it.polimi.dima.dacc.montainroute.creation.TrackedPoints;
+import it.polimi.dima.dacc.mountainroute.commons.presentation.StaticRouteFragment;
 import it.polimi.dima.dacc.mountainroute.commons.types.Point;
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,8 +24,8 @@ public class RouteTrackingActivity extends Activity implements
 	public static final String RESULT_KEY = "RESULT_KEY";
 
 	private TrackedPoints trackedPoints;
-	private PointArrayAdapter pointAdapter;
 	private RouteTracker tracker;
+	private StaticRouteFragment fragment;
 
 	private final OnClickListener endActivity = new OnClickListener() {
 		@Override
@@ -48,12 +52,9 @@ public class RouteTrackingActivity extends Activity implements
 		Button stopTrackingButton = (Button) findViewById(R.id.button_stop_tracking);
 		stopTrackingButton.setOnClickListener(endActivity);
 
-		// Append adapter to list view
-		ListView listView = (ListView) findViewById(R.id.point_listview);
-		int listViewElemId = android.R.layout.simple_list_item_1;
-		pointAdapter = new PointArrayAdapter(this, listViewElemId,
-				trackedPoints.getPoints());
-		listView.setAdapter(pointAdapter);
+		//
+		this.fragment = (StaticRouteFragment) getFragmentManager()
+				.findFragmentById(R.id.static_route);
 
 		// Start tracking user position
 		tracker = new RouteTracker(this, this);
@@ -70,7 +71,7 @@ public class RouteTrackingActivity extends Activity implements
 	@Override
 	public void onPointTracked(Point point) {
 		trackedPoints.add(point);
-		pointAdapter.notifyDataSetChanged();
+		this.fragment.addPoint(point);
 	}
 
 	@Override
@@ -82,8 +83,9 @@ public class RouteTrackingActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		trackedPoints.addAll(tracker.resumeUpdates());
-		pointAdapter.notifyDataSetChanged();
+		List<Point> updatesList = tracker.resumeUpdates();
+		this.trackedPoints.addAll(updatesList);
+		this.fragment.addAll(updatesList);
 	}
 
 	@Override
