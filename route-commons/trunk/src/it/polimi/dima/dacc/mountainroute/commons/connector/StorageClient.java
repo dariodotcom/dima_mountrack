@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 	private ResultCallback callback;
-	private Logger logger = new Logger("STORAGE_CLIENT");
+	private Logger logger = new Logger("storage-client");
 
 	public StorageClient(ResultCallback callback) {
 		this.callback = callback;
@@ -34,6 +34,8 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 		Query q = params[0];
 
+		logger.d("Executing " + q.getType() + " query.");
+		
 		// Execute just the first query.
 		InputStream in = establishConnection(q);
 		String json = getContent(in);
@@ -78,7 +80,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 
 			reader.close();
 			String json = content.toString();
-			logger.d("downloaded json: " + json);
+			logger.d("Query resulted in json: " + json);
 			return json;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -95,6 +97,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 					query);
 			break;
 		case ID:
+		case CREATE:
 			result = new QueryResult(JsonParser.ParseRoute.fromJson(json),
 					query);
 			break;

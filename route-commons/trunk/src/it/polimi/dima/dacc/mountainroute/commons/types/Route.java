@@ -1,22 +1,29 @@
 package it.polimi.dima.dacc.mountainroute.commons.types;
 
-import java.io.Serializable;
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Route implements Serializable {
+public class Route implements Parcelable {
 
-	private static final long serialVersionUID = 7113317019108624384L;
-
-	private String name;
 	private String id;
-	private List<Point> route;
+	private String name;
+	private PointList route;
 	private int duration;
 
-	public Route(String id, String name, List<Point> route, int duration) {
+	// Public contructor
+	public Route(String id, String name, PointList route, int duration) {
 		this.id = id;
 		this.name = name;
 		this.route = route;
 		this.duration = duration;
+	}
+
+	// Private constructor for parcelable
+	private Route(Parcel in) {
+		this.id = in.readString();
+		this.name = in.readString();
+		this.route = (PointList) in.readParcelable(null);
+		this.duration = in.readInt();
 	}
 
 	public String getId() {
@@ -27,11 +34,38 @@ public class Route implements Serializable {
 		return name;
 	}
 
-	public List<Point> getRoute() {
+	public PointList getRoute() {
 		return route;
 	}
 
 	public int getDuration() {
 		return duration;
 	}
+
+	// Parcelable methods
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
+		dest.writeString(name);
+		dest.writeParcelable(route, 0);
+		dest.writeInt(duration);
+	}
+
+	public final Creator<Route> CREATOR = new Creator<Route>() {
+
+		@Override
+		public Route[] newArray(int size) {
+			return new Route[size];
+		}
+
+		@Override
+		public Route createFromParcel(Parcel source) {
+			return new Route(source);
+		}
+	};
 }

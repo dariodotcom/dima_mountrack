@@ -37,7 +37,7 @@ public class CreateRouteQuery extends Query {
 
 	@Override
 	protected QueryType getQueryType() {
-		return QueryType.ID;
+		return QueryType.CREATE;
 	}
 
 }

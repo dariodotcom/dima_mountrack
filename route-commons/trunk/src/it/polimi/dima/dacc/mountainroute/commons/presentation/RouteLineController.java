@@ -1,13 +1,8 @@
 package it.polimi.dima.dacc.mountainroute.commons.presentation;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 
 public class RouteLineController {
@@ -22,8 +17,7 @@ public class RouteLineController {
 		this.log = new Logger("ROUTE_LINE_CONTROLLER");
 
 		// Load stepper
-		List<LatLng> routeLatLng = convertPointList(route.getRoute());
-		this.stepper = new RouteStepper(routeLatLng, completeIndex);
+		this.stepper = new RouteStepper(route.getRoute(), completeIndex);
 	}
 
 	public RouteLineController(Polyline traversed, Polyline pending, Route route) {
@@ -39,14 +33,5 @@ public class RouteLineController {
 		traversed.setPoints(stepper.getTraversed());
 		pending.setPoints(stepper.getPending());
 		log.d("Lines updated");
-	}
-
-	private List<LatLng> convertPointList(List<Point> input) {
-		List<LatLng> output = new ArrayList<LatLng>();
-		for (Point p : input) {
-			output.add(p.toLatLng());
-		}
-
-		return output;
 	}
 }

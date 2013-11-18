@@ -1,48 +1,17 @@
 package it.polimi.dima.dacc.mountainroute.commons.connector;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.Point;
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class JsonParser {
-
-	public static final class ParsePoint {
-		private static final String LATITUDE = "latitude";
-		private static final String LONGITUDE = "longitude";
-
-		private ParsePoint() {
-
-		}
-
-		public static Point fromJson(JSONObject obj) {
-			try {
-				double lat = obj.getDouble(LATITUDE);
-				double lng = obj.getDouble(LONGITUDE);
-				return new Point(lat, lng);
-			} catch (JSONException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		public static JSONObject toJson(Point p) {
-			JSONObject obj = new JSONObject();
-			try {
-				obj.put(LATITUDE, p.getLatitude());
-				obj.put(LONGITUDE, p.getLongitude());
-			} catch (JSONException e) {
-				throw new RuntimeException(e);
-			}
-			return obj;
-		}
-	}
 
 	public static final class ParseRoute {
 		private static final String NAME = "name";
@@ -59,7 +28,7 @@ public class JsonParser {
 
 				String id = obj.getString(ID);
 				String name = obj.getString(NAME);
-				List<Point> points = pointListFromJson(obj.getJSONArray(POINTS));
+				PointList points = pointListFromJson(obj.getJSONArray(POINTS));
 				int duration = obj.getInt(DURATION);
 
 				return new Route(id, name, points, duration);
@@ -81,8 +50,8 @@ public class JsonParser {
 			}
 		}
 
-		private static List<Point> pointListFromJson(JSONArray array) {
-			List<Point> result = new ArrayList<Point>();
+		private static PointList pointListFromJson(JSONArray array) {
+			PointList result = new PointList();
 			try {
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject pt = array.getJSONObject(i);
@@ -95,9 +64,9 @@ public class JsonParser {
 			}
 		}
 
-		private static JSONArray pointListToJson(List<Point> input) {
+		private static JSONArray pointListToJson(PointList input) {
 			JSONArray array = new JSONArray();
-			for (Point p : input) {
+			for (LatLng p : input) {
 				array.put(ParsePoint.toJson(p));
 			}
 			return array;
@@ -133,4 +102,38 @@ public class JsonParser {
 			}
 		}
 	}
+
+	/**
+	 * Methods to parse points from and to json
+	 */
+	public static final class ParsePoint {
+		private static final String LATITUDE = "latitude";
+		private static final String LONGITUDE = "longitude";
+
+		private ParsePoint() {
+
+		}
+
+		public static LatLng fromJson(JSONObject obj) {
+			try {
+				double lat = obj.getDouble(LATITUDE);
+				double lng = obj.getDouble(LONGITUDE);
+				return new LatLng(lat, lng);
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		public static JSONObject toJson(LatLng p) {
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put(LATITUDE, p.latitude);
+				obj.put(LONGITUDE, p.longitude);
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+			return obj;
+		}
+	}
+
 }

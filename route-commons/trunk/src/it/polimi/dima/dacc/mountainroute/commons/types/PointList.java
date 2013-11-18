@@ -1,46 +1,82 @@
 package it.polimi.dima.dacc.mountainroute.commons.types;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class PointList implements Serializable {
+/**
+ * Parcelable list of LatLng
+ * 
+ */
+public class PointList implements Parcelable, Iterable<LatLng> {
 
-	private static final long serialVersionUID = -2137265292905126445L;
-	private List<Point> points;
+	private List<LatLng> points;
 
-	public PointList(List<Point> points) {
-		if (points == null) {
-			this.points = new ArrayList<Point>();
-		}
+	// Public constructor
+	public PointList(List<LatLng> newPoints) {
+		this.points = new ArrayList<LatLng>(newPoints);
 	}
 
 	public PointList() {
-		this(null);
+		this.points = new ArrayList<LatLng>();
 	}
 
-	public void addAll(List<Point> newPoints) {
+	// Private contructor for parcelable
+	public PointList(Parcel in) {
+		this();
+		in.readTypedList(this.points, LatLng.CREATOR);
+	}
+
+	// Public methods
+	public void addAll(List<LatLng> newPoints) {
 		this.points.addAll(newPoints);
 	}
+	
+	public void addAll(PointList newPoints) {
+		this.points.addAll(newPoints.points);
+	}
 
-	public void add(Point newPoint) {
+	public void add(LatLng newPoint) {
 		this.points.add(newPoint);
 	}
 
-	public List<Point> getList() {
+	public List<LatLng> getList() {
 		return this.points;
 	}
 
-	public List<LatLng> toLatLngList() {
-		List<LatLng> result = new ArrayList<LatLng>();
-
-		for (Point p : this.points) {
-			result.add(p.toLatLng());
-		}
-
-		return result;
+	// Parcelable methods
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeTypedList(this.points);
+	}
+
+	public static final Creator<PointList> CREATOR = new Creator<PointList>() {
+		public PointList createFromParcel(Parcel in) {
+			return new PointList(in);
+		}
+
+		public PointList[] newArray(int size) {
+			return new PointList[size];
+		}
+	};
+
+	@Override
+	public Iterator<LatLng> iterator() {
+		return points.iterator();
+	}
+	
+	@Override
+	public String toString() {
+		return points.toString();
+	}
 }

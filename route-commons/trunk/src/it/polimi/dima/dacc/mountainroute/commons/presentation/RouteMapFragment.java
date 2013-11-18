@@ -57,7 +57,7 @@ public class RouteMapFragment extends MapFragment {
 		// Restore from saved state if available
 		if (savedState != null) {
 			Float index = savedState.getFloat(INDEX_KEY);
-			Route route = (Route) savedState.getSerializable(ROUTE_KEY);
+			Route route = (Route) savedState.getParcelable(ROUTE_KEY);
 
 			log.d("State restored from saved bundle");
 			this.initializeRoute(route, index);
@@ -72,7 +72,8 @@ public class RouteMapFragment extends MapFragment {
 		if (traversedIndex != null) {
 			outState.putFloat(INDEX_KEY, traversedIndex);
 		}
-		outState.putSerializable(ROUTE_KEY, route);
+		
+		outState.putParcelable(ROUTE_KEY, route);
 		log.d("Instance data saved.");
 	}
 

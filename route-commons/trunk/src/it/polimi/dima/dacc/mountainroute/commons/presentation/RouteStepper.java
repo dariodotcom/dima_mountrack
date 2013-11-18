@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroute.commons.presentation;
 
+import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +16,8 @@ public class RouteStepper {
 	private int currentPivotIndex;
 	private boolean hasInterpolationPoint;
 
-	public RouteStepper(List<LatLng> route, float traversedIndex) {
+	public RouteStepper(PointList input, float traversedIndex) {
+		List<LatLng> route = input.getList();
 		if (traversedIndex > route.size() - 1) {
 			throw new RuntimeException(
 					"Traversed index is greater that route size!");
@@ -25,7 +28,7 @@ public class RouteStepper {
 		this.currentTraversedIndex = traversedIndex;
 		this.currentPivotIndex = parseInt(currentTraversedIndex);
 
-		// Load Rout
+		// Load Route
 		int routeLength = route.size();
 		traversedRoute.addAll(route.subList(0, currentPivotIndex + 1));
 		pendingRoute.addAll(route.subList(currentPivotIndex + 1, routeLength));
@@ -36,8 +39,8 @@ public class RouteStepper {
 		addInterpolation(interpolationCoeff);
 	}
 
-	public RouteStepper(List<LatLng> route) {
-		this(route, 0);
+	public RouteStepper(PointList input) {
+		this(input, 0);
 	}
 
 	public List<LatLng> getPending() {
