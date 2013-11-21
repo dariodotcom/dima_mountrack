@@ -45,6 +45,13 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAOA9m7umYi3KQEK8BTsKd7TukmSWzHdoI" />
+
+        <service
+            android:name=".tracking.TrackingService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="TrackingService" >
+        </service>
     </application>
 
 </manifest>

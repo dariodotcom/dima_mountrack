@@ -83,7 +83,7 @@ public class RouteSaverActivity extends Activity implements ResultCallback {
 		
 		if (savedState != null) {
 			creationState = (CreationState) savedState
-					.getSerializable(CREATION_KEY);
+					.getParcelable(CREATION_KEY);
 		} else {
 			PointList points = (PointList) getIntent()
 					.getParcelableExtra(TRACKED_POINTS_KEY);
@@ -109,8 +109,8 @@ public class RouteSaverActivity extends Activity implements ResultCallback {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable(CREATION_KEY, creationState);
 		super.onSaveInstanceState(outState);
+		outState.putParcelable(CREATION_KEY, creationState);
 	}
 
 	@Override

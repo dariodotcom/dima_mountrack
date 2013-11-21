@@ -3,21 +3,28 @@ package it.polimi.dima.dacc.montainroute.creation.saver;
 import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 import it.polimi.dima.dacc.mountainroute.commons.types.Route;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class CreationState implements Serializable {
+public class CreationState implements Parcelable {
 
-	private static final long serialVersionUID = -2322487256873277585L;
 	private String name;
 	private Integer duration;
 	private PointList points;
 
+	
 	public CreationState(PointList points) {
 		if (points == null) {
 			throw new RuntimeException("Points must not be null");
 		}
 		
 		this.points = points;
+	}
+
+	private CreationState(Parcel source) {
+		this.name = source.readString();
+		this.duration = source.readInt();
+		this.points = source.readParcelable(PointList.class.getClassLoader());
 	}
 
 	public void setName(String name) {
@@ -36,4 +43,28 @@ public class CreationState implements Serializable {
 		return new Route(null, name, points, duration);
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.name);
+		dest.writeInt(this.duration);
+		dest.writeParcelable(this.points, 0);
+	}
+
+	public final static Creator<CreationState> CREATOR = new Creator<CreationState>() {
+		
+		@Override
+		public CreationState[] newArray(int size) {
+			return new CreationState[size];
+		}
+		
+		@Override
+		public CreationState createFromParcel(Parcel source) {
+			return new CreationState(source);
+		}
+	};
 }

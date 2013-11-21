@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.montainroute.creation;
 
 import it.polimi.dima.dacc.montainroute.creation.saver.RouteSaverActivity;
 import it.polimi.dima.dacc.montainroute.creation.tracking.RouteTrackingActivity;
+import it.polimi.dima.dacc.montainroute.creation.tracking.TrackingService;
 import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,9 +30,11 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_main);
-
+		
 		Button startTrackingButton = (Button) findViewById(R.id.button_start_tracking);
 		startTrackingButton.setOnClickListener(startListener);
+		Intent i = new Intent(this, TrackingService.class);
+		startService(i);
 	}
 
 	@Override
