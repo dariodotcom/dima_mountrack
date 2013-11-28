@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<title>Route Manager</title>
+<link rel="stylesheet" type="text/css" href="/css/zero.css" />
+<link rel="stylesheet" type="text/css" href="/css/manager.css" />
+<link
+	href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300'
+	rel='stylesheet' type='text/css'>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArza0e0or2UKxnmq3rS6kQksZWdz1611o&sensor=false"></script>
+
+<script type="text/javascript" src="/js/manager.js"></script>
+</head>
+<body>
+	<div id="container">
+		<div id="map"></div>
+		<div id="content">
+			<div class="view createPath">
+				<h1 class="title">Creazione sentiero</h1>
+
+				<div class="field">
+					<label for="pathName" class="text">Nome:</label> <input type="text"
+						id="pathName" class="textInput" />
+				</div>
+				<div class="field">
+					<label for="pathDuration" class="text">Durata (minuti):</label> <input
+						type="text" id="pathDuration" class="textInput" />
+				</div>
+
+				<div class="field">
+					<p class="text">Caratteristiche:</p>
+					<div class="pathInfo">
+						<p class="feature">
+							<span class="featureName">Numero di punti</span> <span
+								class="featureValue" id="pathPoints">123</span>
+						</p>
+						<p class="feature">
+							<span class="featureName">Lunghezza</span> <span
+								class="featureValue" id="pathLength">123</span>						</p>
+						<p class="feature">
+							<span class="featureName">Lunghezza media segmenti</span> <span
+								class="featureValue" id="pathAvgSegmentLength">123</span>
+						</p>
+
+					</div>
+				</div>
+				<div class="tip">
+					Clicca sulla mappa per posizionare i punti del sentiero. Puoi
+					trascinare i <i>marker</i> per spostarli. Ctrl+click per rimuovere
+					un punto.
+				</div>
+				<div class="bottomLine">
+					<button class="button" id="pathCompleted">Ho finito</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

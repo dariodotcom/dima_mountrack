@@ -1,0 +1,102 @@
+#map,#content {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#map {
+	
+}
+
+#content {
+	margin-left: -4px;
+	font-family: 'Roboto Condensed', sans-serif;
+	background: #eeeeee;
+}
+
+#content .view {
+	height: 100%;
+}
+
+#content .view .title {
+	background-color: #009dff;
+	padding: 15px;
+	text-align: center;
+	font-size: 1.5em;
+	color: white;
+}
+
+#content .view .field {
+	padding: 15px 25px;
+}
+
+#content .view .field:hover {
+	background: #e9e9e9;
+}
+
+#content .view .text {
+	font-weight: lighter;
+	font-size: 1.1em;
+}
+
+#content .textInput {
+	padding: 4px;
+	margin-top: 5px;
+	font-size: 1.1em;
+	font-weight: 300;
+	width: 240px;
+	font-weight: lighter;
+	color: #787878;
+	border-radius: 1px;
+	border: 1px solid #a9a9a9;
+	width: 240px
+}
+
+#content .view .pathInfo {
+	margin-top: 10px;
+}
+
+#content .view .feature {
+	border-bottom: 1px solid #009dff;
+	padding: 3px 2px;
+	margin-bottom: 3px;
+}
+
+#content .view .featureName {
+	font-weight: lighter;
+}
+
+#content .view .featureValue {
+	float: right;
+}
+
+#content .view .tip {
+	font-weight: lighter;
+	color: #565656;
+	padding: 15px 25px;
+	line-height: 20px;
+}
+
+#content .bottomLine {
+	background-color: #009dff;
+	text-align: center;
+	padding: 15px;
+	margin-top: 25px;
+}
+
+#content .button {
+	padding: 5px 15px;
+	background-color: white;
+	color: #009dff;
+	font-size: 1.0em;
+	border: none;
+	border-radius: 1px;
+	cursor: pointer;
+}
+
+#content .textInput:hover,#content .textInput:focus {
+	border-color: #009dff;
+}
+
+body {
+	overflow: hidden;
+}
