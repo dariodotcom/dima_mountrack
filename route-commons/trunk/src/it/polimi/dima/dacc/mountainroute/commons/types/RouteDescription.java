@@ -1,6 +1,9 @@
 package it.polimi.dima.dacc.mountainroute.commons.types;
 
-public class RouteDescription {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RouteDescription implements Parcelable {
 
 	private String name;
 	private String id;
@@ -10,6 +13,36 @@ public class RouteDescription {
 		this.name = name;
 		this.id = id;
 	}
+
+	private RouteDescription(Parcel in) {
+		in.readString();
+		in.readString();
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeString(id);
+		dest.writeString(name);
+	}
+
+	public final static Creator<RouteDescription> CREATOR = new Creator<RouteDescription>() {
+
+		@Override
+		public RouteDescription[] newArray(int size) {
+			return new RouteDescription[size];
+		}
+
+		@Override
+		public RouteDescription createFromParcel(Parcel source) {
+			return new RouteDescription(source);
+		}
+	};
 
 	public String getName() {
 		return name;

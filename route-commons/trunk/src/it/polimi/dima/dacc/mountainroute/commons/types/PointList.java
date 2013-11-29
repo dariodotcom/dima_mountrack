@@ -49,6 +49,19 @@ public class PointList implements Parcelable, Iterable<LatLng> {
 		return this.points;
 	}
 
+	public int size(){
+		return points.size();
+	}
+	
+	public boolean isEmpty(){
+		return points.isEmpty();
+	}
+	
+	public LatLng getLast(){
+		int last = points.size() - 1;
+		return points.get(last);
+	}
+	
 	// Parcelable methods
 	@Override
 	public int describeContents() {

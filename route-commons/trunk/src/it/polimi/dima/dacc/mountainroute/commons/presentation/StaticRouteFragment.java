@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -38,9 +40,15 @@ public class StaticRouteFragment extends MapFragment {
 
 	public void notifyPathChanged() {
 		List<LatLng> pointList = path.getList();
+		if (pointList.isEmpty()) {
+			return;
+		}
+
 		int last = pointList.size() - 1;
+		LatLng lastPoint = pointList.get(last);
 		this.line.setPoints(pointList);
-		this.moveMarker(pointList.get(last));
+		this.moveMarker(lastPoint);
+		this.moveCamera(lastPoint);
 	}
 
 	// Activity methods to override
@@ -63,10 +71,23 @@ public class StaticRouteFragment extends MapFragment {
 		return result;
 	}
 
+	public void centerMap() {
+		if (this.path.isEmpty()) {
+			return;
+		}
+		moveCamera(this.path.getLast());
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(SAVED_PATH_KEY, path);
+	}
+
+	private void moveCamera(LatLng point) {
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(point,
+				18f);
+		getMap().animateCamera(cameraUpdate);
 	}
 
 	private void moveMarker(LatLng position) {
