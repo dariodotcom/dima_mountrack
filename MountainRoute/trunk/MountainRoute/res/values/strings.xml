@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mountain Route</string>
+    <string name="action_settings">Settings</string>
+    <string name="route_source_input_label">Name: </string>
+    <string name="route_source_loading">Loading&#8230;</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_route_chooser">RouteChooserActivity</string>
+    <string name="routechooser_tab_near_me_title">Near Me</string>
+    <string name="routechooser_tab_by_name_title">By Name</string>
+    <string name="routechooser_tab_local_title">Saved</string>
+    <string name="local_source_description">Here you can find all the path contained that you have marked as favourite.</string>
+    <string name="search_hint">Search</string>
+    <string name="by_name_source_description">Here you can search a path just inserting its name.</string>
+    <string name="near_me_source_description">Here you can find all the paths near you simply using your GPS signal.</string>
+    <string name="update_near_me_list">Update</string>
+
+</resources>
