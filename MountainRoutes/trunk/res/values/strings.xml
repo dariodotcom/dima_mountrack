@@ -13,6 +13,10 @@
     <string name="page_by_name_title">By Name</string>
     <string name="page_near_me_title">Near Me</string>
     <string name="page_saved_title">Saved</string>
+    
+    <string name="routelist_waiting_text">Loading routes&#8230;</string>
+    <string name="routelist_empty">No results found.</string>
+    
     <string name="title_activity_complete_route_selector">Select route</string>
 
 </resources>
