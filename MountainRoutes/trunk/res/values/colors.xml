@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="actionbar.background.color">#38a8ff</color>
-	<color name="actionbar.text.color">#ffffff</color>
+    <color name = "actionbar.background.color">#38a8ff</color>
+    <color name = "button.pressed.color">#aac240</color>
+    <color name = "button.default.color">#7e8f2f</color>
+    <color name = "button.text.color">#ffffff</color>
 </resources>
