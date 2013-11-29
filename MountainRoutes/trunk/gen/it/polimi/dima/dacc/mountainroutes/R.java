@@ -196,7 +196,8 @@ containing a value of this type.
         public static final int repeatingpattern=0x7f020020;
     }
     public static final class id {
-        public static final int action_settings=0x7f050009;
+        public static final int action_settings=0x7f05000f;
+        public static final int emptylist_result=0x7f05000c;
         public static final int hybrid=0x7f050004;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
@@ -204,12 +205,19 @@ containing a value of this type.
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050005;
+        public static final int route_list=0x7f05000b;
+        public static final int route_list_animator=0x7f05000a;
+        public static final int route_name=0x7f050009;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
+        public static final int waiting_progressbar=0x7f05000d;
+        public static final int waiting_textview=0x7f05000e;
     }
     public static final class layout {
         public static final int activity_complete_route_selector=0x7f030000;
         public static final int activity_main=0x7f030001;
+        public static final int route_list_element=0x7f030002;
+        public static final int route_list_fragment=0x7f030003;
     }
     public static final class menu {
         public static final int complete_route_selector=0x7f090000;
@@ -315,7 +323,9 @@ containing a value of this type.
         public static final int page_by_name_title=0x7f06001f;
         public static final int page_near_me_title=0x7f060020;
         public static final int page_saved_title=0x7f060021;
-        public static final int title_activity_complete_route_selector=0x7f060022;
+        public static final int routelist_empty=0x7f060023;
+        public static final int routelist_waiting_text=0x7f060022;
+        public static final int title_activity_complete_route_selector=0x7f060024;
     }
     public static final class style {
         /** 
