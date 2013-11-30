@@ -382,14 +382,15 @@ containing a value of this type.
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f070000;
-        public static final int AppContainer=0x7f070005;
+        public static final int AppContainer=0x7f070006;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
         public static final int BlueActionBar=0x7f070002;
-        public static final int ButtonStyle=0x7f070003;
-        public static final int MainButtonStyle=0x7f070004;
+        public static final int ButtonStyle=0x7f070004;
+        public static final int MainButtonStyle=0x7f070005;
+        public static final int PersonalizedActionBarTabs=0x7f070003;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.
