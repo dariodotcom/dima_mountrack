@@ -1,0 +1,14 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity" >
+
+    <fragment
+        android:id="@+id/test_list_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment"
+        tools:layout="@layout/route_list_fragment" />
+
+</RelativeLayout>

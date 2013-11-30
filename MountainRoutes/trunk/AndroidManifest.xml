@@ -30,6 +30,10 @@
             android:name="it.polimi.dima.dacc.mountainroutes.CompleteRouteSelector"
             android:label="@string/title_activity_complete_route_selector" >
         </activity>
+        <activity
+            android:name="it.polimi.dima.dacc.mountainroutes.TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>

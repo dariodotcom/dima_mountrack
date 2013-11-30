@@ -41,7 +41,7 @@ public class RouteListFragment extends Fragment implements
 
 		listView.setAdapter(resultAdapter);
 
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return inflated;
 	}
 
 	private void showPanel(int index) {

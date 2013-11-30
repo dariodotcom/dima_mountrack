@@ -27,7 +27,7 @@ public class CompleteRouteSelector extends FragmentActivity implements
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		pagerAdapter = new SelectorPagerAdapter(getSupportFragmentManager(),
-				this, true);
+				this);
 
 		// Set up the ViewPager with the sections adapter.
 		viewPager = (ViewPager) findViewById(R.id.pager);
