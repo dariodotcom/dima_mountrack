@@ -132,7 +132,8 @@ containing a value of this type.
         public static final int actionbar_background_color=0x7f04000a;
         public static final int button_default_color=0x7f04000c;
         public static final int button_pressed_color=0x7f04000b;
-        public static final int button_text_color=0x7f04000d;
+        public static final int button_shade_color=0x7f04000d;
+        public static final int button_text_color=0x7f04000e;
         public static final int common_action_bar_splitter=0x7f040009;
         /**  Sign-in Button Colors 
          */
@@ -145,10 +146,10 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f040006;
         public static final int common_signin_btn_light_text_focused=0x7f040007;
         public static final int common_signin_btn_light_text_pressed=0x7f040005;
-        public static final int common_signin_btn_text_dark=0x7f04000e;
-        public static final int common_signin_btn_text_light=0x7f04000f;
-        public static final int pendingroute=0x7f040010;
-        public static final int traversedroute=0x7f040011;
+        public static final int common_signin_btn_text_dark=0x7f04000f;
+        public static final int common_signin_btn_text_light=0x7f040010;
+        public static final int pendingroute=0x7f040011;
+        public static final int traversedroute=0x7f040012;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -159,6 +160,8 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080000;
         public static final int activity_vertical_margin=0x7f080001;
+        public static final int shade_size=0x7f080002;
+        public static final int shade_size_neg=0x7f080003;
     }
     public static final class drawable {
         public static final int button_background=0x7f020000;
@@ -186,14 +189,15 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f020016;
         public static final int common_signin_btn_text_pressed_dark=0x7f020017;
         public static final int common_signin_btn_text_pressed_light=0x7f020018;
-        public static final int headerimage=0x7f020019;
-        public static final int ic_launcher=0x7f02001a;
-        public static final int ic_plusone_medium_off_client=0x7f02001b;
-        public static final int ic_plusone_small_off_client=0x7f02001c;
-        public static final int ic_plusone_standard_off_client=0x7f02001d;
-        public static final int ic_plusone_tall_off_client=0x7f02001e;
-        public static final int pattern=0x7f02001f;
-        public static final int repeatingpattern=0x7f020020;
+        public static final int header=0x7f020019;
+        public static final int headerimage=0x7f02001a;
+        public static final int ic_launcher=0x7f02001b;
+        public static final int ic_plusone_medium_off_client=0x7f02001c;
+        public static final int ic_plusone_small_off_client=0x7f02001d;
+        public static final int ic_plusone_standard_off_client=0x7f02001e;
+        public static final int ic_plusone_tall_off_client=0x7f02001f;
+        public static final int pattern=0x7f020020;
+        public static final int repeatingpattern=0x7f020021;
     }
     public static final class id {
         public static final int action_settings=0x7f050015;
@@ -212,7 +216,7 @@ containing a value of this type.
         public static final int route_name=0x7f05000f;
         public static final int satellite=0x7f050002;
         public static final int saved_list_fragment=0x7f05000e;
-        public static final int search=0x7f05000a;
+        public static final int search_term=0x7f05000a;
         public static final int terrain=0x7f050003;
         public static final int test_list_fragment=0x7f050009;
         public static final int update_button=0x7f05000d;

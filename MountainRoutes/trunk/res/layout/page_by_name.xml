@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/search"
+        android:id="@+id/search_term"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/ic_menu_search"

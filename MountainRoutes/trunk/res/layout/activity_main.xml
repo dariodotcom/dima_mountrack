@@ -8,8 +8,8 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="240dp"
-        android:background="@drawable/headerimage" />
+        android:layout_height="260dp"
+        android:background="@drawable/header" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -3,5 +3,6 @@
     <color name = "actionbar.background.color">#38a8ff</color>
     <color name = "button.pressed.color">#aac240</color>
     <color name = "button.default.color">#7e8f2f</color>
+    <color name = "button.shade.color">#25000000</color>
     <color name = "button.text.color">#ffffff</color>
 </resources>

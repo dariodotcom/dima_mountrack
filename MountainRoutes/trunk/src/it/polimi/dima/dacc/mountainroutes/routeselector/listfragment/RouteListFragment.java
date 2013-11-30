@@ -21,8 +21,8 @@ public class RouteListFragment extends Fragment implements
 		RouteSource.ResultObserver {
 
 	private static final int RESULT_PAGE_INDEX = 0;
-	private static final int LOADING_PAGE_INDEX = 1;
-	private static final int MESSAGE_PAGE_INDEX = 2;
+	private static final int MESSAGE_PAGE_INDEX = 1;
+	private static final int LOADING_PAGE_INDEX = 2;
 
 	private ViewAnimator animator;
 	private RouteListAdapter resultAdapter;
@@ -61,7 +61,7 @@ public class RouteListFragment extends Fragment implements
 
 		this.source.loadRoutes(this);
 	}
-	
+
 	public void setOnRouteSelectListener(OnRouteSelected listener) {
 		OnItemClickListener l = new ItemClickAdapter(listener);
 		this.listView.setOnItemClickListener(l);
@@ -69,8 +69,16 @@ public class RouteListFragment extends Fragment implements
 
 	@Override
 	public void onResultReceived(RouteDescriptionList result) {
-		List<RouteDescription> descriptions = result.getRouteDescriptions();
 
+		// If result is null, no search was performed
+		if (result == null) {
+			this.resultAdapter.clear();
+			this.resultAdapter.notifyDataSetChanged();
+			this.showPanel(RESULT_PAGE_INDEX);
+			return;
+		}
+
+		List<RouteDescription> descriptions = result.getRouteDescriptions();
 		if (descriptions.isEmpty()) {
 			// TODO set error message
 			this.showPanel(MESSAGE_PAGE_INDEX);

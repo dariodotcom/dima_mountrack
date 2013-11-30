@@ -1,20 +1,14 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true"><layer-list>
-            <item><shape>
-                    <solid android:color="#6f7e29" />
-                </shape></item>
-            <item android:bottom="3dp"><shape>
-                    <solid android:color="@color/button.default.color" />
-                </shape></item>
-        </layer-list></item>
     <item><layer-list>
             <item><shape>
-                    <solid android:color="#6f7e29" />
-                </shape></item>
-            <item android:bottom="5dp"><shape>
                     <solid android:color="@color/button.default.color" />
                 </shape></item>
+            <item><inset android:insetBottom="0dp" android:insetLeft="@dimen/shade_size_neg" android:insetRight="@dimen/shade_size_neg" android:insetTop="@dimen/shade_size_neg">
+                    <shape>
+                        <stroke android:width="@dimen/shade_size" android:color="@color/button.shade.color" />
+                    </shape>
+                </inset></item>
         </layer-list></item>
 
 </selector>
