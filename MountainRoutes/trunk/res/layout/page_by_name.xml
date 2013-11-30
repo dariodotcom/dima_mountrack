@@ -5,13 +5,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <EditText
+        android:id="@+id/search_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/page_by_name_search_term_hint" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/page_by_name_description" />
 
     <fragment
-        android:id="@+id/test_list_fragment"
+        android:id="@+id/by_name_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment"

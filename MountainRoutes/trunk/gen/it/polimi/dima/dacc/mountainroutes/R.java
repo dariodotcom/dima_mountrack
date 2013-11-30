@@ -196,25 +196,28 @@ containing a value of this type.
         public static final int repeatingpattern=0x7f020020;
     }
     public static final class id {
-        public static final int action_settings=0x7f050012;
-        public static final int emptylist_result=0x7f05000f;
+        public static final int action_settings=0x7f050015;
+        public static final int by_name_list_fragment=0x7f05000b;
+        public static final int emptylist_result=0x7f050012;
         public static final int hybrid=0x7f050004;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
         public static final int main_start_walk_button=0x7f050006;
-        public static final int near_me_list_fragment=0x7f05000a;
+        public static final int near_me_list_fragment=0x7f05000c;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050005;
-        public static final int route_list=0x7f05000e;
-        public static final int route_list_animator=0x7f05000d;
-        public static final int route_name=0x7f05000c;
+        public static final int route_list=0x7f050011;
+        public static final int route_list_animator=0x7f050010;
+        public static final int route_name=0x7f05000f;
         public static final int satellite=0x7f050002;
+        public static final int saved_list_fragment=0x7f05000e;
+        public static final int search_term=0x7f05000a;
         public static final int terrain=0x7f050003;
         public static final int test_list_fragment=0x7f050009;
-        public static final int update_button=0x7f05000b;
-        public static final int waiting_progressbar=0x7f050010;
-        public static final int waiting_textview=0x7f050011;
+        public static final int update_button=0x7f05000d;
+        public static final int waiting_progressbar=0x7f050013;
+        public static final int waiting_textview=0x7f050014;
     }
     public static final class layout {
         public static final int activity_complete_route_selector=0x7f030000;
@@ -222,8 +225,9 @@ containing a value of this type.
         public static final int activity_test=0x7f030002;
         public static final int page_by_name=0x7f030003;
         public static final int page_near_me=0x7f030004;
-        public static final int route_list_element=0x7f030005;
-        public static final int route_list_fragment=0x7f030006;
+        public static final int page_saved=0x7f030005;
+        public static final int route_list_element=0x7f030006;
+        public static final int route_list_fragment=0x7f030007;
     }
     public static final class menu {
         public static final int complete_route_selector=0x7f090000;
@@ -328,15 +332,17 @@ containing a value of this type.
         public static final int main_my_routes_button_text=0x7f06001d;
         public static final int main_start_walk_button_text=0x7f06001c;
         public static final int page_by_name_description=0x7f060020;
+        public static final int page_by_name_search_term_hint=0x7f060021;
         public static final int page_by_name_title=0x7f06001f;
-        public static final int page_near_me_description=0x7f060022;
-        public static final int page_near_me_title=0x7f060021;
-        public static final int page_ner_me_update_button=0x7f060023;
-        public static final int page_saved_title=0x7f060024;
-        public static final int routelist_empty=0x7f060026;
-        public static final int routelist_waiting_text=0x7f060025;
-        public static final int title_activity_complete_route_selector=0x7f060027;
-        public static final int title_activity_test=0x7f060028;
+        public static final int page_near_me_description=0x7f060023;
+        public static final int page_near_me_title=0x7f060022;
+        public static final int page_near_me_update_button=0x7f060024;
+        public static final int page_saved_description=0x7f060026;
+        public static final int page_saved_title=0x7f060025;
+        public static final int routelist_empty=0x7f060028;
+        public static final int routelist_waiting_text=0x7f060027;
+        public static final int title_activity_complete_route_selector=0x7f060029;
+        public static final int title_activity_test=0x7f06002a;
     }
     public static final class style {
         /** 
