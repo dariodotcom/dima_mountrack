@@ -212,7 +212,7 @@ containing a value of this type.
         public static final int route_name=0x7f05000f;
         public static final int satellite=0x7f050002;
         public static final int saved_list_fragment=0x7f05000e;
-        public static final int search_term=0x7f05000a;
+        public static final int search=0x7f05000a;
         public static final int terrain=0x7f050003;
         public static final int test_list_fragment=0x7f050009;
         public static final int update_button=0x7f05000d;
