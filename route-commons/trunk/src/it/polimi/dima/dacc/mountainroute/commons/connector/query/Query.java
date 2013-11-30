@@ -7,7 +7,7 @@ public abstract class Query {
 	protected static final String ENDPOINT_URL = "http://dima-dacc-mountainroute.appspot.com/routes/";
 
 	public enum QueryType {
-		AVAILABLE, ID, LOCATION, CREATE
+		AVAILABLE, ID, LOCATION, CREATE, BYNAME
 	}
 
 	private HttpRequestBase request;

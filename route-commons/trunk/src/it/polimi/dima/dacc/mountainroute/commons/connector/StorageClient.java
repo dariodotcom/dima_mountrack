@@ -92,6 +92,7 @@ public class StorageClient extends AsyncTask<Query, Void, QueryResult> {
 		QueryResult result;
 
 		switch (query.getType()) {
+		case BYNAME:
 		case AVAILABLE:
 			result = new QueryResult(JsonParser.ParseRouteList.fromJson(json),
 					query);
