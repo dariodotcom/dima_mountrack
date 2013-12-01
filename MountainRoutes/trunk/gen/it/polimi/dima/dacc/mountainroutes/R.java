@@ -129,11 +129,16 @@ containing a value of this type.
         public static final int zOrderOnTop=0x7f01000d;
     }
     public static final class color {
-        public static final int actionbar_background_color=0x7f04000a;
-        public static final int button_default_color=0x7f04000c;
-        public static final int button_pressed_color=0x7f04000b;
-        public static final int button_shade_color=0x7f04000d;
-        public static final int button_text_color=0x7f04000e;
+        public static final int accent_blue=0x7f04000e;
+        /**  TABS 
+         */
+        public static final int actionbar_tabs_background=0x7f04000f;
+        public static final int actionbar_tabs_shade=0x7f040011;
+        public static final int actionbar_tabs_text=0x7f040010;
+        public static final int button_default_color=0x7f04000b;
+        public static final int button_pressed_color=0x7f04000a;
+        public static final int button_shade_color=0x7f04000c;
+        public static final int button_text_color=0x7f04000d;
         public static final int common_action_bar_splitter=0x7f040009;
         /**  Sign-in Button Colors 
          */
@@ -146,10 +151,10 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f040006;
         public static final int common_signin_btn_light_text_focused=0x7f040007;
         public static final int common_signin_btn_light_text_pressed=0x7f040005;
-        public static final int common_signin_btn_text_dark=0x7f04000f;
-        public static final int common_signin_btn_text_light=0x7f040010;
-        public static final int pendingroute=0x7f040011;
-        public static final int traversedroute=0x7f040012;
+        public static final int common_signin_btn_text_dark=0x7f040012;
+        public static final int common_signin_btn_text_light=0x7f040013;
+        public static final int pendingroute=0x7f040014;
+        public static final int traversedroute=0x7f040015;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -198,6 +203,9 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001f;
         public static final int pattern=0x7f020020;
         public static final int repeatingpattern=0x7f020021;
+        public static final int tab_background=0x7f020022;
+        public static final int tab_selected=0x7f020023;
+        public static final int tab_unselected=0x7f020024;
     }
     public static final class id {
         public static final int action_settings=0x7f050015;
@@ -349,6 +357,11 @@ containing a value of this type.
         public static final int title_activity_test=0x7f06002a;
     }
     public static final class style {
+        public static final int ActionBar=0x7f070002;
+        public static final int ActionBar_Divider=0x7f070006;
+        public static final int ActionBar_Tabs_Bar=0x7f070003;
+        public static final int ActionBar_Tabs_Style=0x7f070004;
+        public static final int ActionBar_Tabs_Text=0x7f070005;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -382,15 +395,13 @@ containing a value of this type.
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f070000;
-        public static final int AppContainer=0x7f070006;
+        public static final int AppContainer=0x7f070009;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
-        public static final int BlueActionBar=0x7f070002;
-        public static final int ButtonStyle=0x7f070004;
-        public static final int MainButtonStyle=0x7f070005;
-        public static final int PersonalizedActionBarTabs=0x7f070003;
+        public static final int ButtonStyle=0x7f070007;
+        public static final int MainButtonStyle=0x7f070008;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.
