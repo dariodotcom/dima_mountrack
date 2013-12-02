@@ -210,37 +210,33 @@ containing a value of this type.
         public static final int tab_unselected=0x7f020025;
     }
     public static final class id {
-        public static final int action_settings=0x7f05001e;
-        public static final int by_name_list_fragment=0x7f050014;
-        public static final int difficulty_info=0x7f05000a;
-        public static final int difficulty_value=0x7f05000b;
-        public static final int emptylist_result=0x7f05001b;
-        public static final int estimated_time_info=0x7f050010;
-        public static final int estimated_time_value=0x7f050011;
-        public static final int gap_info=0x7f05000e;
-        public static final int gap_value=0x7f05000f;
+        public static final int action_settings=0x7f05001a;
+        public static final int by_name_list_fragment=0x7f050010;
+        public static final int difficulty_value=0x7f05000a;
+        public static final int emptylist_result=0x7f050017;
+        public static final int estimated_time_value=0x7f05000d;
+        public static final int gap_value=0x7f05000c;
         public static final int hybrid=0x7f050004;
-        public static final int lenght_info=0x7f05000c;
-        public static final int lenght_value=0x7f05000d;
+        public static final int lenght_value=0x7f05000b;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
         public static final int main_start_walk_button=0x7f050006;
-        public static final int near_me_list_fragment=0x7f050015;
+        public static final int near_me_list_fragment=0x7f050011;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050005;
-        public static final int route_list=0x7f05001a;
-        public static final int route_list_animator=0x7f050019;
-        public static final int route_name=0x7f050018;
+        public static final int route_list=0x7f050016;
+        public static final int route_list_animator=0x7f050015;
+        public static final int route_name=0x7f050014;
         public static final int satellite=0x7f050002;
-        public static final int saved_list_fragment=0x7f050017;
-        public static final int search_term=0x7f050013;
+        public static final int saved_list_fragment=0x7f050013;
+        public static final int search_term=0x7f05000f;
         public static final int terrain=0x7f050003;
-        public static final int test_list_fragment=0x7f050012;
-        public static final int update_button=0x7f050016;
+        public static final int test_list_fragment=0x7f05000e;
+        public static final int update_button=0x7f050012;
         public static final int viewer_map=0x7f050009;
-        public static final int waiting_progressbar=0x7f05001c;
-        public static final int waiting_textview=0x7f05001d;
+        public static final int waiting_progressbar=0x7f050018;
+        public static final int waiting_textview=0x7f050019;
     }
     public static final class layout {
         public static final int activity_complete_route_selector=0x7f030000;
@@ -352,7 +348,13 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060012;
+        public static final int difficulty_advanced=0x7f060034;
+        public static final int difficulty_equipped=0x7f060035;
+        public static final int difficulty_excursionist=0x7f060033;
         public static final int difficulty_info=0x7f06002e;
+        /**  Difficulty 
+         */
+        public static final int difficulty_tourist=0x7f060032;
         public static final int estimated_time_info=0x7f060030;
         public static final int gap_info=0x7f06002f;
         public static final int hello_world=0x7f06001b;

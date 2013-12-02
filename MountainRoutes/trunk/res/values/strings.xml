@@ -28,5 +28,10 @@
     <string name="gap_info">Gap</string>
     <string name="estimated_time_info">Estimated time</string>
     <string name="length_info">Length</string>
-
+    
+    <!-- Difficulty -->
+	<string name="difficulty_tourist">Tourist</string>
+	<string name="difficulty_excursionist">Excursionist</string>
+	<string name="difficulty_advanced">Expert Excursionist</string>
+	<string name="difficulty_equipped">Equipped</string>
 </resources>

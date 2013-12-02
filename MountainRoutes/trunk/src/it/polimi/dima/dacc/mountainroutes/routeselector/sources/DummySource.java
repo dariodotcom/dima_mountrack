@@ -1,11 +1,11 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient;
-import it.polimi.dima.dacc.mountainroute.commons.connector.StorageClient.ResultCallback;
-import it.polimi.dima.dacc.mountainroute.commons.connector.query.AvailableRoutesQuery;
-import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
-import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.StorageClient;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.StorageClient.ResultCallback;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.query.AvailableRoutesQuery;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.query.Query;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.query.QueryResult;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
 
 public class DummySource implements RouteSource {
 
