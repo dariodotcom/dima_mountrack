@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroute.commons.types;
+package it.polimi.dima.dacc.mountainroutes.commons.types;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,8 +15,8 @@ public class RouteDescription implements Parcelable {
 	}
 
 	private RouteDescription(Parcel in) {
-		in.readString();
-		in.readString();
+		this.id = in.readString();
+		this.name = in.readString();
 	}
 
 	@Override

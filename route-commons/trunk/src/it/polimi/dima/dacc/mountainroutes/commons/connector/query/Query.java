@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroute.commons.connector.query;
+package it.polimi.dima.dacc.mountainroutes.commons.connector.query;
 
 import org.apache.http.client.methods.HttpRequestBase;
 

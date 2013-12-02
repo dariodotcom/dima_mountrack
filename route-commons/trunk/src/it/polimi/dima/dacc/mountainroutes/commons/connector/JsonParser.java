@@ -1,9 +1,9 @@
-package it.polimi.dima.dacc.mountainroute.commons.connector;
+package it.polimi.dima.dacc.mountainroutes.commons.connector;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
-import it.polimi.dima.dacc.mountainroute.commons.types.Route;
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
+import it.polimi.dima.dacc.mountainroutes.commons.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +31,12 @@ public class JsonParser {
 				PointList points = pointListFromJson(obj.getJSONArray(POINTS));
 				int duration = obj.getInt(DURATION);
 
-				return new Route(id, name, points, duration);
+				Route r = new Route();
+				r.setId(id);
+				r.setName(name);
+				r.setRoute(points);
+				r.setDuration(duration);
+				return r;
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}

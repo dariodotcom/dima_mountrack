@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroute.commons.utils;
+package it.polimi.dima.dacc.mountainroutes.commons.utils;
 
 import android.util.Log;
 

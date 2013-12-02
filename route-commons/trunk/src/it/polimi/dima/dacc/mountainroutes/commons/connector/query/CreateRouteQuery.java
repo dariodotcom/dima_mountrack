@@ -1,9 +1,9 @@
-package it.polimi.dima.dacc.mountainroute.commons.connector.query;
+package it.polimi.dima.dacc.mountainroutes.commons.connector.query;
 
 import java.io.UnsupportedEncodingException;
 
-import it.polimi.dima.dacc.mountainroute.commons.connector.JsonParser;
-import it.polimi.dima.dacc.mountainroute.commons.types.Route;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.JsonParser;
+import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;

@@ -1,8 +1,8 @@
-package it.polimi.dima.dacc.mountainroute.commons.connector;
+package it.polimi.dima.dacc.mountainroutes.commons.connector;
 
-import it.polimi.dima.dacc.mountainroute.commons.connector.query.Query;
-import it.polimi.dima.dacc.mountainroute.commons.connector.query.QueryResult;
-import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.query.Query;
+import it.polimi.dima.dacc.mountainroutes.commons.connector.query.QueryResult;
+import it.polimi.dima.dacc.mountainroutes.commons.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,8 +1,8 @@
-package it.polimi.dima.dacc.mountainroute.commons.presentation;
+package it.polimi.dima.dacc.mountainroutes.commons.presentation;
 
-import it.polimi.dima.dacc.mountainroute.commons.R;
-import it.polimi.dima.dacc.mountainroute.commons.types.Route;
-import it.polimi.dima.dacc.mountainroute.commons.utils.Logger;
+import it.polimi.dima.dacc.mountainroutes.commons.R;
+import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
+import it.polimi.dima.dacc.mountainroutes.commons.utils.Logger;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

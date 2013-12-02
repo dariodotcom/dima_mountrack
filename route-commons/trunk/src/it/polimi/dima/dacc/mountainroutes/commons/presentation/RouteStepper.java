@@ -1,6 +1,6 @@
-package it.polimi.dima.dacc.mountainroute.commons.presentation;
+package it.polimi.dima.dacc.mountainroutes.commons.presentation;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.commons.types.PointList;
 
 import java.util.LinkedList;
 import java.util.List;

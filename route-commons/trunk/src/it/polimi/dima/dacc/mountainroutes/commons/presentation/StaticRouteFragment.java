@@ -1,9 +1,9 @@
-package it.polimi.dima.dacc.mountainroute.commons.presentation;
+package it.polimi.dima.dacc.mountainroutes.commons.presentation;
 
 import java.util.List;
 
-import it.polimi.dima.dacc.mountainroute.commons.R;
-import it.polimi.dima.dacc.mountainroute.commons.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.commons.R;
+import it.polimi.dima.dacc.mountainroutes.commons.types.PointList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
