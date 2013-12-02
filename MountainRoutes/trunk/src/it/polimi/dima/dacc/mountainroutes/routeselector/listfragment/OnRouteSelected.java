@@ -1,12 +1,12 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public interface OnRouteSelected {
-	public void onRouteSelected(RouteDescription description);
+	public void onRouteSelected(RouteDescription  description);
 
 	/* Adapter to use this interface in methods that require ItemClickListener */
 	public static class ItemClickAdapter implements OnItemClickListener {

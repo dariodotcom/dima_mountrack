@@ -27,13 +27,12 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/difficulty_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="@string/difficulty_info" />
 
-            <TextView
+            <it.polimi.dima.dacc.mountainroutes.routeviewer.DifficultyView
                 android:id="@+id/difficulty_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/lenght_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -65,7 +63,6 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/gap_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -84,7 +81,6 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/estimated_time_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

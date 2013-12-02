@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

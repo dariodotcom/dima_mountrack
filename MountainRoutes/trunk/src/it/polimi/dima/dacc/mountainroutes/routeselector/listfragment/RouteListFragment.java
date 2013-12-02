@@ -2,8 +2,6 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
 import java.util.List;
 
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescription;
-import it.polimi.dima.dacc.mountainroute.commons.types.RouteDescriptionList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +11,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ViewAnimator;
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSourceError;

@@ -1,6 +1,8 @@
 package it.polimi.dima.dacc.mountainroutes;
 
+import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
 import it.polimi.dima.dacc.mountainroutes.routeselector.CompleteRouteSelector;
+import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,8 +29,11 @@ public class MainActivity extends Activity {
 
 		Button b = (Button) findViewById(R.id.main_start_walk_button);
 		b.setOnClickListener(startWalkingButtonListener);
-		
+
+		RouteDescription r = new RouteDescription(
+				"ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRjxogQM", null);
 		Intent i = new Intent(this, RouteViewer.class);
+		i.putExtra(RouteViewer.ROUTE_DESCRIPTION, r);
 		startActivity(i);
 
 	}
