@@ -358,7 +358,6 @@ containing a value of this type.
     }
     public static final class style {
         public static final int ActionBar=0x7f070002;
-        public static final int ActionBar_Divider=0x7f070006;
         public static final int ActionBar_Tabs_Bar=0x7f070003;
         public static final int ActionBar_Tabs_Style=0x7f070004;
         public static final int ActionBar_Tabs_Text=0x7f070005;
@@ -395,13 +394,13 @@ containing a value of this type.
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f070000;
-        public static final int AppContainer=0x7f070009;
+        public static final int AppContainer=0x7f070008;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
-        public static final int ButtonStyle=0x7f070007;
-        public static final int MainButtonStyle=0x7f070008;
+        public static final int ButtonStyle=0x7f070006;
+        public static final int MainButtonStyle=0x7f070007;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.
