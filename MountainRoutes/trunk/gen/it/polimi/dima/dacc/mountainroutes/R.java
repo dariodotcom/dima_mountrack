@@ -165,8 +165,9 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080000;
         public static final int activity_vertical_margin=0x7f080001;
-        public static final int shade_size=0x7f080002;
-        public static final int shade_size_neg=0x7f080003;
+        public static final int list_elem_spacing=0x7f080002;
+        public static final int shade_size=0x7f080003;
+        public static final int shade_size_neg=0x7f080004;
     }
     public static final class drawable {
         public static final int button_background=0x7f020000;
@@ -203,48 +204,60 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001f;
         public static final int pattern=0x7f020020;
         public static final int repeatingpattern=0x7f020021;
-        public static final int tab_background=0x7f020022;
-        public static final int tab_selected=0x7f020023;
-        public static final int tab_unselected=0x7f020024;
+        public static final int routeinfo_line=0x7f020022;
+        public static final int tab_background=0x7f020023;
+        public static final int tab_selected=0x7f020024;
+        public static final int tab_unselected=0x7f020025;
     }
     public static final class id {
-        public static final int action_settings=0x7f050015;
-        public static final int by_name_list_fragment=0x7f05000b;
-        public static final int emptylist_result=0x7f050012;
+        public static final int action_settings=0x7f05001e;
+        public static final int by_name_list_fragment=0x7f050014;
+        public static final int difficulty_info=0x7f05000a;
+        public static final int difficulty_value=0x7f05000b;
+        public static final int emptylist_result=0x7f05001b;
+        public static final int estimated_time_info=0x7f050010;
+        public static final int estimated_time_value=0x7f050011;
+        public static final int gap_info=0x7f05000e;
+        public static final int gap_value=0x7f05000f;
         public static final int hybrid=0x7f050004;
+        public static final int lenght_info=0x7f05000c;
+        public static final int lenght_value=0x7f05000d;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
         public static final int main_start_walk_button=0x7f050006;
-        public static final int near_me_list_fragment=0x7f05000c;
+        public static final int near_me_list_fragment=0x7f050015;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050005;
-        public static final int route_list=0x7f050011;
-        public static final int route_list_animator=0x7f050010;
-        public static final int route_name=0x7f05000f;
+        public static final int route_list=0x7f05001a;
+        public static final int route_list_animator=0x7f050019;
+        public static final int route_name=0x7f050018;
         public static final int satellite=0x7f050002;
-        public static final int saved_list_fragment=0x7f05000e;
-        public static final int search_term=0x7f05000a;
+        public static final int saved_list_fragment=0x7f050017;
+        public static final int search_term=0x7f050013;
         public static final int terrain=0x7f050003;
-        public static final int test_list_fragment=0x7f050009;
-        public static final int update_button=0x7f05000d;
-        public static final int waiting_progressbar=0x7f050013;
-        public static final int waiting_textview=0x7f050014;
+        public static final int test_list_fragment=0x7f050012;
+        public static final int update_button=0x7f050016;
+        public static final int viewer_map=0x7f050009;
+        public static final int waiting_progressbar=0x7f05001c;
+        public static final int waiting_textview=0x7f05001d;
     }
     public static final class layout {
         public static final int activity_complete_route_selector=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int activity_test=0x7f030002;
-        public static final int page_by_name=0x7f030003;
-        public static final int page_near_me=0x7f030004;
-        public static final int page_saved=0x7f030005;
-        public static final int route_list_element=0x7f030006;
-        public static final int route_list_fragment=0x7f030007;
+        public static final int activity_route_viewer=0x7f030002;
+        public static final int activity_test=0x7f030003;
+        public static final int page_by_name=0x7f030004;
+        public static final int page_near_me=0x7f030005;
+        public static final int page_saved=0x7f030006;
+        public static final int route_list_element=0x7f030007;
+        public static final int route_list_fragment=0x7f030008;
     }
     public static final class menu {
         public static final int complete_route_selector=0x7f090000;
         public static final int main=0x7f090001;
-        public static final int test=0x7f090002;
+        public static final int route_viewer=0x7f090002;
+        public static final int test=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f06001a;
@@ -339,7 +352,11 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060012;
+        public static final int difficulty_info=0x7f06002e;
+        public static final int estimated_time_info=0x7f060030;
+        public static final int gap_info=0x7f06002f;
         public static final int hello_world=0x7f06001b;
+        public static final int length_info=0x7f060031;
         public static final int main_my_excursions_button_text=0x7f06001e;
         public static final int main_my_routes_button_text=0x7f06001d;
         public static final int main_start_walk_button_text=0x7f06001c;
@@ -351,9 +368,12 @@ containing a value of this type.
         public static final int page_near_me_update_button=0x7f060024;
         public static final int page_saved_description=0x7f060026;
         public static final int page_saved_title=0x7f060025;
+        public static final int route_viewer_save=0x7f06002d;
+        public static final int route_viewer_start=0x7f06002c;
         public static final int routelist_empty=0x7f060028;
         public static final int routelist_waiting_text=0x7f060027;
         public static final int title_activity_complete_route_selector=0x7f060029;
+        public static final int title_activity_route_viewer=0x7f06002b;
         public static final int title_activity_test=0x7f06002a;
     }
     public static final class style {
@@ -401,6 +421,7 @@ containing a value of this type.
         public static final int AppTheme=0x7f070001;
         public static final int ButtonStyle=0x7f070006;
         public static final int MainButtonStyle=0x7f070007;
+        public static final int route_info_entry=0x7f070009;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.

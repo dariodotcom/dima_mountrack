@@ -4,6 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
+    <dimen name="list_elem_spacing">10dp</dimen>
+    
     <dimen name="shade_size">4dp</dimen>
     <dimen name="shade_size_neg">-4dp</dimen>
 </resources>

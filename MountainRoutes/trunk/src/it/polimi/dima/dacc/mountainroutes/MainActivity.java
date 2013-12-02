@@ -27,6 +27,9 @@ public class MainActivity extends Activity {
 
 		Button b = (Button) findViewById(R.id.main_start_walk_button);
 		b.setOnClickListener(startWalkingButtonListener);
+		
+		Intent i = new Intent(this, RouteViewer.class);
+		startActivity(i);
 
 	}
 
