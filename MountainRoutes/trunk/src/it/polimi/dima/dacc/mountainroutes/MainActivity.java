@@ -1,6 +1,12 @@
 package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentLoader;
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery.QueryType;
+import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderObserver;
+import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderResult;
 import it.polimi.dima.dacc.mountainroutes.routeselector.CompleteRouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
 import android.os.Bundle;
@@ -30,11 +36,11 @@ public class MainActivity extends Activity {
 		Button b = (Button) findViewById(R.id.main_start_walk_button);
 		b.setOnClickListener(startWalkingButtonListener);
 
-		RouteDescription r = new RouteDescription(
-				"ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRjxogQM", null);
-		Intent i = new Intent(this, RouteViewer.class);
-		i.putExtra(RouteViewer.ROUTE_DESCRIPTION, r);
-		startActivity(i);
+		// RouteDescription r = new RouteDescription(
+		// "ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRjxogQM", null);
+		// Intent i = new Intent(this, RouteViewer.class);
+		// i.putExtra(RouteViewer.ROUTE_DESCRIPTION, r);
+		// startActivity(i);
 
 	}
 
