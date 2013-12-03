@@ -210,7 +210,7 @@ containing a value of this type.
         public static final int tab_unselected=0x7f020025;
     }
     public static final class id {
-        public static final int action_settings=0x7f05001a;
+        public static final int action_settings=0x7f05001d;
         public static final int by_name_list_fragment=0x7f050010;
         public static final int difficulty_value=0x7f05000a;
         public static final int emptylist_result=0x7f050017;
@@ -218,9 +218,12 @@ containing a value of this type.
         public static final int gap_value=0x7f05000c;
         public static final int hybrid=0x7f050004;
         public static final int lenght_value=0x7f05000b;
+        public static final int loading_overlay=0x7f05001c;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
         public static final int main_start_walk_button=0x7f050006;
+        public static final int message_overlay=0x7f05001a;
+        public static final int message_view=0x7f05001b;
         public static final int near_me_list_fragment=0x7f050011;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
@@ -248,6 +251,7 @@ containing a value of this type.
         public static final int page_saved=0x7f030006;
         public static final int route_list_element=0x7f030007;
         public static final int route_list_fragment=0x7f030008;
+        public static final int route_list_fragment_2=0x7f030009;
     }
     public static final class menu {
         public static final int complete_route_selector=0x7f090000;

@@ -60,7 +60,7 @@ public class ByNamePage extends Fragment {
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.by_name_list_fragment);
 
-		RouteSource source = new ByNameSource(searchTerm);
+		RouteSource source = new ByNameSource(searchTerm, this.getActivity());
 		fragment.setSource(source);
 	}
 
