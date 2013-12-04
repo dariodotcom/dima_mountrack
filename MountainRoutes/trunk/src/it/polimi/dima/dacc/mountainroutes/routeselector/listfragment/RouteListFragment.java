@@ -3,7 +3,6 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 import java.util.List;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
