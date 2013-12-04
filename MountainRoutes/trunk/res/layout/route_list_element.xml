@@ -6,12 +6,8 @@
 
     <TextView
         android:id="@+id/route_name"
+        style="@style/list_element"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:textSize="15sp" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
