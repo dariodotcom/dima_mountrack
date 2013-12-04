@@ -41,9 +41,8 @@ public class ContentLoader {
 		return availableProviders;
 	}
 
-	public ContentConnector createConnector(Context context,
-			LoaderObserver loader) {
-		return new ContentConnector(context, currentProvider, loader);
+	public ContentConnector createConnector(Context context) {
+		return new ContentConnector(context, currentProvider);
 	}
 
 }

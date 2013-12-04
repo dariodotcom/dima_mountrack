@@ -1,5 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentConnector;
 import it.polimi.dima.dacc.mountainroutes.contentloader.ContentLoader;
 import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery;
 import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery.QueryType;
@@ -9,11 +10,11 @@ import android.text.Editable;
 public class ByNameSource implements RouteSource {
 
 	private Editable searchTerm;
-	private Context context;
+	private ContentConnector connector;
 
 	public ByNameSource(Editable searchTerm, Context context) {
 		this.searchTerm = searchTerm;
-		this.context = context;
+		this.connector = ContentLoader.getInstance().createConnector(context);
 	}
 
 	@Override
@@ -27,11 +28,8 @@ public class ByNameSource implements RouteSource {
 
 		observer.onLoadStart();
 
-		LoaderObserverAdapter adapter = new LoaderObserverAdapter(observer);
 		ContentQuery q = new ContentQuery(QueryType.BYNAME);
 		q.getParams().putString(ContentLoader.NAME_PARAM, currentSearchTerm);
-		ContentLoader.getInstance().createConnector(context, adapter)
-				.execute(q);
+		connector.executeQuery(q, new LoaderObserverAdapter(observer));
 	}
-
 }
