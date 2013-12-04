@@ -32,7 +32,7 @@ public class ContentConnector {
 	}
 
 	public void executeQuery(ContentQuery query, LoaderObserver observer) {
-		if (runningExecutor != null) {
+		if (runningExecutor != null && !runningExecutor.isCompleted()) {
 			runningExecutor.cancel(true);
 		}
 
@@ -40,23 +40,24 @@ public class ContentConnector {
 		runningExecutor.execute(query);
 	}
 
-	private class Executor extends AsyncTask<ContentQuery, Void, LoaderResult> {
+	private class Executor extends
+			AsyncTask<ContentQuery, Void, ResultContainer> {
 
+		private boolean completed = false;
 		private LoaderObserver observer;
 
 		public Executor(LoaderObserver callback) {
 			this.observer = callback;
 		}
 
+		public boolean isCompleted(){
+			return completed;
+		}
+		
 		@Override
-		protected LoaderResult doInBackground(ContentQuery... params) {
-			if (params == null || params[0] == null) {
-				return null;
-			}
-
+		protected ResultContainer doInBackground(ContentQuery... params) {
 			if (!isNetworkAvailable()) {
-				handleError(ContentErrorType.NETWORK_UNAVAILABLE);
-				return null;
+				return handleError(ContentErrorType.NETWORK_UNAVAILABLE);
 			}
 
 			ContentQuery query = params[0];
@@ -65,8 +66,7 @@ public class ContentConnector {
 			try {
 				request = provider.createRequestFor(query);
 			} catch (ProviderException e) {
-				handleError(ContentErrorType.SERVER_ERROR);
-				return null;
+				return handleError(ContentErrorType.SERVER_ERROR);
 			}
 
 			Log.d(TAG, "endpoint url: " + request.getURI());
@@ -80,8 +80,7 @@ public class ContentConnector {
 			try {
 				input = establishConnection(request);
 			} catch (ProviderException e) {
-				handleError(ContentErrorType.SERVER_ERROR);
-				return null;
+				return handleError(ContentErrorType.SERVER_ERROR);
 			}
 
 			// Get content
@@ -89,8 +88,7 @@ public class ContentConnector {
 			try {
 				content = readContent(input);
 			} catch (IOException e) {
-				handleError(ContentErrorType.SERVER_ERROR);
-				return null;
+				return handleError(ContentErrorType.SERVER_ERROR);
 			}
 
 			Log.d(TAG, "Received data: " + content);
@@ -101,22 +99,34 @@ public class ContentConnector {
 
 			// Handle result
 			try {
-				LoaderResult result = provider.handleResult(content, query);
+				LoaderResult loadResult = provider.handleResult(content, query);
 				Log.d(TAG, "Parse complete");
-				return result;
+				ResultContainer container = new ResultContainer(
+						ResultContainer.SUCCESS);
+				container.setResult(loadResult);
+				completed = true;
+				return container;
 			} catch (ProviderException e) {
-				handleError(ContentErrorType.RESPONSE_ERROR);
-				return null;
+				return handleError(ContentErrorType.RESPONSE_ERROR);
 			}
 		}
 
-		private void handleError(ContentErrorType error) {
-			observer.onLoadError(error);
+		private ResultContainer handleError(ContentErrorType error) {
+			ResultContainer container = new ResultContainer(ResultContainer.ERROR);
+			container.setError(error);
+			return container;
 		}
 
 		@Override
-		protected void onPostExecute(LoaderResult result) {
-			observer.onLoadResult(result);
+		protected void onPostExecute(ResultContainer result) {
+			switch (result.getType()) {
+			case ResultContainer.SUCCESS:
+				observer.onLoadResult(result.getResult());
+				break;
+			case ResultContainer.ERROR:
+				observer.onLoadError(result.getError());
+				break;
+			}
 		}
 
 		private InputStream establishConnection(HttpRequestBase request)
@@ -172,6 +182,46 @@ public class ContentConnector {
 			NetworkInfo activeNetworkInfo = connectivityManager
 					.getActiveNetworkInfo();
 			return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+		}
+
+	}
+
+	private static class ResultContainer {
+
+		public final static int SUCCESS = 0;
+		public final static int ERROR = 1;
+
+		private int type;
+		private LoaderResult result;
+		private ContentErrorType error;
+
+		public ResultContainer(int containerType) {
+			this.type = containerType;
+		}
+
+		public void setError(ContentErrorType error) {
+			if (this.type == SUCCESS) {
+				throw new IllegalStateException(
+						"Positive result cannot contain error");
+			}
+
+			this.error = error;
+		}
+
+		public void setResult(LoaderResult result) {
+			this.result = result;
+		}
+
+		public int getType() {
+			return type;
+		}
+
+		public LoaderResult getResult() {
+			return result;
+		}
+
+		public ContentErrorType getError() {
+			return error;
 		}
 	}
 }

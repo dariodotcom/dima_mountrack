@@ -22,6 +22,7 @@ public class ByNamePage extends Fragment {
 	private Handler resultUpdateScheduler = new Handler();
 	private RouteListFragment fragment;
 	private Editable searchTerm;
+	private EditText searchTermField;
 
 	private Runnable resultUpdater = new Runnable() {
 		@Override
@@ -46,22 +47,26 @@ public class ByNamePage extends Fragment {
 			Bundle savedInstanceState) {
 		View inflated = inflater.inflate(R.layout.page_by_name, null);
 
-		EditText searchTermField = (EditText) inflated
-				.findViewById(R.id.search_term);
-		searchTermField.setOnKeyListener(searchTermListener);
+		searchTermField = (EditText) inflated.findViewById(R.id.search_term);
 		searchTerm = searchTermField.getText();
 
 		return inflated;
 	}
 
 	@Override
-	public void onStart() {
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		super.onStart();
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.by_name_list_fragment);
-
 		RouteSource source = new ByNameSource(searchTerm, this.getActivity());
 		fragment.setSource(source);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		searchTermField.setOnKeyListener(searchTermListener);
 	}
 
 }

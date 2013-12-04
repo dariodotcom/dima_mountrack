@@ -15,23 +15,22 @@
         android:id="@+id/message_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible" >
+        android:alpha="0" >
 
         <TextView
             android:id="@+id/message_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:text="@string/routelist_empty" />
+            android:layout_marginTop="100dp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/loading_overlay"
+        style="@style/route_list_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:visibility="invisible" >
+        android:alpha="0" >
 
         <ProgressBar
             android:id="@+id/waiting_progressbar"
