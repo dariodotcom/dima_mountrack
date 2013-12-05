@@ -52,7 +52,7 @@ public class RouteController {
     }
 
     @GET
-    @Path("/route/{id}")
+    @Path("/id/{id}")
     public Response getRouteById(@PathParam(value = "id") String id) {
         Key key;
 
