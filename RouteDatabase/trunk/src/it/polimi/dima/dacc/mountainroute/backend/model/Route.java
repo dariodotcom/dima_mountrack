@@ -19,14 +19,24 @@ public class Route implements Serializable {
     @Attribute(version = true)
     private Long version;
 
+    // Attributes
     @Attribute
     private String name;
 
     @Attribute(lob = true)
-    private List<GeoPoint> points;
+    private List<GeoPoint> path;
 
     @Attribute
-    private int avgTraversalTimeMins;
+    private int durationInMinutes;
+
+    @Attribute
+    private Difficulty difficulty;
+
+    @Attribute
+    private int lenghtInMeters;
+
+    @Attribute
+    private int gapInMeters;
 
     public Key getKey() {
         return key;
@@ -52,20 +62,44 @@ public class Route implements Serializable {
         this.name = name;
     }
 
-    public List<GeoPoint> getPoints() {
-        return points;
+    public List<GeoPoint> getPath() {
+        return path;
     }
 
-    public void setPoints(List<GeoPoint> points) {
-        this.points = points;
+    public void setPath(List<GeoPoint> path) {
+        this.path = path;
     }
 
-    public int getAvgTraversalTimeMins() {
-        return avgTraversalTimeMins;
+    public int getDurationInMinutes() {
+        return durationInMinutes;
     }
 
-    public void setAvgTraversalTimeMins(int avgTraversalTimeMins) {
-        this.avgTraversalTimeMins = avgTraversalTimeMins;
+    public void setDurationInMinutes(int duration) {
+        this.durationInMinutes = duration;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getLenghtInMeters() {
+        return lenghtInMeters;
+    }
+
+    public void setLenghtInMeters(int lenghtInMeters) {
+        this.lenghtInMeters = lenghtInMeters;
+    }
+
+    public int getGapInMeters() {
+        return gapInMeters;
+    }
+
+    public void setGapInMeters(int gapInMeters) {
+        this.gapInMeters = gapInMeters;
     }
 
     public static long getSerialversionuid() {
