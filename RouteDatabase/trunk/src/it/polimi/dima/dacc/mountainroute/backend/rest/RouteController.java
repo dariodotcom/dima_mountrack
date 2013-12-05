@@ -1,14 +1,13 @@
 package it.polimi.dima.dacc.mountainroute.backend.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.dima.dacc.mountainroute.backend.Utils;
 import it.polimi.dima.dacc.mountainroute.backend.filters.ContainsIgnoreCase;
 import it.polimi.dima.dacc.mountainroute.backend.filters.StartsNearFilter;
 import it.polimi.dima.dacc.mountainroute.backend.meta.RouteMeta;
 import it.polimi.dima.dacc.mountainroute.backend.model.GeoPoint;
 import it.polimi.dima.dacc.mountainroute.backend.model.Route;
-import it.polimi.dima.dacc.mountainroute.backend.model.RouteDescriptor;
 import it.polimi.dima.dacc.mountainroute.backend.rest.ResponseFactory.ResponseError;
 
 import javax.ws.rs.Consumes;
@@ -32,24 +31,24 @@ public class RouteController {
 
     @GET
     public Response getAvailableRoutes() {
-        List<RouteResult> result = new ArrayList<RouteResult>();
-
         RouteMeta route = RouteMeta.get();
-        Iterable<Route> availableRoute = Datastore.query(route).asIterable();
+        List<Route> availableRoute = Datastore.query(route).asList();
 
-        for (Route r : availableRoute) {
-            result.add(new RouteResult(r));
-        }
-
-        return ResponseFactory.from(result);
+        return ResponseFactory.from(Utils.createReview(availableRoute));
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addNewRoute(RouteCreation request) {
-        Route route = request.createRoute();
-        Datastore.put(route);
-        return ResponseFactory.from(new RouteDescriptor(route));
+    public Response addNewRoute(RouteCreationXml request) {
+        Route route;
+        try {
+            route = request.createRoute();
+        } catch (IllegalStateException e) {
+            return ResponseFactory.fromError(ResponseError.BAD_ROUTE);
+        }
+
+        Key key = Datastore.put(route);
+        return ResponseFactory.from(KeyFactory.keyToString(key));
     }
 
     @GET
@@ -60,7 +59,7 @@ public class RouteController {
         try {
             key = KeyFactory.stringToKey(id);
             Route r = Datastore.get(Route.class, key);
-            return ResponseFactory.from(new RouteDescriptor(r));
+            return ResponseFactory.from(new RouteXml(r));
         } catch (IllegalArgumentException e) {
             return ResponseFactory.fromError(ResponseError.BAD_KEY);
         } catch (EntityNotFoundRuntimeException e) {
@@ -78,12 +77,7 @@ public class RouteController {
                 .filterInMemory(new ContainsIgnoreCase(name))
                 .asList();
 
-        List<RouteResult> result = new ArrayList<RouteResult>();
-        for (Route r : matching) {
-            result.add(new RouteResult(r));
-        }
-
-        return ResponseFactory.from(result);
+        return ResponseFactory.from(Utils.createReview(matching));
     }
 
     @GET
@@ -105,11 +99,6 @@ public class RouteController {
                 .filterInMemory(new StartsNearFilter(point))
                 .asList();
 
-        List<RouteResult> result = new ArrayList<RouteResult>();
-        for (Route r : matching) {
-            result.add(new RouteResult(r));
-        }
-        return ResponseFactory.from(result);
+        return ResponseFactory.from(Utils.createReview(matching));
     }
-
 }

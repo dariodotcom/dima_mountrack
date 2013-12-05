@@ -16,7 +16,8 @@ public class ResponseFactory {
     public static enum ResponseError {
         BAD_KEY("Route ID is not valid.", Status.BAD_REQUEST), ROUTE_NOT_FOUND(
                 "Route not found", Status.NOT_FOUND), BAD_LOCATION(
-                "Bad location", Status.BAD_REQUEST);
+                "Bad location", Status.BAD_REQUEST), BAD_ROUTE("Bad route",
+                Status.BAD_REQUEST);
 
         private final String friendlyText;
         private final Status status;
