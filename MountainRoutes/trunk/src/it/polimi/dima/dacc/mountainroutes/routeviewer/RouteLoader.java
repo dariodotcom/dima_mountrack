@@ -10,9 +10,9 @@ import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
 
 public class RouteLoader {
 
-	private LoaderCallback callback;
+	private Callback callback;
 
-	public RouteLoader(LoaderCallback callback) {
+	public RouteLoader(Callback callback) {
 		this.callback = callback;
 	}
 
@@ -34,7 +34,7 @@ public class RouteLoader {
 		}).execute(q);
 	}
 
-	public static interface LoaderCallback {
+	public static interface Callback {
 		public void onLoadError();
 
 		public void onLoadResult(Route route);
