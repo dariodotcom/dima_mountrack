@@ -3,13 +3,12 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
 import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
-import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteLoader.LoaderCallback;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.TextView;
 
-public class RouteViewer extends Activity implements LoaderCallback {
+public class RouteViewer extends Activity implements RouteLoader.Callback {
 
 	private static final String ROUTE = "ROUTE";
 	public static final String ROUTE_DESCRIPTION = "ROUTE_DESCRIPTION";
@@ -81,13 +80,11 @@ public class RouteViewer extends Activity implements LoaderCallback {
 	@Override
 	public void onLoadError() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onLoadResult(Route route) {
 		displayRoute(route);
-
 	}
 
 	@Override
