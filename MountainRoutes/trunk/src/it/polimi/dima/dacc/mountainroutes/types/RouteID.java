@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class RouteID implements Parcelable {
 
+	private static final String SEPARATOR = ":";
 	private String providerID;
 	private String routeID;
 
@@ -18,6 +19,17 @@ public class RouteID implements Parcelable {
 		routeID = in.readString();
 	}
 
+	public RouteID(String representation) {
+		String[] parts = representation.split(SEPARATOR);
+		
+		if (parts.length != 2) {
+			throw new IllegalArgumentException("Invalid routeID representation");
+		}
+		
+		this.providerID = parts[0];
+		this.routeID = parts[1];
+	}
+
 	public String getProviderID() {
 		return providerID;
 	}
@@ -29,7 +41,7 @@ public class RouteID implements Parcelable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return providerID + ":" + routeID;
+		return providerID + SEPARATOR + routeID;
 	}
 
 	@Override
