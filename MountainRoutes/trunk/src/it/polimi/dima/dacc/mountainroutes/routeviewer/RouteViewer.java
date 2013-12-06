@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.os.Bundle;
@@ -82,7 +82,7 @@ public class RouteViewer extends Activity implements RouteLoader.Callback {
 	}
 
 	@Override
-	public void onLoadError(ContentErrorType error) {
+	public void onLoadError(LoadError error) {
 		Log.d("viewer","onloadstart");
 	}
 

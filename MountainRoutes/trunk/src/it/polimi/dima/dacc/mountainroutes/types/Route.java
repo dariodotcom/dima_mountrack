@@ -5,21 +5,29 @@ import android.os.Parcelable;
 
 public class Route implements Parcelable {
 
-    private RouteID id;
-    private String name;
-    private Difficulty difficulty;
-    private int durationInMinutes;
-    private int lengthInMeters;
-    private int gapInMeters;
-    private PointList path;
+	// Identifiers
+	private RouteID id;
+	private Source source;
+
+	// Features
+	private String name;
+	private Difficulty difficulty;
+	private int durationInMinutes;
+	private int lengthInMeters;
+	private int gapInMeters;
+	private PointList path;
 
 	// Default constructor
-	public Route() {
+	public Route(RouteID id, Source source) {
+		this.id = id;
+		this.source = source;
 	}
 
 	// Private constructor for parcelable
 	private Route(Parcel in) {
 		this.id = (RouteID) in.readParcelable(null);
+		this.source = Source.valueOf(in.readString());
+
 		this.name = in.readString();
 		this.difficulty = Difficulty.valueOf(in.readInt());
 		this.durationInMinutes = in.readInt();
@@ -31,6 +39,7 @@ public class Route implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeParcelable(this.id, 0);
+		dest.writeString(this.source.name());
 		dest.writeString(name);
 		dest.writeInt(Difficulty.indexOf(difficulty));
 		dest.writeInt(durationInMinutes);
@@ -38,14 +47,15 @@ public class Route implements Parcelable {
 		dest.writeInt(gapInMeters);
 		dest.writeParcelable(path, 0);
 	}
-	
+
 	// ID
 	public RouteID getId() {
 		return this.id;
 	}
 
-	public void setId(RouteID id) {
-		this.id = id;
+	// Source
+	public Source getSource() {
+		return source;
 	}
 
 	// Name
@@ -120,4 +130,8 @@ public class Route implements Parcelable {
 			return new Route(source);
 		}
 	};
+
+	public static enum Source {
+		STORAGE, REMOTE
+	}
 }

@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.contentloader;
+package it.polimi.dima.dacc.mountainroutes.remotecontent;
 
 import java.util.ArrayList;
 import java.util.List;

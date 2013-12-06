@@ -1,6 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.persistence;
 
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
 import android.os.AsyncTask;
 
 public class AsyncExecutor<E> {
@@ -64,14 +64,14 @@ public class AsyncExecutor<E> {
 			this.type = RESULT;
 		}
 
-		public Container(ContentErrorType error) {
+		public Container(LoadError error) {
 			this.error = error;
 			this.type = ERROR;
 		}
 
 		private int type;
 		private E result;
-		private ContentErrorType error;
+		private LoadError error;
 
 		public int getType() {
 			return type;
@@ -81,7 +81,7 @@ public class AsyncExecutor<E> {
 			return result;
 		}
 
-		public ContentErrorType getError() {
+		public LoadError getError() {
 			return error;
 		}
 	}
@@ -95,6 +95,6 @@ public class AsyncExecutor<E> {
 
 		public void onStart();
 
-		public void onError(ContentErrorType type);
+		public void onError(LoadError type);
 	}
 }

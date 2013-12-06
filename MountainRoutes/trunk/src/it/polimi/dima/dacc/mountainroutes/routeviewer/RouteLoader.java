@@ -2,13 +2,13 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import android.content.Context;
 import android.util.Log;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentConnector;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentLoader;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery.QueryType;
-import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderObserver;
-import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderResult;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentConnector;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentLoader;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderObserver;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderResult;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery.QueryType;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 
@@ -45,7 +45,7 @@ public class RouteLoader {
 		}
 
 		@Override
-		public void onLoadError(ContentErrorType error) {
+		public void onLoadError(LoadError error) {
 			callback.onLoadError(error);
 		}
 
@@ -56,7 +56,7 @@ public class RouteLoader {
 	}
 
 	public static interface Callback {
-		public void onLoadError(ContentErrorType error);
+		public void onLoadError(LoadError error);
 
 		public void onLoadResult(Route route);
 

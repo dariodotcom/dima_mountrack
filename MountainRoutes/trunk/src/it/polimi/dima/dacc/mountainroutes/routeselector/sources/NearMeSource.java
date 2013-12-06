@@ -1,10 +1,10 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentConnector;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentLoader;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery.QueryType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentConnector;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentLoader;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery.QueryType;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +41,7 @@ public class NearMeSource implements RouteSource {
 		// Notify the user if the provider is disabled
 		if (!locMan.isProviderEnabled(pvdName)) {
 			Log.d(TAG, "GPS provider is disabled");
-			observer.onError(ContentErrorType.GPS_DISABLED);
+			observer.onError(LoadError.GPS_DISABLED);
 		}
 
 		observer.onLoadStart();

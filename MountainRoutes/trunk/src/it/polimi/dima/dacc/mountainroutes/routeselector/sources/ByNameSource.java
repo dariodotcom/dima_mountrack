@@ -1,9 +1,9 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentConnector;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentLoader;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentQuery.QueryType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentConnector;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentLoader;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery.QueryType;
 import android.content.Context;
 import android.text.Editable;
 

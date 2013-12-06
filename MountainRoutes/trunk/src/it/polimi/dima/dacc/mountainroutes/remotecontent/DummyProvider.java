@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.contentloader;
+package it.polimi.dima.dacc.mountainroutes.remotecontent;
 
 import it.polimi.dima.dacc.mountainroutes.ImplementationError;
 import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
@@ -133,7 +133,7 @@ public class DummyProvider implements ContentProvider {
 				String routeId = obj.getString(ID);
 				RouteID id = new RouteID(PROVIDER_ID, routeId);
 				summary.setId(id);
-				
+
 				summary.setName(obj.getString(NAME));
 				summary.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
 				Difficulty difficulty = Difficulty.valueOf(obj
@@ -167,26 +167,26 @@ public class DummyProvider implements ContentProvider {
 		}
 
 		public static Route parseRoute(String content) throws ParserException {
-			Route r = new Route();
-
 			try {
 				JSONObject obj = new JSONObject(content);
 
+				// Read route ID
 				String routeID = obj.getString(ID);
 				RouteID id = new RouteID(DummyProvider.PROVIDER_ID, routeID);
 
-				r.setId(id);
+				Route r = new Route(id, Route.Source.REMOTE);
+
 				r.setName(obj.getString(NAME));
 				r.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
 				r.setLengthInMeters(obj.getInt(LENGTH_IN_METERS));
 				r.setGapInMeters(obj.getInt(GAP_IN_METERS));
 				r.setDifficulty(Difficulty.valueOf(obj.getString(DIFFICULTY)));
 				r.setPath(parsePointList(obj.getJSONArray(PATH)));
+
+				return r;
 			} catch (JSONException e) {
 				throw new ParserException(e);
 			}
-
-			return r;
 		}
 
 		private static PointList parsePointList(JSONArray array)
