@@ -10,6 +10,7 @@
         <item name="android:showDividers">middle</item>
         <item name="android:divider">#ff0000</item>
         <item name="android:background">@drawable/tab_unselected</item>
+        <item name="android:icon">@drawable/ab_icon</item>
     </style>
 
     <style name="ActionBar.Tabs.Style" parent="@android:style/Widget.Holo.ActionBar.TabView">

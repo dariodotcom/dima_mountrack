@@ -43,5 +43,6 @@
     <string name="viewer_loading_message">Loading route&#8230;</string>
     <string name="route_viewer_start">Start walking</string>
     <string name="route_viewer_save">Save to device</string>
+    <string name="title_activity_saved_route_manager">SavedRouteManager</string>
 
 </resources>

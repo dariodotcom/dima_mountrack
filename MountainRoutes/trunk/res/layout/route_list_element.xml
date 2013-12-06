@@ -8,6 +8,7 @@
         android:id="@+id/route_name"
         style="@style/list_element"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" >
+    </TextView>
 
 </LinearLayout>
