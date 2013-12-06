@@ -13,11 +13,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
 import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 public class RouteListFragment extends Fragment implements
 		RouteSource.ResultObserver {
@@ -87,7 +87,7 @@ public class RouteListFragment extends Fragment implements
 	}
 
 	@Override
-	public void onResultReceived(RouteDescriptionList result) {
+	public void onResultReceived(RouteSummaryList result) {
 
 		Log.d("list-fragment", "onResultReceived called");
 
@@ -99,15 +99,15 @@ public class RouteListFragment extends Fragment implements
 			return;
 		}
 
-		List<RouteDescription> descriptions = result.getRouteDescriptions();
-		if (descriptions.isEmpty()) {
+		List<RouteSummary> summaries = result.getRouteSummaries();
+		if (summaries.isEmpty()) {
 			messageContainer.setText(emptyMessage);
 			showPanel(MESSAGE_VIEW);
 			return;
 		}
 
 		RouteListAdapter adapter = new RouteListAdapter(getActivity());
-		adapter.addAll(descriptions);
+		adapter.addAll(summaries);
 		adapter.notifyDataSetChanged();
 		this.resultAdapter = adapter;
 		this.listView.setAdapter(adapter);

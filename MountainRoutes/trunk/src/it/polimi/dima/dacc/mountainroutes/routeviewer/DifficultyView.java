@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.Difficulty;
+import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;

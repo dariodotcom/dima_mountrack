@@ -12,7 +12,7 @@
     <string name="page_by_name_title">By Name</string>
     <string name="page_by_name_description">Search by name</string>
     <string name="page_by_name_search_term_hint">Insert a route name</string>
-    <string name="page_near_me_title">Near Me</string>
+    <string name="page_near_me_title">Near Meear Me</string>
     <string name="page_near_me_description">Search routes near you</string>
     <string name="page_near_me_update_button">Update</string>
     <string name="page_saved_title">Saved</string>
@@ -21,8 +21,6 @@
     <string name="title_activity_complete_route_selector">Select route</string>
     <string name="title_activity_test">Test Activity</string>
     <string name="title_activity_route_viewer">RouteViewer</string>
-    <string name="route_viewer_start">Start walking</string>
-    <string name="route_viewer_save">Save to device</string>
     <string name="difficulty_info">Difficulty</string>
     <string name="gap_info">Gap</string>
     <string name="estimated_time_info">Estimated time</string>
@@ -32,13 +30,18 @@
     <string name="no_result_message">No results found.</string>
     <string name="gps_disabled_message">Please turn on GPS and retry</string>
     <string name="network_unavailable_message">Please check your internet connection and retry</string>
-	<string name="internal_error_message">An error occurred contacting the server.</string>
+    <string name="internal_error_message">An error occurred contacting the server.</string>
     <string name="general_error_message">An error occurred</string>
-    
+
     <!-- Difficulty -->
     <string name="difficulty_tourist">Tourist</string>
     <string name="difficulty_excursionist">Excursionist</string>
     <string name="difficulty_advanced">Expert Excursionist</string>
     <string name="difficulty_equipped">Equipped</string>
+
+    <!-- Route viewer -->
+    <string name="viewer_loading_message">Loading route&#8230;</string>
+    <string name="route_viewer_start">Start walking</string>
+    <string name="route_viewer_save">Save to device</string>
 
 </resources>
