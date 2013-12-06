@@ -1,21 +1,27 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 public class RouteViewer extends Activity implements RouteLoader.Callback {
 
 	private static final String ROUTE = "ROUTE";
-	public static final String ROUTE_DESCRIPTION = "ROUTE_DESCRIPTION";
+	public static final String ROUTE_ID = "ROUTE_ID";
 
 	private Route displayedRoute;
-	private RouteDescription description;
+	private RouteViewerFragment fragment;
 
+	private View overlay;
+	private TextView overlayMessage;
+	
 	private DifficultyView difficultyView;
 	private TextView lengthView;
 	private TextView gapView;
@@ -30,28 +36,25 @@ public class RouteViewer extends Activity implements RouteLoader.Callback {
 		lengthView = (TextView) findViewById(R.id.lenght_value);
 		gapView = (TextView) findViewById(R.id.gap_value);
 		durationView = (TextView) findViewById(R.id.estimated_time_value);
-
-		if (savedState != null) {
-			// App was resumed
-			Route route = (Route) savedState.getParcelable(ROUTE);
-			if (route != null) {
-				displayRoute(route);
-				return;
-			}
-		}
+		overlay = findViewById(R.id.overlay);
+		overlayMessage = (TextView) findViewById(R.id.overlay_message);
+		fragment = (RouteViewerFragment) getFragmentManager().findFragmentById(
+				R.id.viewer_map);
+		
+		// Load route from remote
+		Log.d("viewer", "" + getIntent().getParcelableExtra(ROUTE_ID));
+		RouteID id = (RouteID) getIntent().getParcelableExtra(ROUTE_ID);
+		
 
 		// Load route from remote
-		RouteDescription description;
+		RouteLoader loader = new RouteLoader(this, this);
+		loader.loadRoute(id);
+	}
 
-		if (savedState != null) {
-			description = savedState.getParcelable(ROUTE_DESCRIPTION);
-		} else {
-			description = getIntent().getParcelableExtra(ROUTE_DESCRIPTION);
-		}
+	@Override
+	protected void onStart() {
+		super.onStart();
 
-		// Load route from remote
-		RouteLoader loader = new RouteLoader(this);
-		loader.loadRoute(description);
 	}
 
 	@Override
@@ -59,7 +62,6 @@ public class RouteViewer extends Activity implements RouteLoader.Callback {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(ROUTE, displayedRoute);
-		outState.putParcelable(ROUTE_DESCRIPTION, description);
 	}
 
 	@Override
@@ -72,24 +74,26 @@ public class RouteViewer extends Activity implements RouteLoader.Callback {
 	private void displayRoute(Route route) {
 		this.displayedRoute = route;
 		difficultyView.setDifficulty(route.getDifficulty());
-		gapView.setText(route.getGap() + " m");
-		lengthView.setText(route.getLength() + " km");
-		durationView.setText(route.getDuration() + "ms");
+		gapView.setText(route.getGapInMeters() + " m");
+		lengthView.setText(route.getLengthInMeters() + " m");
+		durationView.setText(route.getDurationInMinutes() + "min");
+		fragment.showRoute(route.getPath());
+		overlay.animate().alpha(0).setDuration(250);
 	}
 
 	@Override
-	public void onLoadError() {
-		// TODO Auto-generated method stub
+	public void onLoadError(ContentErrorType error) {
+		Log.d("viewer","onloadstart");
 	}
 
 	@Override
 	public void onLoadResult(Route route) {
+		Log.d("viewer","onloadresult");
 		displayRoute(route);
 	}
 
 	@Override
 	public void onLoadStart() {
-
 	}
 
 }

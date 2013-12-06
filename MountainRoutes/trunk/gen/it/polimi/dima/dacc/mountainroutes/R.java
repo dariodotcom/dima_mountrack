@@ -153,8 +153,6 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_pressed=0x7f040005;
         public static final int common_signin_btn_text_dark=0x7f040012;
         public static final int common_signin_btn_text_light=0x7f040013;
-        public static final int pendingroute=0x7f040014;
-        public static final int traversedroute=0x7f040015;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -163,11 +161,11 @@ containing a value of this type.
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f080000;
-        public static final int activity_vertical_margin=0x7f080001;
-        public static final int list_elem_spacing=0x7f080002;
-        public static final int shade_size=0x7f080003;
-        public static final int shade_size_neg=0x7f080004;
+        public static final int activity_horizontal_margin=0x7f070000;
+        public static final int activity_vertical_margin=0x7f070001;
+        public static final int list_elem_spacing=0x7f070002;
+        public static final int shade_size=0x7f070003;
+        public static final int shade_size_neg=0x7f070004;
     }
     public static final class drawable {
         public static final int button_background=0x7f020000;
@@ -211,36 +209,39 @@ containing a value of this type.
         public static final int tab_unselected=0x7f020026;
     }
     public static final class id {
-        public static final int action_settings=0x7f05001d;
-        public static final int by_name_list_fragment=0x7f050010;
+        public static final int action_settings=0x7f050020;
+        public static final int by_name_list_fragment=0x7f050013;
         public static final int difficulty_value=0x7f05000a;
-        public static final int emptylist_result=0x7f050017;
+        public static final int emptylist_result=0x7f05001a;
         public static final int estimated_time_value=0x7f05000d;
         public static final int gap_value=0x7f05000c;
         public static final int hybrid=0x7f050004;
         public static final int lenght_value=0x7f05000b;
-        public static final int loading_overlay=0x7f05001c;
+        public static final int loading_overlay=0x7f05001f;
+        public static final int loading_spinner=0x7f05000f;
         public static final int main_my_excursions_button=0x7f050008;
         public static final int main_my_routes_button=0x7f050007;
         public static final int main_start_walk_button=0x7f050006;
-        public static final int message_overlay=0x7f05001a;
-        public static final int message_view=0x7f05001b;
-        public static final int near_me_list_fragment=0x7f050011;
+        public static final int message_overlay=0x7f05001d;
+        public static final int message_view=0x7f05001e;
+        public static final int near_me_list_fragment=0x7f050014;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
+        public static final int overlay=0x7f05000e;
+        public static final int overlay_message=0x7f050010;
         public static final int pager=0x7f050005;
-        public static final int route_list=0x7f050016;
-        public static final int route_list_animator=0x7f050015;
-        public static final int route_name=0x7f050014;
+        public static final int route_list=0x7f050019;
+        public static final int route_list_animator=0x7f050018;
+        public static final int route_name=0x7f050017;
         public static final int satellite=0x7f050002;
-        public static final int saved_list_fragment=0x7f050013;
-        public static final int search_term=0x7f05000f;
+        public static final int saved_list_fragment=0x7f050016;
+        public static final int search_term=0x7f050012;
         public static final int terrain=0x7f050003;
-        public static final int test_list_fragment=0x7f05000e;
-        public static final int update_button=0x7f050012;
+        public static final int test_list_fragment=0x7f050011;
+        public static final int update_button=0x7f050015;
         public static final int viewer_map=0x7f050009;
-        public static final int waiting_progressbar=0x7f050018;
-        public static final int waiting_textview=0x7f050019;
+        public static final int waiting_progressbar=0x7f05001b;
+        public static final int waiting_textview=0x7f05001c;
     }
     public static final class layout {
         public static final int activity_complete_route_selector=0x7f030000;
@@ -353,27 +354,27 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060012;
-        public static final int difficulty_advanced=0x7f060038;
-        public static final int difficulty_equipped=0x7f060039;
-        public static final int difficulty_excursionist=0x7f060037;
-        public static final int difficulty_info=0x7f06002d;
+        public static final int difficulty_advanced=0x7f060036;
+        public static final int difficulty_equipped=0x7f060037;
+        public static final int difficulty_excursionist=0x7f060035;
+        public static final int difficulty_info=0x7f06002b;
         /**  Difficulty 
          */
-        public static final int difficulty_tourist=0x7f060036;
-        public static final int estimated_time_info=0x7f06002f;
-        public static final int gap_info=0x7f06002e;
-        public static final int general_error_message=0x7f060035;
-        public static final int gps_disabled_message=0x7f060032;
+        public static final int difficulty_tourist=0x7f060034;
+        public static final int estimated_time_info=0x7f06002d;
+        public static final int gap_info=0x7f06002c;
+        public static final int general_error_message=0x7f060033;
+        public static final int gps_disabled_message=0x7f060030;
         public static final int hello_world=0x7f06001b;
-        public static final int internal_error_message=0x7f060034;
-        public static final int length_info=0x7f060030;
+        public static final int internal_error_message=0x7f060032;
+        public static final int length_info=0x7f06002e;
         public static final int main_my_excursions_button_text=0x7f06001e;
         public static final int main_my_routes_button_text=0x7f06001d;
         public static final int main_start_walk_button_text=0x7f06001c;
-        public static final int network_unavailable_message=0x7f060033;
+        public static final int network_unavailable_message=0x7f060031;
         /**  Error messages 
          */
-        public static final int no_result_message=0x7f060031;
+        public static final int no_result_message=0x7f06002f;
         public static final int page_by_name_description=0x7f060020;
         public static final int page_by_name_search_term_hint=0x7f060021;
         public static final int page_by_name_title=0x7f06001f;
@@ -382,39 +383,22 @@ containing a value of this type.
         public static final int page_near_me_update_button=0x7f060024;
         public static final int page_saved_description=0x7f060026;
         public static final int page_saved_title=0x7f060025;
-        public static final int route_viewer_save=0x7f06002c;
-        public static final int route_viewer_start=0x7f06002b;
+        public static final int route_viewer_save=0x7f06003a;
+        public static final int route_viewer_start=0x7f060039;
         public static final int routelist_waiting_text=0x7f060027;
         public static final int title_activity_complete_route_selector=0x7f060028;
         public static final int title_activity_route_viewer=0x7f06002a;
         public static final int title_activity_test=0x7f060029;
+        /**  Route viewer 
+         */
+        public static final int viewer_loading_message=0x7f060038;
     }
     public static final class style {
-        public static final int ActionBar=0x7f070002;
-        public static final int ActionBar_Tabs_Bar=0x7f070003;
-        public static final int ActionBar_Tabs_Style=0x7f070004;
-        public static final int ActionBar_Tabs_Text=0x7f070005;
+        public static final int ActionBar=0x7f080001;
+        public static final int ActionBar_Tabs_Bar=0x7f080002;
+        public static final int ActionBar_Tabs_Style=0x7f080003;
+        public static final int ActionBar_Tabs_Text=0x7f080004;
         /** 
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
-
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
@@ -426,17 +410,16 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
-        public static final int AppContainer=0x7f07000a;
-        /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
-         */
-        public static final int AppTheme=0x7f070001;
-        public static final int ButtonStyle=0x7f070006;
-        public static final int MainButtonStyle=0x7f070007;
-        public static final int list_element=0x7f070008;
-        public static final int route_info_entry=0x7f07000b;
-        public static final int route_list_overlay=0x7f070009;
+        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppContainer=0x7f08000b;
+        public static final int AppTheme=0x7f08000c;
+        public static final int ButtonStyle=0x7f080005;
+        public static final int MainButtonStyle=0x7f080006;
+        public static final int list_element=0x7f080007;
+        public static final int overlay_background=0x7f080009;
+        public static final int overlay_text=0x7f08000a;
+        public static final int route_info_entry=0x7f08000d;
+        public static final int route_list_overlay=0x7f080008;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.

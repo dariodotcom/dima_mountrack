@@ -1,11 +1,12 @@
 package it.polimi.dima.dacc.mountainroutes.contentloader;
 
 import it.polimi.dima.dacc.mountainroutes.ImplementationError;
-import it.polimi.dima.dacc.mountainroutes.commons.types.Difficulty;
-import it.polimi.dima.dacc.mountainroutes.commons.types.PointList;
-import it.polimi.dima.dacc.mountainroutes.commons.types.Route;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
+import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
+import it.polimi.dima.dacc.mountainroutes.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.types.RouteID;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -17,18 +18,18 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class DummyProvider implements ContentProvider {
 
-	private final static String NAME = "Test provider";
-	private final static String ID = "e6brx2";
+	private final static String PROVIDER_NAME = "Test provider";
+	private final static String PROVIDER_ID = "e6brx2";
 	private static final String ENDPOINT_URL = "http://dima-dacc-mountainroute.appspot.com/routes/";
 
 	@Override
 	public String getName() {
-		return NAME;
+		return PROVIDER_NAME;
 	}
 
 	@Override
 	public String getID() {
-		return ID;
+		return PROVIDER_ID;
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class DummyProvider implements ContentProvider {
 			case BYNAME:
 			case NEAR:
 				// Parse a list of route description
-				RouteDescriptionList list = JSONParser
-						.parseRouteDescriptionList(content);
+				RouteSummaryList list = JSONParser
+						.parseRouteSummaryList(content);
 				return new LoaderResult(list, query);
 
 			case ID:
@@ -103,43 +104,55 @@ public class DummyProvider implements ContentProvider {
 					+ paramName);
 		}
 
-		String url = ENDPOINT_URL + "route/" + id;
+		String url = ENDPOINT_URL + "id/" + id;
 		return new HttpGet(url);
 	}
 
 	private static class JSONParser {
-		private static final String NAME = "name";
+
 		private static final String ID = "id";
+		private static final String NAME = "name";
+		private static final String DIFFICULTY = "difficulty";
+		private static final String DURATION_IN_MINUTES = "durationInMinutes";
+		private static final String LENGTH_IN_METERS = "lengthInMeters";
+		private static final String GAP_IN_METERS = "gapInMeters";
+		private static final String PATH = "path";
+
 		private static final String LATITUDE = "latitude";
 		private static final String LONGITUDE = "longitude";
 
-		public static RouteDescription parseRouteDescription(JSONObject obj)
+		public static RouteSummary parseRouteSummary(JSONObject obj)
 				throws ParserException {
 
-			String id, name;
+			RouteSummary summary;
 
 			try {
-				id = obj.getString(ID);
-				name = obj.getString(NAME);
+				summary = new RouteSummary();
+				summary.setId(obj.getString(ID));
+				summary.setName(obj.getString(NAME));
+				summary.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
+				Difficulty difficulty = Difficulty.valueOf(obj
+						.getString(DIFFICULTY));
+				summary.setDifficulty(difficulty);
 			} catch (JSONException e) {
 				throw new ParserException(e);
 			}
 
-			return new RouteDescription(id, name);
+			return summary;
 		}
 
-		public static RouteDescriptionList parseRouteDescriptionList(
-				String content) throws ParserException {
+		public static RouteSummaryList parseRouteSummaryList(String content)
+				throws ParserException {
 
-			RouteDescriptionList list = new RouteDescriptionList();
+			RouteSummaryList list = new RouteSummaryList();
 
 			try {
 				JSONArray array = new JSONArray(content);
 
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject obj = array.getJSONObject(i);
-					RouteDescription desc = parseRouteDescription(obj);
-					list.addRouteDescription(desc);
+					RouteSummary desc = parseRouteSummary(obj);
+					list.addRouteSummary(desc);
 				}
 			} catch (JSONException e) {
 				throw new ParserException(e);
@@ -153,21 +166,22 @@ public class DummyProvider implements ContentProvider {
 
 			try {
 				JSONObject obj = new JSONObject(content);
-				r.setId(obj.getString(ID));
+				
+				String routeID = obj.getString(ID);
+				RouteID id = new RouteID(DummyProvider.PROVIDER_ID, routeID);
+				
+				r.setId(id);
 				r.setName(obj.getString(NAME));
-				r.setGap(obj.getInt("gap"));
-				r.setLength(obj.getInt("length"));
-				r.setDuration(obj.getInt("duration"));
-				r.setDifficulty(Difficulty.valueOf(obj.getString("difficulty")));
-				r.setRoute(parsePointList(obj.getJSONArray("points")));
-
+				r.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
+				r.setLengthInMeters(obj.getInt(LENGTH_IN_METERS));
+				r.setGapInMeters(obj.getInt(GAP_IN_METERS));
+				r.setDifficulty(Difficulty.valueOf(obj.getString(DIFFICULTY)));
+				r.setPath(parsePointList(obj.getJSONArray(PATH)));
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new ParserException(e);
 			}
 
 			return r;
-
 		}
 
 		private static PointList parsePointList(JSONArray array)

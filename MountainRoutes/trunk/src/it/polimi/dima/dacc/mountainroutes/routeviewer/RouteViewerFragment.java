@@ -1,8 +1,9 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,14 +46,17 @@ public class RouteViewerFragment extends MapFragment {
 				.geodesic(true).color(lineColor);
 		map.addPolyline(options);
 
+		//
+		
 		// Center map
 		LatLngBounds bounds = bound(points);
+		Log.d("viewer", "bounds: " + bounds);
 		CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, 10);
 		getMap().moveCamera(update);
 	}
 
 	private LatLngBounds bound(PointList path) {
-		double maxLat = Double.POSITIVE_INFINITY, minLat = Double.NEGATIVE_INFINITY, maxLng = Double.POSITIVE_INFINITY, minLng = Double.NEGATIVE_INFINITY;
+		double maxLat = Double.NEGATIVE_INFINITY, minLat = Double.POSITIVE_INFINITY, maxLng = Double.NEGATIVE_INFINITY, minLng = Double.POSITIVE_INFINITY;
 
 		for (LatLng point : path) {
 			double lat = point.latitude, lng = point.longitude;
@@ -71,6 +75,7 @@ public class RouteViewerFragment extends MapFragment {
 
 		LatLng southWest = new LatLng(minLat, minLng);
 		LatLng northEast = new LatLng(maxLat, maxLng);
+		Log.d("viewer", "SW: " + southWest + ". NE: " + northEast);
 		return new LatLngBounds(southWest, northEast);
 	}
 }

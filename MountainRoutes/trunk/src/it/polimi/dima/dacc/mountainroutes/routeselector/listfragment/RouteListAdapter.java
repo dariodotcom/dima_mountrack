@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescription;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RouteListAdapter extends ArrayAdapter<RouteDescription> {
+public class RouteListAdapter extends ArrayAdapter<RouteSummary> {
 
 	public RouteListAdapter(Context context) {
 		super(context, R.layout.route_list_element);
@@ -26,11 +26,11 @@ public class RouteListAdapter extends ArrayAdapter<RouteDescription> {
 			view = inflater.inflate(R.layout.route_list_element, null);
 		}
 
-		RouteDescription desc = getItem(position);
+		RouteSummary summary = getItem(position);
 
-		if (desc != null) {
+		if (summary != null) {
 			TextView name = (TextView) view.findViewById(R.id.route_name);
-			name.setText(desc.getName());
+			name.setText(summary.getName());
 		}
 
 		return view;

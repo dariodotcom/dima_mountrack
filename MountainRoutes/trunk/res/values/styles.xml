@@ -55,6 +55,14 @@
         <item name="android:background">@drawable/overlay_background</item>
     </style>
     
+    <style name="overlay_background">
+        <item name="android:background">#cc000000</item>
+    </style>
+    
+    <style name="overlay_text">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
     <style name="AppContainer">
         <item name="android:background">@drawable/repeatingpattern</item>
     </style>

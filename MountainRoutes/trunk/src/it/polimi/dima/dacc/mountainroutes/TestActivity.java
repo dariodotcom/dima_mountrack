@@ -1,7 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.DummySource;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -16,7 +15,6 @@ public class TestActivity extends FragmentActivity {
 		setContentView(R.layout.activity_test);
 		fragment = (RouteListFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.test_list_fragment);
-		fragment.setSource(new DummySource());
 		fragment.update();
 	}
 

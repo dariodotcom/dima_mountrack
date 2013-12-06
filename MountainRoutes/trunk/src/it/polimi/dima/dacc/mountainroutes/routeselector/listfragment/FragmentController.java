@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.commons.types.RouteDescriptionList;
+import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ public class FragmentController {
 
 	private ListView resultList;
 	private RouteListAdapter adapter;
-	private RouteDescriptionList currentResult;
+	private RouteSummaryList currentResult;
 	private TextView messageView;
 
 	public FragmentController(RouteListFragment fragment) {
@@ -55,11 +55,11 @@ public class FragmentController {
 		showView(State.MESSAGE.ordinal());
 	}
 
-	public void showResult(RouteDescriptionList result) {
+	public void showResult(RouteSummaryList result) {
 		this.currentResult = result;
 		this.adapter.clear();
 		if (result != null) {
-			this.adapter.addAll(result.getRouteDescriptions());
+			this.adapter.addAll(result.getRouteSummaries());
 		}
 		this.adapter.notifyDataSetChanged();
 		showView(State.RESULT.ordinal());
@@ -87,7 +87,7 @@ public class FragmentController {
 		State state = State.valueOf(stateName);
 		switch (state) {
 		case RESULT:
-			RouteDescriptionList result = (RouteDescriptionList) in
+			RouteSummaryList result = (RouteSummaryList) in
 					.getParcelable(RESULT);
 			showResult(result);
 		case MESSAGE:
