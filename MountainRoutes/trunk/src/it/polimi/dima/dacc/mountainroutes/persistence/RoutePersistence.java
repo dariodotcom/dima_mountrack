@@ -145,8 +145,7 @@ public class RoutePersistence {
 			throw new PersistenceException(e);
 		}
 
-		Route route = new Route();
-		route.setId(id);
+		Route route = new Route(id, Route.Source.STORAGE);
 		route.setName(name);
 		route.setDifficulty(difficulty);
 		route.setDurationInMinutes(duration);
@@ -154,19 +153,6 @@ public class RoutePersistence {
 		route.setGapInMeters(gap);
 		route.setPath(list);
 		return route;
-	}
-
-	public static class PersistenceException extends Exception {
-
-		private static final long serialVersionUID = -3388155218677244835L;
-
-		public PersistenceException(Throwable e) {
-			super(e);
-		}
-
-		public PersistenceException(String message) {
-			super(message);
-		}
 	}
 
 	private static RouteSummary routeSummaryFromCursor(Cursor cursor,

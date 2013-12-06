@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.contentloader;
+package it.polimi.dima.dacc.mountainroutes.remotecontent;
 
 public class ProviderException extends Exception {
 

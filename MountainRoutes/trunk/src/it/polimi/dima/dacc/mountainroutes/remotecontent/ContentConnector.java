@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.contentloader;
+package it.polimi.dima.dacc.mountainroutes.remotecontent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class ContentConnector {
 		@Override
 		protected ResultContainer doInBackground(ContentQuery... params) {
 			if (!isNetworkAvailable()) {
-				return handleError(ContentErrorType.NETWORK_UNAVAILABLE);
+				return handleError(LoadError.NETWORK_UNAVAILABLE);
 			}
 
 			ContentQuery query = params[0];
@@ -66,7 +66,7 @@ public class ContentConnector {
 			try {
 				request = provider.createRequestFor(query);
 			} catch (ProviderException e) {
-				return handleError(ContentErrorType.SERVER_ERROR);
+				return handleError(LoadError.SERVER_ERROR);
 			}
 
 			Log.d(TAG, "endpoint url: " + request.getURI());
@@ -80,7 +80,7 @@ public class ContentConnector {
 			try {
 				input = establishConnection(request);
 			} catch (ProviderException e) {
-				return handleError(ContentErrorType.SERVER_ERROR);
+				return handleError(LoadError.SERVER_ERROR);
 			}
 
 			// Get content
@@ -88,7 +88,7 @@ public class ContentConnector {
 			try {
 				content = readContent(input);
 			} catch (IOException e) {
-				return handleError(ContentErrorType.SERVER_ERROR);
+				return handleError(LoadError.SERVER_ERROR);
 			}
 
 			Log.d(TAG, "Received data: " + content);
@@ -107,11 +107,11 @@ public class ContentConnector {
 				completed = true;
 				return container;
 			} catch (ProviderException e) {
-				return handleError(ContentErrorType.RESPONSE_ERROR);
+				return handleError(LoadError.RESPONSE_ERROR);
 			}
 		}
 
-		private ResultContainer handleError(ContentErrorType error) {
+		private ResultContainer handleError(LoadError error) {
 			ResultContainer container = new ResultContainer(ResultContainer.ERROR);
 			container.setError(error);
 			return container;
@@ -193,13 +193,13 @@ public class ContentConnector {
 
 		private int type;
 		private LoaderResult result;
-		private ContentErrorType error;
+		private LoadError error;
 
 		public ResultContainer(int containerType) {
 			this.type = containerType;
 		}
 
-		public void setError(ContentErrorType error) {
+		public void setError(LoadError error) {
 			if (this.type == SUCCESS) {
 				throw new IllegalStateException(
 						"Positive result cannot contain error");
@@ -220,7 +220,7 @@ public class ContentConnector {
 			return result;
 		}
 
-		public ContentErrorType getError() {
+		public LoadError getError() {
 			return error;
 		}
 	}

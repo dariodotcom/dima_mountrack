@@ -1,8 +1,8 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
-import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderObserver;
-import it.polimi.dima.dacc.mountainroutes.contentloader.LoaderResult;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderObserver;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderResult;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource.ResultObserver;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
@@ -22,7 +22,7 @@ public class LoaderObserverAdapter implements LoaderObserver{
 	}
 
 	@Override
-	public void onLoadError(ContentErrorType type) {
+	public void onLoadError(LoadError type) {
 		if(observer != null){
 			observer.onError(type);
 		}

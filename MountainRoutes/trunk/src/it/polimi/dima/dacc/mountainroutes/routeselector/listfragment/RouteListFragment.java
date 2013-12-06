@@ -13,7 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
@@ -121,7 +121,7 @@ public class RouteListFragment extends Fragment implements
 	}
 
 	@Override
-	public void onError(ContentErrorType error) {
+	public void onError(LoadError error) {
 		Log.d("list-fragment", "onError called");
 		String message;
 		switch (error) {

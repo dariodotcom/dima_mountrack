@@ -1,6 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.contentloader.ContentErrorType;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 /**
@@ -15,6 +15,6 @@ public interface RouteSource {
 
 		public void onLoadStart();
 
-		public void onError(ContentErrorType error);
+		public void onError(LoadError error);
 	}
 }
