@@ -88,7 +88,6 @@ public class RouteViewer extends Activity implements RouteLoader.Callback {
 
 	@Override
 	public void onLoadResult(Route route) {
-		Log.d("viewer","onloadresult");
 		displayRoute(route);
 	}
 

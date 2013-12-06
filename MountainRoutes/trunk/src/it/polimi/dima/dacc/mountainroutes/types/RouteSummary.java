@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class RouteSummary implements Parcelable {
 
-	private String id;
+	private RouteID id;
 	private String name;
 	private Difficulty difficulty;
 	private int durationInMinutes;
@@ -15,7 +15,7 @@ public class RouteSummary implements Parcelable {
 	}
 
 	private RouteSummary(Parcel in) {
-		this.id = in.readString();
+		this.id = new RouteID(in.readString());
 		this.name = in.readString();
 		this.difficulty = Difficulty.valueOf(in.readString());
 		this.durationInMinutes = in.readInt();
@@ -29,7 +29,7 @@ public class RouteSummary implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		// TODO Auto-generated method stub
-		dest.writeString(id);
+		dest.writeString(id.toString());
 		dest.writeString(name);
 		dest.writeString(difficulty.name());
 		dest.writeInt(durationInMinutes);
@@ -48,11 +48,11 @@ public class RouteSummary implements Parcelable {
 		}
 	};
 
-	public String getId() {
+	public RouteID getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(RouteID id) {
 		this.id = id;
 	}
 

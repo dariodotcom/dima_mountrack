@@ -128,7 +128,12 @@ public class DummyProvider implements ContentProvider {
 
 			try {
 				summary = new RouteSummary();
-				summary.setId(obj.getString(ID));
+
+				// Route ID
+				String routeId = obj.getString(ID);
+				RouteID id = new RouteID(PROVIDER_ID, routeId);
+				summary.setId(id);
+				
 				summary.setName(obj.getString(NAME));
 				summary.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
 				Difficulty difficulty = Difficulty.valueOf(obj
@@ -166,10 +171,10 @@ public class DummyProvider implements ContentProvider {
 
 			try {
 				JSONObject obj = new JSONObject(content);
-				
+
 				String routeID = obj.getString(ID);
 				RouteID id = new RouteID(DummyProvider.PROVIDER_ID, routeID);
-				
+
 				r.setId(id);
 				r.setName(obj.getString(NAME));
 				r.setDurationInMinutes(obj.getInt(DURATION_IN_MINUTES));
