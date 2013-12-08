@@ -1,4 +1,6 @@
-package it.polimi.dima.dacc.mountainroutes.remotecontent;
+package it.polimi.dima.dacc.mountainroutes.remote;
+
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ProviderException;
 
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -11,6 +13,6 @@ public interface ContentProvider {
 	public HttpRequestBase createRequestFor(ContentQuery query)
 			throws ProviderException;
 
-	public LoaderResult handleResult(String response, ContentQuery query)
+	public Object handleResult(String response, ContentQuery query)
 			throws ProviderException;
 }

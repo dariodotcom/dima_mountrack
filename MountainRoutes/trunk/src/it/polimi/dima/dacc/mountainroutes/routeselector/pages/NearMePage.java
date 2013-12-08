@@ -2,8 +2,8 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.pages;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.NearMeSource;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.NearMeSummaryListLoader;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,8 +27,8 @@ public class NearMePage extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.near_me_list_fragment);
-		RouteSource source = new NearMeSource(getActivity());
-		fragment.setSource(source);
+		SummaryListLoader loader = new NearMeSummaryListLoader(getActivity());
+		fragment.setLoader(loader);
 		fragment.update();
 	}
 

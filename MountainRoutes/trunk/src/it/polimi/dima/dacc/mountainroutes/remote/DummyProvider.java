@@ -1,6 +1,7 @@
-package it.polimi.dima.dacc.mountainroutes.remotecontent;
+package it.polimi.dima.dacc.mountainroutes.remote;
 
 import it.polimi.dima.dacc.mountainroutes.ImplementationError;
+import it.polimi.dima.dacc.mountainroutes.remotecontent.ProviderException;
 import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class DummyProvider implements ContentProvider {
 
 	private final static String PROVIDER_NAME = "Test provider";
-	private final static String PROVIDER_ID = "e6brx2";
+	public final static String PROVIDER_ID = "e6brx2";
 	private static final String ENDPOINT_URL = "http://dima-dacc-mountainroute.appspot.com/routes/";
 
 	@Override
@@ -48,20 +49,17 @@ public class DummyProvider implements ContentProvider {
 	}
 
 	@Override
-	public LoaderResult handleResult(String content, ContentQuery query)
+	public Object handleResult(String content, ContentQuery query)
 			throws ProviderException {
 		try {
 			switch (query.getType()) {
 			case BYNAME:
 			case NEAR:
 				// Parse a list of route description
-				RouteSummaryList list = JSONParser
-						.parseRouteSummaryList(content);
-				return new LoaderResult(list, query);
+				return JSONParser.parseRouteSummaryList(content);
 
 			case ID:
-				Route route = JSONParser.parseRoute(content);
-				return new LoaderResult(route, query);
+				return JSONParser.parseRoute(content);
 			default:
 				throw new ImplementationError(
 						"Fallen oustide of a switch on enum");
@@ -72,7 +70,7 @@ public class DummyProvider implements ContentProvider {
 	}
 
 	private HttpRequestBase createNameQuery(ContentQuery q) {
-		String paramName = ContentLoader.NAME_PARAM;
+		String paramName = RemoteContentManager.NAME_PARAM;
 		String name = q.getParams().getString(paramName);
 		if (name == null) {
 			throw new ImplementationError("Missing required String parameter "
@@ -84,7 +82,7 @@ public class DummyProvider implements ContentProvider {
 	}
 
 	private HttpRequestBase createPositionQuery(ContentQuery q) {
-		String paramName = ContentLoader.POSITION_PARAM;
+		String paramName = RemoteContentManager.POSITION_PARAM;
 		LatLng position = (LatLng) q.getParams().getParcelable(paramName);
 		if (position == null) {
 			throw new ImplementationError("Missing required LatLng parameter "
@@ -97,7 +95,7 @@ public class DummyProvider implements ContentProvider {
 	}
 
 	private HttpRequestBase createIdQuery(ContentQuery q) {
-		String paramName = ContentLoader.ID_PARAM;
+		String paramName = RemoteContentManager.ID_PARAM;
 		String id = q.getParams().getString(paramName);
 		if (id == null) {
 			throw new ImplementationError("Missing required String parameter "

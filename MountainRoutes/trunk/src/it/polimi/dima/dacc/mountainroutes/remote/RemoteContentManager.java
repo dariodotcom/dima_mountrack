@@ -1,11 +1,11 @@
-package it.polimi.dima.dacc.mountainroutes.remotecontent;
+package it.polimi.dima.dacc.mountainroutes.remote;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 
-public class ContentLoader {
+public class RemoteContentManager {
 
 	public final static String NAME_PARAM = "name";
 	public final static String POSITION_PARAM = "position";
@@ -18,18 +18,18 @@ public class ContentLoader {
 		availableProviders.add(new DummyProvider());
 	}
 
-	private static ContentLoader instance;
+	private static RemoteContentManager instance;
 	private ContentProvider currentProvider;
 
-	public static ContentLoader getInstance() {
+	public static RemoteContentManager getInstance() {
 		if (instance == null) {
-			instance = new ContentLoader();
+			instance = new RemoteContentManager();
 		}
 
 		return instance;
 	}
 
-	private ContentLoader() {
+	private RemoteContentManager() {
 		this.currentProvider = new DummyProvider();
 	}
 
@@ -41,8 +41,8 @@ public class ContentLoader {
 		return availableProviders;
 	}
 
-	public ContentConnector createConnector(Context context) {
-		return new ContentConnector(context, currentProvider);
+	public RemoteContentConnector createConnector(Context context) {
+		return new RemoteContentConnector(context, currentProvider);
 	}
 
 }

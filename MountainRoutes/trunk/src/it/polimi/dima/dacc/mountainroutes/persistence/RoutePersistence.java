@@ -13,12 +13,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class RoutePersistence {
 
-	private static String[] allColumns = { DbHelper.COLUMN_KEY,
-			DbHelper.COLUMN_NAME, DbHelper.COLUMN_DIFFICULTY,
-			DbHelper.COLUMN_DURATION_IN_MINUTES,
+	private static String[] allColumns = { DbHelper.COLUMN_ID,
+			DbHelper.COLUMN_KEY, DbHelper.COLUMN_NAME,
+			DbHelper.COLUMN_DIFFICULTY, DbHelper.COLUMN_DURATION_IN_MINUTES,
 			DbHelper.COLUMN_LENGTH_IN_METERS, DbHelper.COLUMN_GAP_IN_METERS,
 			DbHelper.COLUMN_PATH };
 
@@ -55,18 +56,20 @@ public class RoutePersistence {
 	public boolean hasRoute(RouteID id) {
 		String[] columns = new String[] { "1" };
 		String reference = id.toString();
-		String where = DbHelper.COLUMN_ID + "=" + reference;
+		String where = DbHelper.COLUMN_ID + " = ?";
+		String[] selectionArgs = new String[] { reference };
 		Cursor c = database.query(DbHelper.DATABASE_TABLE, columns, where,
-				null, null, null, null);
+				selectionArgs, null, null, null);
 		boolean hasRoute = c.moveToFirst();
 		c.close();
 		return hasRoute;
 	}
 
 	public Route loadRoute(RouteID id) throws PersistenceException {
-		String where = DbHelper.COLUMN_ID + "=" + id.toString();
+		String where = DbHelper.COLUMN_ID + "= ?";
+		String[] whereArgs = new String[] { id.toString() };
 		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, where,
-				null, null, null, null);
+				whereArgs, null, null, null);
 
 		if (!c.moveToFirst()) {
 			return null;
@@ -75,8 +78,9 @@ public class RoutePersistence {
 		return routeFromCursor(c, context);
 	}
 
-	public void persistRoute(Route route) {
+	public void persistRoute(Route route) throws PersistenceException {
 		if (hasRoute(route.getId())) {
+			Log.d("persistence", "Already has route");
 			return;
 		}
 
@@ -90,7 +94,9 @@ public class RoutePersistence {
 		values.put(DbHelper.COLUMN_GAP_IN_METERS, route.getGapInMeters());
 		values.put(DbHelper.COLUMN_PATH, route.getPath().toString());
 
-		database.insert(DbHelper.DATABASE_TABLE, null, values);
+		if (database.insert(DbHelper.DATABASE_TABLE, null, values) == -1) {
+			throw new PersistenceException("could not persist route");
+		}
 	}
 
 	public void removeRoute(RouteID id) throws PersistenceException {
@@ -105,10 +111,6 @@ public class RoutePersistence {
 	// Create Route reading it from cursor
 	private static Route routeFromCursor(Cursor cursor, Context context)
 			throws PersistenceException {
-
-		// RouteID
-		int idIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID);
-		RouteID id = new RouteID(cursor.getString(idIndex));
 
 		// Name
 		int nameIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_NAME);
@@ -135,6 +137,10 @@ public class RoutePersistence {
 				.getColumnIndexOrThrow(DbHelper.COLUMN_GAP_IN_METERS);
 		int gap = cursor.getInt(gapIndex);
 
+		// RouteID
+		int idIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID);
+		RouteID id = new RouteID(cursor.getString(idIndex));
+
 		// Path
 		int pathIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_PATH);
 		String pathString = cursor.getString(pathIndex);
@@ -158,10 +164,6 @@ public class RoutePersistence {
 	private static RouteSummary routeSummaryFromCursor(Cursor cursor,
 			Context context) throws PersistenceException {
 
-		// RouteID
-		int idIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID);
-		RouteID id = new RouteID(cursor.getString(idIndex));
-
 		// Name
 		int nameIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_NAME);
 		String name = cursor.getString(nameIndex);
@@ -177,7 +179,11 @@ public class RoutePersistence {
 				.getColumnIndexOrThrow(DbHelper.COLUMN_DURATION_IN_MINUTES);
 		int duration = cursor.getInt(durationIndex);
 
+		// RouteID
+		int idIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID);
+		RouteID id = new RouteID(cursor.getString(idIndex));
 		RouteSummary summary = new RouteSummary();
+
 		summary.setId(id);
 		summary.setName(name);
 		summary.setDifficulty(difficulty);
@@ -201,7 +207,7 @@ public class RoutePersistence {
 		public static final String COLUMN_GAP_IN_METERS = "gap_in_meters";
 		public static final String COLUMN_PATH = "path";
 
-		private static final String DATABASE_CREATE_SQL = String.format(
+		public static final String DATABASE_CREATE_SQL = String.format(
 				"CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT,"
 						+ " %s TEXT NOT NULL," + // Route ID
 						" %s TEXT NOT NULL," + // Name
@@ -214,7 +220,7 @@ public class RoutePersistence {
 				COLUMN_DIFFICULTY, COLUMN_DURATION_IN_MINUTES,
 				COLUMN_LENGTH_IN_METERS, COLUMN_GAP_IN_METERS, COLUMN_PATH);
 
-		private static final String DATABASE_DROP_SQL = "DROP TABLE IF EXISTS "
+		public static final String DATABASE_DROP_SQL = "DROP TABLE IF EXISTS "
 				+ DATABASE_TABLE;
 
 		public DbHelper(Context context) {

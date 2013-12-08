@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.remotecontent;
 
+import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;
+
 public class LoaderResult {
 
 	private Object result;

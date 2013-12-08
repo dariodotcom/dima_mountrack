@@ -2,8 +2,8 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.pages;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.ByNameSource;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.ByNameSummaryListLoader;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -59,8 +59,9 @@ public class ByNamePage extends Fragment {
 		super.onStart();
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.by_name_list_fragment);
-		RouteSource source = new ByNameSource(searchTerm, this.getActivity());
-		fragment.setSource(source);
+		SummaryListLoader loader = new ByNameSummaryListLoader(searchTerm,
+				this.getActivity());
+		fragment.setLoader(loader);
 	}
 
 	@Override

@@ -1,7 +1,9 @@
 package it.polimi.dima.dacc.mountainroutes;
 
+import it.polimi.dima.dacc.mountainroutes.remote.DummyProvider;
 import it.polimi.dima.dacc.mountainroutes.routeselector.CompleteRouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
+import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,18 +24,33 @@ public class MainActivity extends Activity {
 		}
 	};
 
+	private OnClickListener showSavedRoutesButtonListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(MainActivity.this, SavedRouteManager.class);
+			startActivity(i);
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Button b = (Button) findViewById(R.id.main_start_walk_button);
-		b.setOnClickListener(startWalkingButtonListener);
+		Button startWalking = (Button) findViewById(R.id.main_start_walk_button);
+		startWalking.setOnClickListener(startWalkingButtonListener);
 
-		RouteID id = new RouteID(null, "ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+		Button savedRoutes = (Button) findViewById(R.id.main_my_routes_button);
+		savedRoutes.setOnClickListener(showSavedRoutesButtonListener);
+		
+		RouteID id = new RouteID(DummyProvider.PROVIDER_ID,
+				"ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
 		Intent i = new Intent(this, RouteViewer.class);
 		i.putExtra(RouteViewer.ROUTE_ID, id);
-		startActivity(i);
+		//startActivity(i);
+
+		// Intent i = new Intent(this, SavedRouteManager.class);
+		// startActivity(i);
 	}
 
 	@Override

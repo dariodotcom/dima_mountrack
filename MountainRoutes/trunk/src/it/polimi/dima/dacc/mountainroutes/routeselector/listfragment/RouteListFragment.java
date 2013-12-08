@@ -5,6 +5,8 @@ import java.util.List;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,25 +15,28 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import it.polimi.dima.dacc.mountainroutes.R;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
+import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
+import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSource;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 public class RouteListFragment extends Fragment implements
-		RouteSource.ResultObserver {
+		LoaderCallbacks<LoadResult<RouteSummaryList>> {
 
+	private static final int LOADER_ID = 0;
 	private final static int LIST_VIEW = 0;
 	private final static int MESSAGE_VIEW = 1;
 	private final static int LOADING_VIEW = 2;
 
 	private View[] panels = new View[3];
 
+	// UI elements
 	private TextView messageContainer;
 	private RouteListAdapter resultAdapter;
 	private ListView listView;
-	private RouteSource source;
+	private SummaryListLoader loader;
 
 	private String emptyMessage;
 	private String gpsDisabledMessage;
@@ -69,16 +74,20 @@ public class RouteListFragment extends Fragment implements
 		return inflated;
 	}
 
-	public void setSource(RouteSource source) {
-		this.source = source;
+	public void setLoader(SummaryListLoader loader) {
+		this.loader = loader;
+
 	}
 
 	public void update() {
-		if (this.source == null) {
-			return;
+		showPanel(LOADING_VIEW);
+		Loader<LoadResult<RouteSummaryList>> loader = getLoaderManager()
+				.getLoader(LOADER_ID);
+		if (loader != null) {
+			loader.forceLoad();
+		} else {
+			getLoaderManager().initLoader(LOADER_ID, null, this);
 		}
-
-		this.source.loadRoutes(this);
 	}
 
 	public void setOnRouteSelectListener(OnRouteSelected listener) {
@@ -86,20 +95,33 @@ public class RouteListFragment extends Fragment implements
 		this.listView.setOnItemClickListener(l);
 	}
 
+	// Loader callbacks
 	@Override
-	public void onResultReceived(RouteSummaryList result) {
+	public Loader<LoadResult<RouteSummaryList>> onCreateLoader(int arg0,
+			Bundle arg1) {
+		return loader;
+	}
 
-		Log.d("list-fragment", "onResultReceived called");
+	@Override
+	public void onLoaderReset(Loader<LoadResult<RouteSummaryList>> arg0) {
 
-		// If result is null, no search was performed
-		if (result == null) {
-			this.resultAdapter.clear();
-			this.resultAdapter.notifyDataSetChanged();
-			showPanel(LIST_VIEW);
-			return;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> loader,
+			LoadResult<RouteSummaryList> result) {
+		switch (result.getType()) {
+		case LoadResult.ERROR:
+			onError(result.getError());
+			break;
+		case LoadResult.RESULT:
+			onResultReceived(result.getResult());
+			break;
 		}
+	}
 
-		List<RouteSummary> summaries = result.getRouteSummaries();
+	public void onResultReceived(RouteSummaryList result) {
+		List<RouteSummary> summaries = result.asList();
 		if (summaries.isEmpty()) {
 			messageContainer.setText(emptyMessage);
 			showPanel(MESSAGE_VIEW);
@@ -114,13 +136,6 @@ public class RouteListFragment extends Fragment implements
 		showPanel(LIST_VIEW);
 	}
 
-	@Override
-	public void onLoadStart() {
-		Log.d("list-fragment", "onLoadStart called");
-		showPanel(LOADING_VIEW);
-	}
-
-	@Override
 	public void onError(LoadError error) {
 		Log.d("list-fragment", "onError called");
 		String message;

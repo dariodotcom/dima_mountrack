@@ -1,6 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.persistence;
 
-import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
+import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import android.os.AsyncTask;
 
 public class AsyncExecutor<E> {

@@ -44,26 +44,30 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="list_container">
+        <item name="android:background">@drawable/background_listcontainer</item>
+    </style>
+
     <style name="list_element">
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
-        <item name="android:paddingRight">25dp</item>
-        <item name="android:paddingLeft">25dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:textSize">20sp</item>
     </style>
-    
+
     <style name="route_list_overlay">
         <item name="android:background">@drawable/overlay_background</item>
     </style>
-    
+
     <style name="overlay_background">
         <item name="android:background">#cc000000</item>
     </style>
-    
+
     <style name="overlay_text">
         <item name="android:textColor">#ffffff</item>
     </style>
-    
+
     <style name="AppContainer">
         <item name="android:background">@drawable/repeatingpattern</item>
     </style>
