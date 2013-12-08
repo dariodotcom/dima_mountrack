@@ -22,7 +22,11 @@ public class RouteSummaryList implements Parcelable {
 		this.summaries.add(desc);
 	}
 
-	public List<RouteSummary> getRouteSummaries() {
+	public boolean isEmpty(){
+		return summaries.isEmpty();
+	}
+
+	public List<RouteSummary> asList() {
 		return summaries;
 	}
 

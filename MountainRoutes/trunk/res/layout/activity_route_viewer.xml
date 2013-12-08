@@ -104,6 +104,7 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/route_viewer_start"
                 style="@style/ButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,6 +112,7 @@
                 android:text="@string/route_viewer_start" />
 
             <Button
+                android:id="@+id/route_viewer_save"
                 style="@style/ButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,8 +122,8 @@
     </LinearLayout>
 
     <RelativeLayout
-        style="@style/overlay_background"
         android:id="@+id/overlay"
+        style="@style/overlay_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="1" >

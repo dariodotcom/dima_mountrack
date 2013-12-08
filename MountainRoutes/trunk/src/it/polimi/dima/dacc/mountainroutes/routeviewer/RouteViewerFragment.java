@@ -25,11 +25,13 @@ public class RouteViewerFragment extends MapFragment {
 		// Load color
 		lineColor = getActivity().getResources().getColor(R.color.accent_blue);
 
-		// Disable map interaction;
+		// Disable interaction
 		GoogleMap map = getMap();
-		UiSettings settings = map.getUiSettings();
-		settings.setAllGesturesEnabled(false);
-		settings.setZoomControlsEnabled(false);
+		if (map != null) {
+			UiSettings settings = map.getUiSettings();
+			settings.setAllGesturesEnabled(false);
+			settings.setZoomControlsEnabled(false);
+		}
 	}
 
 	/**
@@ -42,17 +44,17 @@ public class RouteViewerFragment extends MapFragment {
 	public void showRoute(PointList points) {
 		// Add line
 		GoogleMap map = getMap();
-		PolylineOptions options = new PolylineOptions().addAll(points)
-				.geodesic(true).color(lineColor);
-		map.addPolyline(options);
 
-		//
-		
-		// Center map
-		LatLngBounds bounds = bound(points);
-		Log.d("viewer", "bounds: " + bounds);
-		CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, 10);
-		getMap().moveCamera(update);
+		if (map != null) {
+			PolylineOptions options = new PolylineOptions();
+			options.addAll(points).geodesic(true).color(lineColor);
+			map.addPolyline(options);
+
+			// Center map
+			LatLngBounds bnd = bound(points);
+			CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bnd, 10);
+			getMap().moveCamera(update);
+		}
 	}
 
 	private LatLngBounds bound(PointList path) {

@@ -2,64 +2,64 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import android.content.Context;
 import android.util.Log;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentConnector;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.LoadError;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentLoader;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderObserver;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.LoaderResult;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ContentQuery.QueryType;
+
+import it.polimi.dima.dacc.mountainroutes.loader.GenericLoader;
+import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
+import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
+import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentConnector;
+import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentManager;
+import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery.QueryType;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 
-public class RouteLoader {
+public class RouteLoader extends GenericLoader<Route> {
 
-	private Callback callback;
-	private Context context;
+	private final static String TAG = "route-loader";
+	private RouteID id;
 
-	public RouteLoader(Context context, Callback callback) {
-		this.callback = callback;
-		this.context = context;
+	public RouteLoader(Context context, RouteID id) {
+		super(context);
+		if (id == null) {
+			throw new IllegalArgumentException("Route ID must not be null");
+		}
+
+		this.id = id;
 	}
 
-	public void loadRoute(RouteID id) {
-		ContentQuery query = new ContentQuery(QueryType.ID);
-		query.getParams().putString(ContentLoader.ID_PARAM, id.getRouteID());
-		ContentConnector connector = ContentLoader.getInstance()
+	@Override
+	protected void onReleaseResources(LoadResult<Route> result) {
+		// Route does not need to be released
+	}
+
+	@Override
+	public LoadResult<Route> loadInBackground() {
+		Context context = getContext();
+
+		// Try to load route from the persistence
+		RoutePersistence persistence = RoutePersistence.create(context);
+
+		try {
+			Route route = persistence.loadRoute(id);
+			if (route != null) {
+				Log.d(TAG, "Route was loaded from persistence");
+				return new LoadResult<Route>(route);
+			}
+		} catch (PersistenceException e) {
+			// if an exception was caught, the persistence has some corrupted
+			// data.
+			Log.e(TAG, "Persistence exception - ", e);
+		}
+
+		// Route was not found in persistence, load from remote
+		RemoteContentConnector connector = RemoteContentManager.getInstance()
 				.createConnector(context);
-		connector.executeQuery(query, new LoaderObserverAdapter(callback));
-		Log.d("loader","request started");
-	}
+		ContentQuery query = new ContentQuery(QueryType.ID);
+		query.getParams().putString(RemoteContentManager.ID_PARAM,
+				id.getRouteID());
 
-	private static class LoaderObserverAdapter implements LoaderObserver {
-
-		private Callback callback;
-
-		public LoaderObserverAdapter(Callback callback) {
-			this.callback = callback;
-		}
-
-		@Override
-		public void onLoadStart() {
-			callback.onLoadStart();
-		}
-
-		@Override
-		public void onLoadError(LoadError error) {
-			callback.onLoadError(error);
-		}
-
-		@Override
-		public void onLoadResult(LoaderResult result) {
-			callback.onLoadResult(result.getResult(Route.class));
-		}
-	}
-
-	public static interface Callback {
-		public void onLoadError(LoadError error);
-
-		public void onLoadResult(Route route);
-
-		public void onLoadStart();
+		Log.d(TAG, "Route was loaded from remote");
+		return connector.executeQuery(query, Route.class);
 	}
 }

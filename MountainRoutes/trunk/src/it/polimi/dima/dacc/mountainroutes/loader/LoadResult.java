@@ -1,4 +1,5 @@
-package it.polimi.dima.dacc.mountainroutes.remotecontent;
+package it.polimi.dima.dacc.mountainroutes.loader;
+
 
 public class LoadResult<E> {
 
