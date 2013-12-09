@@ -2,7 +2,9 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -19,6 +21,7 @@ import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
+import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
@@ -70,6 +73,8 @@ public class RouteListFragment extends Fragment implements
 		gpsDisabledMessage = context.getString(R.string.gps_disabled_message);
 
 		listView.setAdapter(resultAdapter);
+		listView.setOnItemClickListener(new ItemClickAdapter(
+				onRouteSelectedListener));
 
 		return inflated;
 	}
@@ -94,6 +99,16 @@ public class RouteListFragment extends Fragment implements
 		OnItemClickListener l = new ItemClickAdapter(listener);
 		this.listView.setOnItemClickListener(l);
 	}
+
+	private OnRouteSelected onRouteSelectedListener = new OnRouteSelected() {
+		@Override
+		public void onRouteSelected(RouteSummary summary) {
+			Activity activity = RouteListFragment.this.getActivity();
+			Intent intent = new Intent(activity, RouteViewer.class);
+			intent.putExtra(RouteViewer.ROUTE_ID, summary.getId());
+			startActivity(intent);
+		}
+	};
 
 	// Loader callbacks
 	@Override
@@ -137,15 +152,19 @@ public class RouteListFragment extends Fragment implements
 	}
 
 	public void onError(LoadError error) {
-		Log.d("list-fragment", "onError called");
+		Log.d("list-fragment", "onError called: " + error);
 		String message;
 		switch (error) {
+		case EMPTY_PARAM:
+			message = "";
+			break;
 		case GPS_DISABLED:
 			message = gpsDisabledMessage;
 			break;
 		case NETWORK_UNAVAILABLE:
 			message = networkDisabledMessage;
 			break;
+		case INTERNAL_ERROR:
 		case RESPONSE_ERROR:
 		case SERVER_ERROR:
 			message = internalErrorMessage;

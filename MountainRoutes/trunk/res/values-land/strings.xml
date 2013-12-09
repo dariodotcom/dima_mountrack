@@ -3,5 +3,6 @@
 
     <string name="route_viewer_start">Start\nwalking</string>
     <string name="route_viewer_save">Save to\ndevice</string>
+    <string name="route_viewer_delete">Delete from\ndevice</string>
 
 </resources>

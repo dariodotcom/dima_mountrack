@@ -53,6 +53,25 @@ public class RoutePersistence {
 		return summaryList;
 	}
 
+	public RouteSummaryList getAvailableRoutes(String name)
+			throws PersistenceException {
+		if (name == null || name.length() == 0) {
+			return getAvailableRoutes();
+		}
+
+		String where = DbHelper.COLUMN_NAME + " = ?";
+		String[] whereArgs = new String[] { name };
+		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, where,
+				whereArgs, null, null, null);
+		RouteSummaryList summaryList = new RouteSummaryList();
+
+		while (c.moveToNext()) {
+			summaryList.addRouteSummary(routeSummaryFromCursor(c, context));
+		}
+
+		return summaryList;
+	}
+
 	public boolean hasRoute(RouteID id) {
 		String[] columns = new String[] { "1" };
 		String reference = id.toString();
@@ -92,7 +111,15 @@ public class RoutePersistence {
 				route.getDurationInMinutes());
 		values.put(DbHelper.COLUMN_LENGTH_IN_METERS, route.getLengthInMeters());
 		values.put(DbHelper.COLUMN_GAP_IN_METERS, route.getGapInMeters());
-		values.put(DbHelper.COLUMN_PATH, route.getPath().toString());
+
+		String rep;
+		try {
+			rep = PointListConverter.toString(route.getPath());
+		} catch (ConverterException e) {
+			throw new PersistenceException(e);
+		}
+
+		values.put(DbHelper.COLUMN_PATH, rep);
 
 		if (database.insert(DbHelper.DATABASE_TABLE, null, values) == -1) {
 			throw new PersistenceException("could not persist route");
@@ -104,8 +131,9 @@ public class RoutePersistence {
 			throw new PersistenceException("Route " + id + " not found");
 		}
 
-		String where = DbHelper.COLUMN_ID + "=" + id.toString();
-		database.delete(DbHelper.DATABASE_NAME, where, null);
+		String where = DbHelper.COLUMN_ID + " = ?";
+		String[] whereArgs = new String[] { id.toString() };
+		database.delete(DbHelper.DATABASE_TABLE, where, whereArgs);
 	}
 
 	// Create Route reading it from cursor

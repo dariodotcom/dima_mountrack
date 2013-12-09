@@ -26,7 +26,7 @@ public class LocationUpdater implements Runnable {
 		locMan = (LocationManager) context.getSystemService(svcName);
 
 		String pvdName = LocationManager.GPS_PROVIDER;
-		if (locMan.isProviderEnabled(pvdName)) {
+		if (!locMan.isProviderEnabled(pvdName)) {
 			throw new IllegalStateException("Provider disabled");
 		}
 	}
@@ -34,11 +34,13 @@ public class LocationUpdater implements Runnable {
 	@Override
 	public void run() {
 		Looper.prepare();
-		Looper currentLooper = Looper.myLooper();
 
 		// Register location updater
 		String pvdName = LocationManager.GPS_PROVIDER;
-		locMan.requestSingleUpdate(pvdName, locListenerImpl, currentLooper);
+		locMan.requestSingleUpdate(pvdName, locListenerImpl, Looper.myLooper());
+		
+		// Start looping
+		Looper.loop();
 	}
 
 	public LatLng getLocation() {
@@ -49,10 +51,18 @@ public class LocationUpdater implements Runnable {
 
 		@Override
 		public void onLocationChanged(Location l) {
+			// Get location
 			double lat = l.getLatitude(), lng = l.getLongitude();
 			location = new LatLng(lat, lng);
 			Log.d(TAG, "location: " + location);
-			loaderToUpdate.notifyAll();
+
+			// Notify loader that current location is available
+			synchronized (loaderToUpdate) {
+				loaderToUpdate.notifyAll();
+			}
+
+			// Exit from looper
+			Looper.myLooper().quit();
 		}
 
 		@Override

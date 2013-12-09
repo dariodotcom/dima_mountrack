@@ -3,28 +3,23 @@
 
     <string name="app_name">Mountain Routes</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="routelist_waiting_text">Loading routes&#8230;</string>
+    <string name="title_activity_test">Test Activity</string>
+
+    <!-- Main Activity -->
     <string name="main_start_walk_button_text">Start walking</string>
     <string name="main_my_routes_button_text">My routes</string>
     <string name="main_my_excursions_button_text">My excursions</string>
-    <string name="app_name">Mountain Routes</string>
-    <string name="action_settings">Settings</string>
+    
+    <!-- Route selector -->
     <string name="page_by_name_title">By Name</string>
     <string name="page_by_name_description">Search by name</string>
     <string name="page_by_name_search_term_hint">Insert a route name</string>
-    <string name="page_near_me_title">Near Meear Me</string>
+    <string name="page_near_me_title">Near Me</string>
     <string name="page_near_me_description">Search routes near you</string>
     <string name="page_near_me_update_button">Update</string>
     <string name="page_saved_title">Saved</string>
     <string name="page_saved_description">Search saved route</string>
-    <string name="routelist_waiting_text">Loading routes&#8230;</string>
-    <string name="title_activity_complete_route_selector">Select route</string>
-    <string name="title_activity_test">Test Activity</string>
-    <string name="title_activity_route_viewer">RouteViewer</string>
-    <string name="difficulty_info">Difficulty</string>
-    <string name="gap_info">Gap</string>
-    <string name="estimated_time_info">Estimated time</string>
-    <string name="length_info">Length</string>
 
     <!-- Error messages -->
     <string name="no_result_message">No results found.</string>
@@ -40,9 +35,17 @@
     <string name="difficulty_equipped">Equipped</string>
 
     <!-- Route viewer -->
+    <string name="title_activity_route_selector">Select route</string>
+    <string name="title_activity_route_viewer">Route Viewer</string>
+    <string name="difficulty_info">Difficulty</string>
+    <string name="gap_info">Gap</string>
+    <string name="estimated_time_info">Estimated time</string>
+    <string name="length_info">Length</string>
     <string name="viewer_loading_message">Loading route&#8230;</string>
     <string name="route_viewer_start">Start walking</string>
     <string name="route_viewer_save">Save to device</string>
+    <string name="route_viewer_delete">Delete</string>
     <string name="title_activity_saved_route_manager">SavedRouteManager</string>
+    <string name="page_saved_search_term_hint">Insert a route name</string>
 
 </resources>

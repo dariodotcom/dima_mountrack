@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
@@ -39,11 +41,12 @@ public class PointListConverter {
 				list.add(point);
 			}
 		} catch (JSONException e) {
+			Log.d("pointlist-converter", "exception: ", e);
 			throw new ConverterException();
 		}
 		return list;
 	}
-
+	
 	public static class ConverterException extends Exception {
 
 		private static final long serialVersionUID = -8660084402633727273L;

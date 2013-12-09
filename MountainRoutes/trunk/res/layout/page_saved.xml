@@ -6,10 +6,15 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin" >
 
-    <TextView
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/saved_route_search_term"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/page_saved_description" />
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:hint="@string/page_saved_search_term_hint"
+        android:singleLine="true" >
+    </EditText>
 
     <fragment
         android:id="@+id/saved_list_fragment"

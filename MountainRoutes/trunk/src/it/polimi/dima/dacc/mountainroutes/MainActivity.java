@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.remote.DummyProvider;
-import it.polimi.dima.dacc.mountainroutes.routeselector.CompleteRouteSelector;
+import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(MainActivity.this,
-					CompleteRouteSelector.class);
+					RouteSelector.class);
 			startActivity(i);
 		}
 	};
