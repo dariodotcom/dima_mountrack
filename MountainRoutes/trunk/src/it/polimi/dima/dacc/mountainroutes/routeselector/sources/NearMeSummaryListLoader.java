@@ -24,6 +24,11 @@ public class NearMeSummaryListLoader extends SummaryListLoader {
 	}
 
 	@Override
+	protected String getTag() {
+		return TAG;
+	}
+	
+	@Override
 	public LoadResult<RouteSummaryList> loadInBackground() {
 
 		// Create location updater

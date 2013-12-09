@@ -47,5 +47,9 @@
     <string name="route_viewer_delete">Delete</string>
     <string name="title_activity_saved_route_manager">SavedRouteManager</string>
     <string name="page_saved_search_term_hint">Insert a route name</string>
+    <string name="error_deleting_route">Error deleting route</string>
+    <string name="error_saving_route">Error saving route</string>
+    <string name="route_saved">Route saved</string>
+    <string name="route_deleted">Route deleted</string>
 
 </resources>

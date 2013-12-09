@@ -3,7 +3,6 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,7 +76,6 @@ public class RouteViewerFragment extends MapFragment {
 
 		LatLng southWest = new LatLng(minLat, minLng);
 		LatLng northEast = new LatLng(maxLat, maxLng);
-		Log.d("viewer", "SW: " + southWest + ". NE: " + northEast);
 		return new LatLngBounds(southWest, northEast);
 	}
 }

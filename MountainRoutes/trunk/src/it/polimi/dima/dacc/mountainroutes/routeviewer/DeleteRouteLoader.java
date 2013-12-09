@@ -34,7 +34,5 @@ public class DeleteRouteLoader extends GenericLoader<Route> {
 			Log.d("route-save-loader", "Received exception: ", e);
 			return new LoadResult<Route>(LoadError.INTERNAL_ERROR);
 		}
-
 	}
-
 }

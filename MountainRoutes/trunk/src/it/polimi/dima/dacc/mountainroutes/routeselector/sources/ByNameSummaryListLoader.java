@@ -12,6 +12,8 @@ import android.text.Editable;
 
 public class ByNameSummaryListLoader extends SummaryListLoader {
 
+	private final static String TAG = "byname-route-loader";
+
 	private Editable searchTerm;
 	private Context context;
 
@@ -19,6 +21,11 @@ public class ByNameSummaryListLoader extends SummaryListLoader {
 		super(context);
 		this.searchTerm = searchTerm;
 		this.context = context;
+	}
+
+	@Override
+	protected String getTag() {
+		return TAG;
 	}
 
 	@Override
