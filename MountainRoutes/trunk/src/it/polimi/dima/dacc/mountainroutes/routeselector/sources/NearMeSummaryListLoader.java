@@ -2,6 +2,10 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
+import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;
+import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery.QueryType;
+import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentConnector;
+import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentManager;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 import android.content.Context;
 import android.util.Log;
@@ -27,12 +31,12 @@ public class NearMeSummaryListLoader extends SummaryListLoader {
 		try {
 			updater = new LocationUpdater(context, this);
 		} catch (IllegalStateException e) {
-			return new LoadResult<RouteSummaryList>(LoadError.INTERNAL_ERROR);
+			Log.d(TAG, "gps disabled");
+			return new LoadResult<RouteSummaryList>(LoadError.GPS_DISABLED);
 		}
 
 		new Thread(updater).start();
-		
-		Log.d(TAG, "Going to sleep!");
+
 		synchronized (this) {
 			try {
 				wait();
@@ -42,9 +46,13 @@ public class NearMeSummaryListLoader extends SummaryListLoader {
 			}
 		}
 
-		Log.d(TAG, "I'm awaken");
 		LatLng location = updater.getLocation();
-		Log.d(TAG, "Location = " + location);
-		return new LoadResult<RouteSummaryList>(LoadError.INTERNAL_ERROR);
+		ContentQuery query = new ContentQuery(QueryType.NEAR);
+		query.getParams().putParcelable(RemoteContentManager.POSITION_PARAM,
+				location);
+		RemoteContentConnector connector = RemoteContentManager.getInstance()
+				.createConnector(context);
+		return connector.executeQuery(query, RouteSummaryList.class);
+
 	}
 }

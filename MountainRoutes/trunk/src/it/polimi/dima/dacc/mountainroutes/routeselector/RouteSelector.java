@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class CompleteRouteSelector extends FragmentActivity implements
+public class RouteSelector extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	private SelectorPagerAdapter pagerAdapter;
@@ -18,7 +18,7 @@ public class CompleteRouteSelector extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_complete_route_selector);
+		setContentView(R.layout.activity_route_selector);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -40,6 +40,7 @@ public class CompleteRouteSelector extends FragmentActivity implements
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
+
 						actionBar.setSelectedNavigationItem(position);
 					}
 				});
