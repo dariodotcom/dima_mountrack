@@ -1,6 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
@@ -8,8 +9,8 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,16 +21,21 @@ import android.widget.Toast;
 public class RouteViewer extends Activity implements
 		LoaderManager.LoaderCallbacks<LoadResult<Route>> {
 
-	private static final String ROUTE = "ROUTE";
+	public static final String ROUTE = "ROUTE";
 	public static final String ROUTE_ID = "ROUTE_ID";
 
 	private static final int LOAD_ROUTE_LOADER_ID = 0;
 	private static final int SAVE_ROUTE_LOADER_ID = 1;
 	private static final int DELETE_ROUTE_LOADER_ID = 2;
 
+	private final static int TOAST_DURATION = Toast.LENGTH_SHORT;
+	protected static final int ROUTE_RESULT = 0;
+
 	private Route displayedRoute;
 	private RouteViewerFragment fragment;
 	private View overlay;
+
+	private Button startButton;
 	private Button saveButton;
 	private Button deleteButton;
 
@@ -40,11 +46,14 @@ public class RouteViewer extends Activity implements
 
 	private RouteLoader loader;
 
+	private StringRepository stringRepo;
+
 	@Override
 	protected void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_route_viewer);
 
+		// Load UI Components
 		difficultyView = (DifficultyView) findViewById(R.id.difficulty_value);
 		lengthView = (TextView) findViewById(R.id.lenght_value);
 		gapView = (TextView) findViewById(R.id.gap_value);
@@ -53,27 +62,32 @@ public class RouteViewer extends Activity implements
 		fragment = (RouteViewerFragment) getFragmentManager().findFragmentById(
 				R.id.viewer_map);
 
+		startButton = (Button) findViewById(R.id.route_viewer_start);
 		saveButton = (Button) findViewById(R.id.route_viewer_save);
 		deleteButton = (Button) findViewById(R.id.route_viewer_delete);
 
+		// Load strings
+		stringRepo = new StringRepository(this);
+
+		stringRepo.loadString(R.string.error_deleting_route);
+		stringRepo.loadString(R.string.error_saving_route);
+		stringRepo.loadString(R.string.route_deleted);
+		stringRepo.loadString(R.string.route_saved);
+
 		// Load route from remote
-		Log.d("viewer", "" + getIntent().getParcelableExtra(ROUTE_ID));
-		RouteID id = (RouteID) getIntent().getParcelableExtra(ROUTE_ID);
-
-		// Initialize loader
-		loader = new RouteLoader(this, id);
-		getLoaderManager().initLoader(LOAD_ROUTE_LOADER_ID, null, this);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
+		if (savedState != null && savedState.getParcelable(ROUTE) != null) {
+			Route r = (Route) savedState.getParcelable(ROUTE);
+			displayRoute(r);
+		} else {
+			RouteID id = (RouteID) getIntent().getParcelableExtra(ROUTE_ID);
+			loader = new RouteLoader(this, id);
+			getLoaderManager().initLoader(LOAD_ROUTE_LOADER_ID, null, this);
+		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
+		// Save displayed route to restore it later
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(ROUTE, displayedRoute);
 	}
@@ -85,6 +99,18 @@ public class RouteViewer extends Activity implements
 		return true;
 	}
 
+	/* -- START WALKING -- */
+	private OnClickListener startButtonClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			Intent i = new Intent();
+			i.putExtra(ROUTE, displayedRoute);
+			setResult(ROUTE_RESULT, i);
+			finish();
+		}
+	};
+
 	/* -- ROUTE DISPLAY -- */
 	private void displayRoute(Route route) {
 		this.displayedRoute = route;
@@ -92,6 +118,7 @@ public class RouteViewer extends Activity implements
 		// Add save button listener
 		this.saveButton.setOnClickListener(saveButtonClickListener);
 		this.deleteButton.setOnClickListener(deleteButtonClickListener);
+		this.startButton.setOnClickListener(startButtonClickListener);
 
 		// Set infos
 		setTitle(route.getName());
@@ -141,10 +168,15 @@ public class RouteViewer extends Activity implements
 	private void onRouteSaved(LoadResult<Route> loadResult) {
 		switch (loadResult.getType()) {
 		case LoadResult.ERROR:
-			Toast.makeText(this, "Error saving route", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this,
+					stringRepo.getString(R.string.error_saving_route),
+					TOAST_DURATION).show();
 			break;
 		case LoadResult.RESULT:
+			// Make tost
+			Toast.makeText(this, stringRepo.getString(R.string.route_saved),
+					TOAST_DURATION).show();
+
 			// Hide save button
 			saveButton.setVisibility(View.GONE);
 
@@ -170,10 +202,14 @@ public class RouteViewer extends Activity implements
 	private void onRouteDeleted(LoadResult<Route> loadResult) {
 		switch (loadResult.getType()) {
 		case LoadResult.ERROR:
-			Toast.makeText(this, "Error deleting route", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this,
+					stringRepo.getString(R.string.error_deleting_route),
+					TOAST_DURATION).show();
 			break;
 		case LoadResult.RESULT:
+			// Show Toast
+			Toast.makeText(this, stringRepo.getString(R.string.route_deleted),
+					TOAST_DURATION).show();
 			// Hide save button
 			saveButton.setVisibility(View.VISIBLE);
 

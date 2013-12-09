@@ -372,6 +372,8 @@ containing a value of this type.
         /**  Difficulty 
          */
         public static final int difficulty_tourist=0x7f06002d;
+        public static final int error_deleting_route=0x7f06003d;
+        public static final int error_saving_route=0x7f06003e;
         public static final int estimated_time_info=0x7f060035;
         public static final int gap_info=0x7f060034;
         public static final int general_error_message=0x7f06002c;
@@ -398,6 +400,8 @@ containing a value of this type.
         public static final int page_saved_description=0x7f060027;
         public static final int page_saved_search_term_hint=0x7f06003c;
         public static final int page_saved_title=0x7f060026;
+        public static final int route_deleted=0x7f060040;
+        public static final int route_saved=0x7f06003f;
         public static final int route_viewer_delete=0x7f06003a;
         public static final int route_viewer_save=0x7f060039;
         public static final int route_viewer_start=0x7f060038;

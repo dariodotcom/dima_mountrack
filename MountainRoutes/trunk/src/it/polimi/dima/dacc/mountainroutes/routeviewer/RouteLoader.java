@@ -43,7 +43,6 @@ public class RouteLoader extends GenericLoader<Route> {
 		try {
 			Route route = persistence.loadRoute(id);
 			if (route != null) {
-				Log.d(TAG, "Route was loaded from persistence");
 				return new LoadResult<Route>(route);
 			}
 		} catch (PersistenceException e) {
@@ -59,7 +58,6 @@ public class RouteLoader extends GenericLoader<Route> {
 		query.getParams().putString(RemoteContentManager.ID_PARAM,
 				id.getRouteID());
 
-		Log.d(TAG, "Route was loaded from remote");
 		return connector.executeQuery(query, Route.class);
 	}
 }

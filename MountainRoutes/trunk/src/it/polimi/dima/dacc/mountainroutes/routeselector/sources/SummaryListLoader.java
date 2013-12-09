@@ -6,10 +6,9 @@ import android.util.Log;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
+// Basically the same class as generic loader, but this one is based on support AsyncTaskLoader.
 public abstract class SummaryListLoader extends
 		AsyncTaskLoader<LoadResult<RouteSummaryList>> {
-
-	private final static String TAG = "summary-list-loader";
 
 	private LoadResult<RouteSummaryList> result;
 
@@ -17,10 +16,13 @@ public abstract class SummaryListLoader extends
 		super(context);
 	}
 
+	protected abstract String getTag();
+
 	@Override
 	public void deliverResult(LoadResult<RouteSummaryList> data) {
+		Log.d(getTag(), "deliverResult called");
 		if (isReset()) {
-			Log.d(TAG, "Result not delivered as loader has been reset.");
+			Log.d(getTag(), "Result not delivered as loader has been reset.");
 			if (this.result != null) {
 				onReleaseResources(this.result);
 			}
@@ -46,6 +48,8 @@ public abstract class SummaryListLoader extends
 	protected void onStartLoading() {
 		super.onStartLoading();
 
+		Log.d(getTag(), "startLoading called");
+
 		if (result != null) {
 			deliverResult(result);
 		}
@@ -57,7 +61,20 @@ public abstract class SummaryListLoader extends
 
 	@Override
 	protected void onReset() {
-		Log.d(TAG, "Load reset.");
+		Log.d(getTag(), "onReset called");
 		super.onReset();
+	}
+
+	@Override
+	protected void onAbandon() {
+		// TODO Auto-generated method stub
+		super.onAbandon();
+		Log.d(getTag(), "onAbadon called");
+	}
+
+	@Override
+	protected void onStopLoading() {
+		super.onStopLoading();
+		Log.d(getTag(), "stopLoading called");
 	}
 }

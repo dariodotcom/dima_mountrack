@@ -10,6 +10,8 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 public class SavedRouteListLoader extends SummaryListLoader {
 
+	private final static String TAG = "saved-route-loader";
+
 	private Editable searchTerm;
 	private Context context;
 
@@ -17,6 +19,11 @@ public class SavedRouteListLoader extends SummaryListLoader {
 		super(context);
 		this.context = context;
 		this.searchTerm = searchTerm;
+	}
+
+	@Override
+	protected String getTag() {
+		return TAG;
 	}
 
 	@Override
