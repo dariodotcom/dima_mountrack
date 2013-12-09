@@ -14,7 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ProviderException;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

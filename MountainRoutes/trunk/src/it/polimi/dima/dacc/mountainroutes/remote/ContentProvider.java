@@ -1,6 +1,5 @@
 package it.polimi.dima.dacc.mountainroutes.remote;
 
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ProviderException;
 
 import org.apache.http.client.methods.HttpRequestBase;
 

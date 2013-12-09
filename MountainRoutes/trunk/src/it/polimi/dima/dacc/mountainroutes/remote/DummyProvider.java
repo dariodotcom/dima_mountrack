@@ -1,7 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.remote;
 
 import it.polimi.dima.dacc.mountainroutes.ImplementationError;
-import it.polimi.dima.dacc.mountainroutes.remotecontent.ProviderException;
 import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
