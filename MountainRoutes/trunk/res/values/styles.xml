@@ -48,6 +48,14 @@
         <item name="android:background">@drawable/background_listcontainer</item>
     </style>
 
+    <!-- Widgets -->
+    <style name="widget_textview">
+        <item name="android:background">@drawable/background_widget_textbox</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <!-- Lists -->
     <style name="list_element">
         <item name="android:paddingRight">15dp</item>
         <item name="android:paddingLeft">15dp</item>
