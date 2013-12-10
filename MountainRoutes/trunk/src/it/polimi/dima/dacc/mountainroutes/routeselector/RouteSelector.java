@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 
 public class RouteSelector extends FragmentActivity implements
@@ -15,8 +16,12 @@ public class RouteSelector extends FragmentActivity implements
 	private SelectorPagerAdapter pagerAdapter;
 	private ViewPager viewPager;
 
+	private final static String TAG = "route-selector";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "onCreate");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_selector);
 
@@ -81,5 +86,35 @@ public class RouteSelector extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	@Override
+	protected void onRestart() {
+		Log.d(TAG, "onRestart");
+		super.onRestart();
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d(TAG, "onStart");
+		super.onStart();
+	}
+
+	@Override
+	protected void onResume() {
+		Log.d(TAG, "onResume");
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		Log.d(TAG, "onStop");
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		Log.d(TAG, "onDestroy");
+		super.onDestroy();
 	}
 }

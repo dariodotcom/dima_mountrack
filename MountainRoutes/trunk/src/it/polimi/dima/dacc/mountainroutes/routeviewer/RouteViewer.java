@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +22,9 @@ import android.widget.Toast;
 public class RouteViewer extends Activity implements
 		LoaderManager.LoaderCallbacks<LoadResult<Route>> {
 
+	private static final String TAG = "route-viewer";
+
+	public static final int ROUTE_RESULT = 0;
 	public static final String ROUTE = "ROUTE";
 	public static final String ROUTE_ID = "ROUTE_ID";
 
@@ -29,7 +33,6 @@ public class RouteViewer extends Activity implements
 	private static final int DELETE_ROUTE_LOADER_ID = 2;
 
 	private final static int TOAST_DURATION = Toast.LENGTH_SHORT;
-	protected static final int ROUTE_RESULT = 0;
 
 	private Route displayedRoute;
 	private RouteViewerFragment fragment;
@@ -52,6 +55,8 @@ public class RouteViewer extends Activity implements
 	protected void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_route_viewer);
+
+		Log.d(TAG, "onCreate");
 
 		// Load UI Components
 		difficultyView = (DifficultyView) findViewById(R.id.difficulty_value);
@@ -86,12 +91,38 @@ public class RouteViewer extends Activity implements
 	}
 
 	@Override
+	protected void onStart() {
+		Log.d(TAG, "onStart");
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+		Log.d(TAG, "onResume");
+		super.onResume();
+	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(TAG, "onStop");
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		Log.d(TAG, "onDestroy");
+		super.onDestroy();
+	}
+	
+	
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// Save displayed route to restore it later
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(ROUTE, displayedRoute);
+		Log.d(TAG, "onSaveInstanceState");
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
