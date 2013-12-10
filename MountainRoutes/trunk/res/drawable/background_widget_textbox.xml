@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_enabled="true" android:state_focused="true"><layer-list>
+            <item><shape>
+                    <solid android:color="#ffffffff" />
+                </shape></item>
+            <item><inset android:insetLeft="-2dp" android:insetRight="-2dp" android:insetTop="-2dp">
+                    <shape>
+                        <stroke android:width="3dp" android:color="@color/accent.blue"/>
+                    </shape>
+                </inset></item>
+        </layer-list></item>
+    <item><layer-list>
+            <item><shape>
+                    <solid android:color="#bbffffff" />
+                </shape></item>
+            <item><inset android:insetLeft="-2dp" android:insetRight="-2dp" android:insetTop="-2dp">
+                    <shape>
+                        <stroke android:width="3dp" android:color="@color/button.shade.color" />
+                    </shape>
+                </inset></item>
+        </layer-list></item>
+
+</selector>

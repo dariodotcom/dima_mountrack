@@ -8,6 +8,7 @@
 
     <EditText
         android:id="@+id/search_term"
+        style="@style/widget_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/ic_menu_search"

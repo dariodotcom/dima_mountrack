@@ -8,6 +8,7 @@
 
     <EditText
         android:id="@+id/saved_route_search_term"
+        style="@style/widget_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/ic_menu_search"

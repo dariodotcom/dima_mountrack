@@ -137,6 +137,8 @@ public class RouteListFragment extends Fragment implements
 	public void onResultReceived(RouteSummaryList result) {
 		currentResult = result;
 
+		Log.d("list-fragment", "onResult called: " + result);
+		
 		List<RouteSummary> summaries = result.asList();
 		if (summaries.isEmpty()) {
 			String message = strings.getString(R.string.no_result_message);

@@ -1,6 +1,5 @@
 package it.polimi.dima.dacc.mountainroutes.loader;
 
-
 public class LoadResult<E> {
 
 	public final static int RESULT = 0;
@@ -30,5 +29,17 @@ public class LoadResult<E> {
 
 	public int getType() {
 		return type;
+	}
+
+	@Override
+	public String toString() {
+		switch (type) {
+		case RESULT:
+			return "RESULT: " + result;
+		case ERROR:
+			return "ERROR: " + error;
+		default:
+			return super.toString();
+		}
 	}
 }
