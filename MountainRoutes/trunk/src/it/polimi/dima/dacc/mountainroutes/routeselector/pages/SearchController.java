@@ -6,7 +6,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
+import android.widget.TextView;
 
+/**
+ * Controller that adds a listener to a {@link TextView} to automatically update
+ * a {@link RouteListFragment}. The fragment is automatically updated after the
+ * user stops typing, after a small delay.
+ */
 public class SearchController {
 
 	private static final int UPDATE_DELAY_MILLIS = 250;
@@ -36,12 +42,12 @@ public class SearchController {
 		this.fragment = fragment;
 		this.searchTermField = searchTermField;
 	}
-	
-	public void addListener(){
+
+	public void addListener() {
 		searchTermField.setOnKeyListener(searchTermListener);
 	}
-	
-	public void removeListener(){
+
+	public void removeListener() {
 		// TODO find out how to remove listener
 	}
 

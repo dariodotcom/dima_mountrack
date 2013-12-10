@@ -3,11 +3,19 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.pages;
 import java.util.Locale;
 
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
+/**
+ * {@link ViewPager} subclass that handles the paging of {@link RouteSelector}
+ * 
+ * @author Chiara
+ * 
+ */
 public class SelectorPagerAdapter extends FragmentStatePagerAdapter {
 
 	private static final int PAGE_COUNT = 3;
@@ -19,6 +27,17 @@ public class SelectorPagerAdapter extends FragmentStatePagerAdapter {
 	private boolean showSavedRoutePanel;
 	private Context context;
 
+	/**
+	 * Constructs a new instance.
+	 * 
+	 * @param fm
+	 *            - the Fragment Manager
+	 * @param context
+	 *            - the Context
+	 * @param showSavedRoutePanel
+	 *            - whether to show or not the page "SAVED"
+	 * @see RouteSelector
+	 */
 	public SelectorPagerAdapter(FragmentManager fm, Context context,
 			boolean showSavedRoutePanel) {
 		super(fm);
@@ -26,6 +45,14 @@ public class SelectorPagerAdapter extends FragmentStatePagerAdapter {
 		this.showSavedRoutePanel = showSavedRoutePanel;
 	}
 
+	/**
+	 * Constructs a new instance hiding the "SAVED" page
+	 * 
+	 * @param fm
+	 *            - the Fragment Manager
+	 * @param context
+	 *            - the Context
+	 */
 	public SelectorPagerAdapter(FragmentManager manager, Context contex) {
 		this(manager, contex, false);
 	}

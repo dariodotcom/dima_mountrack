@@ -114,7 +114,6 @@ public class RouteViewer extends Activity implements
 		super.onDestroy();
 	}
 	
-	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// Save displayed route to restore it later
@@ -137,7 +136,7 @@ public class RouteViewer extends Activity implements
 		public void onClick(View arg0) {
 			Intent i = new Intent();
 			i.putExtra(ROUTE, displayedRoute);
-			setResult(ROUTE_RESULT, i);
+			setResult(RESULT_OK, i);
 			finish();
 		}
 	};
