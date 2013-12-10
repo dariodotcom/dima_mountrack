@@ -1,6 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.pages;
 
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
 import it.polimi.dima.dacc.mountainroutes.routeselector.sources.ByNameSummaryListLoader;
@@ -17,6 +18,10 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+/**
+ * Fragments that contains the page that allows the user to search among routes
+ * available in the currently selected datasource. 
+ */
 public class ByNamePage extends Fragment {
 
 	private final static int UPDATE_DELAY_MILLIS = 250;
@@ -67,8 +72,9 @@ public class ByNamePage extends Fragment {
 		fragment.setOnRouteSelectListener(new OnRouteSelected() {
 
 			@Override
-			public void onRouteSelected(RouteSummary description) {
-				
+			public void onRouteSelected(RouteSummary summary) {
+				RouteSelector selector = (RouteSelector) getActivity();
+				selector.startViewer(summary.getId());
 			}
 		});
 	}

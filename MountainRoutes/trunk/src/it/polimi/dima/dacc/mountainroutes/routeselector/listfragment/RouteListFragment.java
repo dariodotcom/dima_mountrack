@@ -2,7 +2,6 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.listfragment;
 
 import java.util.List;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -15,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected.ItemClickAdapter;
@@ -29,6 +29,7 @@ public class RouteListFragment extends Fragment implements
 	private final static int LIST_VIEW = 0;
 	private final static int MESSAGE_VIEW = 1;
 	private final static int LOADING_VIEW = 2;
+	private final static String ROUTE = "route";
 
 	private View[] panels = new View[3];
 
@@ -36,13 +37,10 @@ public class RouteListFragment extends Fragment implements
 	private TextView messageContainer;
 	private RouteListAdapter resultAdapter;
 	private ListView listView;
+	private RouteSummaryList currentResult;
 	private SummaryListLoader loader;
 
-	private String emptyMessage;
-	private String gpsDisabledMessage;
-	private String networkDisabledMessage;
-	private String generalErrorMessage;
-	private String internalErrorMessage;
+	private StringRepository strings;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,34 +55,49 @@ public class RouteListFragment extends Fragment implements
 		this.messageContainer = (TextView) inflated
 				.findViewById(R.id.message_view);
 		this.resultAdapter = new RouteListAdapter(this.getActivity());
-
-		Context context = this.getActivity();
+		listView.setAdapter(resultAdapter);
 
 		// Load error messages
-		emptyMessage = context.getString(R.string.no_result_message);
-		generalErrorMessage = context.getString(R.string.general_error_message);
-		internalErrorMessage = context
-				.getString(R.string.internal_error_message);
-		networkDisabledMessage = context
-				.getString(R.string.network_unavailable_message);
-		gpsDisabledMessage = context.getString(R.string.gps_disabled_message);
-
-		listView.setAdapter(resultAdapter);
+		strings = new StringRepository(this.getActivity());
+		strings.loadString(R.string.no_result_message);
+		strings.loadString(R.string.general_error_message);
+		strings.loadString(R.string.internal_error_message);
+		strings.loadString(R.string.network_unavailable_message);
+		strings.loadString(R.string.gps_disabled_message);
 
 		return inflated;
 	}
 
+	@Override
+	public void onViewStateRestored(Bundle savedState) {
+		super.onViewStateRestored(savedState);
+		if (savedState != null) {
+			RouteSummaryList savedResult = savedState.getParcelable(ROUTE);
+			if (savedResult != null) {
+				onResultReceived(savedResult);
+			}
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (currentResult != null) {
+			outState.putParcelable(ROUTE, currentResult);
+		}
+	}
+
 	public void setLoader(SummaryListLoader loader) {
 		this.loader = loader;
-
 	}
 
 	public void update() {
 		showPanel(LOADING_VIEW);
-		Loader<LoadResult<RouteSummaryList>> loader = getLoaderManager()
-				.getLoader(LOADER_ID);
+		Loader<LoadResult<RouteSummaryList>> loader;
+		loader = getLoaderManager().getLoader(LOADER_ID);
+
 		if (loader != null) {
-			loader.forceLoad();
+			loader.forceLoad(); // Restarts the loader manually
 		} else {
 			getLoaderManager().initLoader(LOADER_ID, null, this);
 		}
@@ -120,10 +133,14 @@ public class RouteListFragment extends Fragment implements
 		}
 	}
 
+	/* -- Private Methods -- */
 	public void onResultReceived(RouteSummaryList result) {
+		currentResult = result;
+
 		List<RouteSummary> summaries = result.asList();
 		if (summaries.isEmpty()) {
-			messageContainer.setText(emptyMessage);
+			String message = strings.getString(R.string.no_result_message);
+			messageContainer.setText(message);
 			showPanel(MESSAGE_VIEW);
 			return;
 		}
@@ -144,18 +161,18 @@ public class RouteListFragment extends Fragment implements
 			message = "";
 			break;
 		case GPS_DISABLED:
-			message = gpsDisabledMessage;
+			message = strings.getString(R.string.gps_disabled_message);
 			break;
 		case NETWORK_UNAVAILABLE:
-			message = networkDisabledMessage;
+			message = strings.getString(R.string.network_unavailable_message);
 			break;
 		case INTERNAL_ERROR:
 		case RESPONSE_ERROR:
 		case SERVER_ERROR:
-			message = internalErrorMessage;
+			message = strings.getString(R.string.internal_error_message);
 			break;
 		default:
-			message = generalErrorMessage;
+			message = strings.getString(R.string.general_error_message);
 			break;
 		}
 

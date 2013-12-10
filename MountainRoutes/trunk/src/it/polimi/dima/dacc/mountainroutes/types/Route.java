@@ -25,7 +25,7 @@ public class Route implements Parcelable {
 
 	// Private constructor for parcelable
 	private Route(Parcel in) {
-		this.id = (RouteID) in.readParcelable(null);
+		this.id = (RouteID) in.readParcelable(RouteID.class.getClassLoader());
 		this.source = Source.valueOf(in.readString());
 
 		this.name = in.readString();
@@ -33,7 +33,9 @@ public class Route implements Parcelable {
 		this.durationInMinutes = in.readInt();
 		this.lengthInMeters = in.readInt();
 		this.gapInMeters = in.readInt();
-		this.path = (PointList) in.readParcelable(null);
+
+		this.path = (PointList) in.readParcelable(PointList.class
+				.getClassLoader());
 	}
 
 	@Override
@@ -118,7 +120,7 @@ public class Route implements Parcelable {
 		return 0;
 	}
 
-	public final Creator<Route> CREATOR = new Creator<Route>() {
+	public final static Creator<Route> CREATOR = new Creator<Route>() {
 
 		@Override
 		public Route[] newArray(int size) {
