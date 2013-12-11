@@ -1,18 +1,31 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+import it.polimi.dima.dacc.mountainroutes.loader.GenericLoader;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
-// Basically the same class as generic loader, but this one is based on support AsyncTaskLoader.
-public abstract class SummaryListLoader extends
+/**
+ * Version of <code>GenericLoader</code> based on support
+ * {@link AsyncTaskLoader} so that it can be used with support {@link Fragment}
+ * 
+ * @see GenericLoader
+ */
+public abstract class RouteSummaryLoader extends
 		AsyncTaskLoader<LoadResult<RouteSummaryList>> {
 
 	private LoadResult<RouteSummaryList> result;
 
-	public SummaryListLoader(Context context) {
+	/**
+	 * Constructs a new instance
+	 * 
+	 * @param context
+	 *            - the context in which this loader is running
+	 */
+	public RouteSummaryLoader(Context context) {
 		super(context);
 	}
 

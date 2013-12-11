@@ -56,12 +56,15 @@ public class FragmentController {
 	}
 
 	public void showResult(RouteSummaryList result) {
+		if (result == null) {
+			return;
+		}
+
 		this.currentState = State.RESULT;
 		this.currentResult = result;
+
 		this.adapter.clear();
-		if (result != null) {
-			this.adapter.addAll(result.asList());
-		}
+		this.adapter.addAll(result.asList());
 		this.adapter.notifyDataSetChanged();
 		showView(State.RESULT.ordinal());
 	}

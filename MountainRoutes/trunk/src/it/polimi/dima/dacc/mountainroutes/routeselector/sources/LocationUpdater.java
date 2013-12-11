@@ -15,10 +15,10 @@ public class LocationUpdater implements Runnable {
 	private final static String TAG = "location-updater";
 
 	private LatLng location;
-	private NearMeSummaryListLoader loaderToUpdate;
+	private NearMeLoader loaderToUpdate;
 	private LocationManager locMan;
 
-	public LocationUpdater(Context context, NearMeSummaryListLoader loader) {
+	public LocationUpdater(Context context, NearMeLoader loader) {
 		this.loaderToUpdate = loader;
 
 		// Get location manager
