@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector;
 
+import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
+
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.routeselector.pages.SelectorPagerAdapter;
 import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewer;
@@ -44,8 +46,8 @@ public class RouteSelector extends FragmentActivity implements
 		setContentView(R.layout.activity_route_selector);
 
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//		final ActionBar actionBar = getActionBar();
+//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -56,29 +58,9 @@ public class RouteSelector extends FragmentActivity implements
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(pagerAdapter);
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		viewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < pagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar
-					.addTab(actionBar.newTab()
-							.setText(pagerAdapter.getPageTitle(i))
-							.setTabListener(this));
-		}
+		 // Bind the widget to the adapter
+		 PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		 tabs.setViewPager(viewPager);
 	}
 
 	@Override
@@ -129,7 +111,8 @@ public class RouteSelector extends FragmentActivity implements
 	 * Method that is called by fragments to start {@link RouteViewer} class to
 	 * display the route the user has selected.
 	 * 
-	 * @param id - the {@link RouteID} of the selected route
+	 * @param id
+	 *            - the {@link RouteID} of the selected route
 	 */
 	public void startViewer(RouteID id) {
 		Intent i = new Intent(this, RouteViewer.class);
