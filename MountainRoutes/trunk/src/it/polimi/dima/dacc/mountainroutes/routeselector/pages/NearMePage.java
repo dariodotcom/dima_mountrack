@@ -4,8 +4,7 @@ import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.NearMeSummaryListLoader;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.NearMeLoader;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,7 @@ import android.widget.Button;
 
 /**
  * Fragment that contains the page that allows the user to retrieve the routes
- * available in the currently selected datasource and near the user's position
+ * available in the currently selected data source and near the user's position
  */
 public class NearMePage extends Fragment {
 
@@ -37,8 +36,7 @@ public class NearMePage extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.near_me_list_fragment);
-		SummaryListLoader loader = new NearMeSummaryListLoader(getActivity());
-		fragment.setLoader(loader);
+		fragment.setLoaderFactory(new NearMeLoader.Factory(getActivity()));
 		fragment.setOnRouteSelectListener(new OnRouteSelected() {
 
 			@Override

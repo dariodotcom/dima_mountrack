@@ -4,11 +4,11 @@ import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.OnRouteSelected;
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SavedRouteListLoader;
-import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SummaryListLoader;
+import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SavedLoader;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,13 +46,13 @@ public class SavedPage extends Fragment {
 				selector.startViewer(summary.getId());
 			}
 		});
-		
+
 		SearchController sc = new SearchController(searchTermField, fragment);
 		sc.addListener();
 
-		SummaryListLoader loader = new SavedRouteListLoader(this.getActivity(),
-				searchTermField.getText());
-		fragment.setLoader(loader);
+		Editable searchTerm = searchTermField.getText();
+		fragment.setLoaderFactory(new SavedLoader.Factory(getActivity(),
+				searchTerm));
 		fragment.update();
 	}
 }

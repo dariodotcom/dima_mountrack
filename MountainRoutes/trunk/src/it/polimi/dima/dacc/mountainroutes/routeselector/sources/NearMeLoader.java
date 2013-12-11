@@ -12,13 +12,24 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class NearMeSummaryListLoader extends SummaryListLoader {
+/**
+ * Subclass of {@link RouteSummaryLoader} that implements the loading of
+ * <code>Route Summary</code> whose starting point are near the user's current
+ * position
+ */
+public class NearMeLoader extends RouteSummaryLoader {
 
 	private final static String TAG = "near-me-source";
 
 	private Context context;
 
-	public NearMeSummaryListLoader(Context context) {
+	/**
+	 * Constructs a new instance
+	 *
+	 * @param context
+	 *            - the {@link Context} in which the loader is executing
+	 */
+	public NearMeLoader(Context context) {
 		super(context);
 		this.context = context;
 	}
@@ -27,7 +38,7 @@ public class NearMeSummaryListLoader extends SummaryListLoader {
 	protected String getTag() {
 		return TAG;
 	}
-	
+
 	@Override
 	public LoadResult<RouteSummaryList> loadInBackground() {
 
@@ -58,6 +69,25 @@ public class NearMeSummaryListLoader extends SummaryListLoader {
 		RemoteContentConnector connector = RemoteContentManager.getInstance()
 				.createConnector(context);
 		return connector.executeQuery(query, RouteSummaryList.class);
+	}
+
+	/**
+	 * Implementation of {@link RouteSummaryLoaderFactory} that creates
+	 * instances of {@link NearMeLoader} subclass.
+	 */
+	public static class Factory implements RouteSummaryLoaderFactory {
+
+		private Context context;
+
+		public Factory(Context context) {
+			super();
+			this.context = context;
+		}
+
+		@Override
+		public RouteSummaryLoader createLoader() {
+			return new NearMeLoader(context);
+		}
 
 	}
 }
