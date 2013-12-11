@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape>
+            <solid android:color="@color/accent.blue" />
+        </shape>
+    </item>
+    <item>
+        <inset
+            android:insetBottom="0dp"
+            android:insetLeft="@dimen/shade_size_neg"
+            android:insetRight="@dimen/shade_size_neg"
+            android:insetTop="-8dp" >
+            <shape>
+                <stroke
+                    android:width="@dimen/shade_size"
+                    android:color="@color/actionbar.tabs.shade" />
+            </shape>
+        </inset>
+    </item>
+</layer-list>

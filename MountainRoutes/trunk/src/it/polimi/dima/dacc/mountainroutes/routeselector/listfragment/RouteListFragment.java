@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
@@ -26,18 +25,7 @@ public class RouteListFragment extends Fragment implements
 		LoaderCallbacks<LoadResult<RouteSummaryList>> {
 
 	private static final int LOADER_ID = 0;
-	// private final static int LIST_VIEW = 0;
-	// private final static int MESSAGE_VIEW = 1;
-	// private final static int LOADING_VIEW = 2;
-	// private final static String ROUTE = "route";
-
-	// private View[] panels = new View[3];
-
-	// UI elements
-	// private TextView messageContainer;
-	// private RouteListAdapter resultAdapter;
 	private ListView listView;
-	// private RouteSummaryList currentResult;
 
 	private RouteSummaryLoaderFactory loaderFactory;
 	private StringRepository strings;
@@ -47,16 +35,6 @@ public class RouteListFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View inflated = inflater.inflate(R.layout.route_list_fragment_2, null);
-		// panels[LOADING_VIEW] = inflated.findViewById(R.id.loading_overlay);
-		// panels[MESSAGE_VIEW] = inflated.findViewById(R.id.message_overlay);
-		// panels[LIST_VIEW] = inflated.findViewById(R.id.route_list);
-
-		// this.listView = (ListView) panels[LIST_VIEW];
-		// this.messageContainer = (TextView) inflated
-		// .findViewById(R.id.message_view);
-		// this.resultAdapter = new RouteListAdapter(this.getActivity());
-		// listView.setAdapter(resultAdapter);
-
 		listView = (ListView) inflated.findViewById(R.id.route_list);
 
 		// Load error messages
@@ -77,23 +55,9 @@ public class RouteListFragment extends Fragment implements
 		controller.loadState(savedInstanceState);
 	}
 
-	// @Override
-	// public void onViewStateRestored(Bundle savedState) {
-	// super.onViewStateRestored(savedState);
-	// if (savedState != null) {
-	// RouteSummaryList savedResult = savedState.getParcelable(ROUTE);
-	// if (savedResult != null) {
-	// onResultReceived(savedResult);
-	// }
-	// }
-	// }
-
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		// if (currentResult != null) {
-		// outState.putParcelable(ROUTE, currentResult);
-		// }
 		controller.saveState(outState);
 	}
 
@@ -147,27 +111,16 @@ public class RouteListFragment extends Fragment implements
 
 	/* -- Private Methods -- */
 	public void onResultReceived(RouteSummaryList result) {
-		// currentResult = result;
-
 		Log.d("list-fragment", "onResult called: " + result);
 
 		List<RouteSummary> summaries = result.asList();
 		if (summaries.isEmpty()) {
 			String message = strings.getString(R.string.no_result_message);
 			controller.showMessage(message);
-			// messageContainer.setText(message);
-			// showPanel(MESSAGE_VIEW);
-			// return;
+			return;
 		}
 
 		controller.showResult(result);
-
-		// RouteListAdapter adapter = new RouteListAdapter(getActivity());
-		// adapter.addAll(summaries);
-		// adapter.notifyDataSetChanged();
-		// this.resultAdapter = adapter;
-		// this.listView.setAdapter(adapter);
-		// showPanel(LIST_VIEW);
 	}
 
 	public void onError(LoadError error) {
@@ -194,28 +147,5 @@ public class RouteListFragment extends Fragment implements
 		}
 
 		controller.showMessage(message);
-		// messageContainer.setText(message);
-		// showPanel(MESSAGE_VIEW);
 	}
-
-	// private void showPanel(int index) {
-	// Log.d("list-fragment", "show panel " + index);
-	// for (int i = 0; i < panels.length; i++) {
-	// View current = panels[i];
-	//
-	// if (index == i) {
-	// showView(current);
-	// } else {
-	// hideView(current);
-	// }
-	// }
-	// }
-
-	// private void showView(final View view) {
-	// view.animate().alpha(1).setDuration(250);
-	// }
-	//
-	// private void hideView(final View view) {
-	// view.animate().alpha(0).setDuration(250);
-	// }
 }

@@ -5,14 +5,12 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class FragmentController {
 
-	private final static String TAG = "fragment-controller";
 	private final static String STATE = "state";
 	private final static String RESULT = "result";
 	private final static String MESSAGE = "message";
@@ -70,15 +68,17 @@ public class FragmentController {
 	}
 
 	public void saveState(Bundle out) {
+		if(out == null){
+			return;
+		}
+		
 		out.putString(STATE, currentState.toString());
 		switch (currentState) {
 		case RESULT:
 			out.putParcelable(RESULT, currentResult);
-			Log.d(TAG, "saved result list");
 			break;
 		case MESSAGE:
 			out.putString(MESSAGE, messageView.getText().toString());
-			Log.d(TAG, "saved message");
 		default:
 			break;
 		}
@@ -100,12 +100,11 @@ public class FragmentController {
 		case RESULT:
 			RouteSummaryList result = (RouteSummaryList) in
 					.getParcelable(RESULT);
-			Log.d(TAG, "loaded result list");
 			showResult(result);
+			break;
 		case MESSAGE:
 			String message = in.getString(MESSAGE);
 			showMessage(message);
-			Log.d(TAG, "loaded message");
 			break;
 		default:
 			break;
@@ -114,10 +113,10 @@ public class FragmentController {
 
 	private void showView(int index) {
 		for (int i = 0; i < panels.length; i++) {
-			if (i == index && panels[i].getAlpha() != 1) {
-				panels[i].animate().alpha(1).setDuration(250);
-			} else if (i != index && panels[i].getAlpha() != 0) {
-				panels[i].animate().alpha(0).setDuration(250);
+			if (i == index) {
+				panels[i].animate().alpha(1).setDuration(150);
+			} else {
+				panels[i].animate().alpha(0).setDuration(150);
 			}
 		}
 	}

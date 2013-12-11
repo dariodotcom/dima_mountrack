@@ -112,7 +112,7 @@
 
                 <Button
                     android:id="@+id/route_viewer_start"
-                    style="@style/ButtonStyle"
+                    style="@style/widget_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -120,7 +120,7 @@
 
                 <Button
                     android:id="@+id/route_viewer_save"
-                    style="@style/ButtonStyle"
+                    style="@style/widget_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -128,7 +128,7 @@
 
                 <Button
                     android:id="@+id/route_viewer_delete"
-                    style="@style/ButtonStyle"
+                    style="@style/widget_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

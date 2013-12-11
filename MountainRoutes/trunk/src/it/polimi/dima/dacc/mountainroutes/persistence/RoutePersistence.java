@@ -59,8 +59,8 @@ public class RoutePersistence {
 			return getAvailableRoutes();
 		}
 
-		String where = DbHelper.COLUMN_NAME + " = ?";
-		String[] whereArgs = new String[] { name };
+		String where = DbHelper.COLUMN_NAME + " LIKE ?";
+		String[] whereArgs = new String[] { "%" + name + "%" };
 		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, where,
 				whereArgs, null, null, null);
 		RouteSummaryList summaryList = new RouteSummaryList();
