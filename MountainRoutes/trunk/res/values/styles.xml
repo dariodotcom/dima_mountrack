@@ -1,109 +1,1 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>
-
-    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/accent.blue</item>
-    </style>
-
-    <style name="ActionBarShaded" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/background_actionbar_shaded</item>
-    </style>
-
-    <style name="ActionBarWithTabs" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/background_actionbar_shaded</item>
-    </style>
-
-    <style name="ActionBar.Tabs.Bar" parent="@android:style/Widget.Holo.ActionBar.TabBar">
-        <item name="android:showDividers">middle</item>
-        <item name="android:divider">#ff0000</item>
-        <item name="android:background">@drawable/tab_unselected</item>
-        <item name="android:icon">@drawable/ab_icon</item>
-    </style>
-
-    <style name="ActionBar.Tabs.Style" parent="@android:style/Widget.Holo.ActionBar.TabView">
-        <item name="android:showDividers">none</item>
-        <item name="android:measureWithLargestChild">true</item>
-        <item name="android:background">@drawable/tab_background</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="ActionBar.Tabs.Text" parent="@android:style/Widget.Holo.ActionBar.TabText">
-        <item name="android:divider">@drawable/background_button</item>
-        <item name="android:textColor">@color/actionbar.tabs.text</item>
-    </style>
-
-    <style name="list_container">
-        <item name="android:background">@drawable/background_listcontainer</item>
-    </style>
-
-    <!-- Widgets -->
-    <style name="widget_textview">
-        <item name="android:background">@drawable/background_widget_textbox</item>
-        <item name="android:padding">6dp</item>
-        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
-    </style>
-
-    <style name="widget_button">
-        <item name="android:background">@drawable/background_button</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/button.text.color</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
-    </style>
-
-    <style name="widget_button_main" parent="@style/widget_button">
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
-        <item name="android:layout_marginRight">30dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <!-- Lists -->
-    <style name="list_element">
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="route_list_overlay">
-        <item name="android:background">@drawable/background_overlay</item>
-    </style>
-
-    <style name="overlay_background">
-        <item name="android:background">#cc000000</item>
-    </style>
-
-    <style name="overlay_text">
-        <item name="android:textColor">#ffffff</item>
-    </style>
-
-    <style name="ActivityWithTabs" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/ActionBarShaded</item>
-    </style>
-    
-    <style name="AppContainer">
-        <item name="android:background">@drawable/repeatingpattern</item>
-    </style>
-
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-        <item name="android:actionBarTabStyle">@style/ActionBar.Tabs.Style</item>
-        <item name="android:actionBarTabBarStyle">@style/ActionBar.Tabs.Bar</item>
-        <item name="android:actionBarTabTextStyle">@style/ActionBar.Tabs.Text</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="route_info_entry">
-        <item name="android:background">@drawable/routeinfo_line</item>
-        <item name="android:paddingTop">@dimen/list_elem_spacing</item>
-        <item name="android:paddingBottom">@dimen/list_elem_spacing</item>
-    </style>
-
-</resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:pagertabslidingstrip="http://schemas.android.com/apk/res/com.astuetz.viewpager.extensions">    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">        <item name="android:background">@color/accent.blue</item>    </style>    <style name="ActionBarShaded" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">        <item name="android:background">@drawable/background_actionbar_shaded</item>    </style>    <style name="tab_strip">        <item name="android:layout_width">match_parent</item>        <item name="android:layout_height">48dp</item>        <item name="indicatorColor">@color/accent.blue</item>    </style>    <style name="list_container">        <item name="android:background">@drawable/background_listcontainer</item>    </style> <!-- Widgets -->    <style name="widget_textview">        <item name="android:background">@drawable/background_widget_textbox</item>        <item name="android:padding">6dp</item>        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>    </style>    <style name="widget_button">        <item name="android:background">@drawable/background_button</item>        <item name="android:fontFamily">sans-serif-light</item>        <item name="android:textStyle">normal</item>        <item name="android:gravity">center</item>        <item name="android:textColor">@color/button.text.color</item>        <item name="android:paddingLeft">@dimen/button_padding_hor</item>        <item name="android:paddingRight">@dimen/button_padding_hor</item>        <item name="android:paddingTop">@dimen/button_padding_ver</item>        <item name="android:paddingBottom">@dimen/button_padding_ver</item>    </style>    <style name="widget_button_main" parent="@style/widget_button">        <item name="android:layout_marginBottom">8dp</item>        <item name="android:layout_marginLeft">30dp</item>        <item name="android:layout_marginRight">30dp</item>        <item name="android:layout_marginTop">8dp</item>        <item name="android:layout_width">fill_parent</item>        <item name="android:layout_height">wrap_content</item>    </style> <!-- Lists -->    <style name="list_element">        <item name="android:paddingRight">15dp</item>        <item name="android:paddingLeft">15dp</item>        <item name="android:paddingTop">5dp</item>        <item name="android:paddingBottom">5dp</item>        <item name="android:textSize">20sp</item>    </style>    <style name="route_list_overlay">        <item name="android:background">@drawable/background_overlay</item>    </style>    <style name="overlay_background">        <item name="android:background">#cc000000</item>    </style>    <style name="overlay_text">        <item name="android:textColor">#ffffff</item>    </style>    <style name="ActivityWithTabs" parent="AppTheme">        <item name="android:actionBarStyle">@style/ActionBarShaded</item>    </style>    <style name="AppContainer">        <item name="android:background">@drawable/repeatingpattern</item>    </style>    <style name="AppTheme" parent="AppBaseTheme">        <item name="android:actionBarStyle">@style/ActionBarShaded</item>        <item name="android:windowContentOverlay">@null</item>    </style>    <style name="CleanActionBar" parent="AppTheme">        <item name="android:actionBarStyle">@style/ActionBar</item>    </style>    <style name="route_info_entry">        <item name="android:background">@drawable/routeinfo_line</item>        <item name="android:paddingTop">@dimen/list_elem_spacing</item>        <item name="android:paddingBottom">@dimen/list_elem_spacing</item>    </style></resources>

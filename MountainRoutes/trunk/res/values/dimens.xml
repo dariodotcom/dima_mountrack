@@ -6,6 +6,8 @@
     
     <dimen name="list_elem_spacing">10dp</dimen>
     <dimen name="activity_margin">16dp</dimen>
-    <dimen name="shade_size">3dp</dimen>
-    <dimen name="shade_size_neg">-3dp</dimen>
+    <dimen name="button_padding_ver">10dp</dimen>
+    <dimen name="button_padding_hor">10dp</dimen>
+    <dimen name="shade_size">2dp</dimen>
+    <dimen name="shade_size_neg">-2dp</dimen>
 </resources>

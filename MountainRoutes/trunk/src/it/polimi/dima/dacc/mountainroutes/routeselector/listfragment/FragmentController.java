@@ -37,7 +37,7 @@ public class FragmentController {
 
 		panels[State.RESULT.ordinal()] = resultList;
 		panels[State.LOADING.ordinal()] = fragmentView
-				.findViewById(R.id.loading_overlay);
+				.findViewById(R.id.loading_progressbar);
 		panels[State.MESSAGE.ordinal()] = fragmentView
 				.findViewById(R.id.message_overlay);
 	}

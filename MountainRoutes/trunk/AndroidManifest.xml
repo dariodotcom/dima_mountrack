@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="it.polimi.dima.dacc.mountainroutes.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/CleanActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
