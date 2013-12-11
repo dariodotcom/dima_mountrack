@@ -2,9 +2,8 @@ package it.polimi.dima.dacc.mountainroutes.routeselector.pages;
 
 import it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment;
 import android.os.Handler;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnKeyListener;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,15 +25,25 @@ public class SearchController {
 			fragment.update();
 		}
 	};
-
-	private OnKeyListener searchTermListener = new OnKeyListener() {
-
+	
+	private TextWatcher watcher = new TextWatcher() {
+		
 		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			resultUpdateScheduler.removeCallbacks(resultUpdater);
 			resultUpdateScheduler.postDelayed(resultUpdater,
 					UPDATE_DELAY_MILLIS);
-			return false;
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			
 		}
 	};
 
@@ -43,12 +52,13 @@ public class SearchController {
 		this.searchTermField = searchTermField;
 	}
 
-	public void addListener() {
-		searchTermField.setOnKeyListener(searchTermListener);
+	public void startListening() {
+		searchTermField.addTextChangedListener(watcher);
 	}
 
-	public void removeListener() {
-		// TODO find out how to remove listener
+	public void stopListening() {
+		searchTermField.removeTextChangedListener(watcher);
+		resultUpdateScheduler.removeCallbacks(resultUpdater);
 	}
 
 }

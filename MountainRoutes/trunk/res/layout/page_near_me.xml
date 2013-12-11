@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/update_button"
-        style="@style/ButtonStyle"
+        style="@style/widget_button_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

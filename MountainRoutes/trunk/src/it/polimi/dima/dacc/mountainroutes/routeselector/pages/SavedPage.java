@@ -8,7 +8,6 @@ import it.polimi.dima.dacc.mountainroutes.routeselector.sources.SavedLoader;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ public class SavedPage extends Fragment {
 
 	private RouteListFragment fragment;
 	private EditText searchTermField;
+	private SearchController searchController;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +38,7 @@ public class SavedPage extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(
 				R.id.saved_list_fragment);
+
 		fragment.setOnRouteSelectListener(new OnRouteSelected() {
 
 			@Override
@@ -47,12 +48,21 @@ public class SavedPage extends Fragment {
 			}
 		});
 
-		SearchController sc = new SearchController(searchTermField, fragment);
-		sc.addListener();
-
-		Editable searchTerm = searchTermField.getText();
+		searchController = new SearchController(searchTermField, fragment);
 		fragment.setLoaderFactory(new SavedLoader.Factory(getActivity(),
-				searchTerm));
+				searchTermField));
 		fragment.update();
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		searchController.startListening();
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		searchController.stopListening();
 	}
 }

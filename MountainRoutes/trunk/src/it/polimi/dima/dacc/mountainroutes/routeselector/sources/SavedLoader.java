@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
 import android.content.Context;
-import android.text.Editable;
+import android.widget.EditText;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
@@ -18,22 +18,22 @@ public class SavedLoader extends RouteSummaryLoader {
 
 	private final static String TAG = "saved-route-loader";
 
-	private Editable searchTerm;
+	private EditText searchTermField;
 	private Context context;
 
 	/**
 	 * Constructs a new instance
 	 * 
-	 * @param searchTerm
-	 *            - the {@link Editable} containing current earch term
+	 * @param searchTermField
+	 *            - the {@link EditText} containing current earch term
 	 * @param context
 	 *            - the {@link Context} in which the loader is executing
 	 */
 
-	public SavedLoader(Context context, Editable searchTerm) {
+	public SavedLoader(Context context, EditText searchTermField) {
 		super(context);
 		this.context = context;
-		this.searchTerm = searchTerm;
+		this.searchTermField = searchTermField;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SavedLoader extends RouteSummaryLoader {
 	@Override
 	public LoadResult<RouteSummaryList> loadInBackground() {
 		try {
-			String term = searchTerm.toString();
+			String term = searchTermField.getText().toString();
 			RoutePersistence persistence = RoutePersistence.create(context);
 			RouteSummaryList result = persistence.getAvailableRoutes(term);
 			return new LoadResult<RouteSummaryList>(result);
@@ -60,17 +60,17 @@ public class SavedLoader extends RouteSummaryLoader {
 	public static class Factory implements RouteSummaryLoaderFactory {
 
 		private Context context;
-		private Editable searchTerm;
+		private EditText searchTermField;
 
-		public Factory(Context context, Editable searchTerm) {
+		public Factory(Context context, EditText searchTermField) {
 			super();
 			this.context = context;
-			this.searchTerm = searchTerm;
+			this.searchTermField = searchTermField;
 		}
 
 		@Override
 		public RouteSummaryLoader createLoader() {
-			return new SavedLoader(context, searchTerm);
+			return new SavedLoader(context, searchTermField);
 		}
 
 	}
