@@ -60,4 +60,22 @@ public class RouteLoader extends GenericLoader<Route> {
 
 		return connector.executeQuery(query, Route.class);
 	}
+
+	public static class Factory {
+		private final Context context;
+		private final RouteID id;
+
+		public Factory(Context context, RouteID id) {
+			if (id == null) {
+				throw new IllegalArgumentException("Route ID must not be null");
+			}
+
+			this.context = context;
+			this.id = id;
+		}
+		
+		public RouteLoader createLoader(){
+			return new RouteLoader(context, id);
+		}
+	}
 }
