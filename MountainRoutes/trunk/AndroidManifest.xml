@@ -56,6 +56,13 @@
             android:name="it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager"
             android:label="@string/title_activity_saved_route_manager" >
         </activity>
+
+        <service
+            android:name="it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="TrackingService" >
+        </service>
     </application>
 
 </manifest>
