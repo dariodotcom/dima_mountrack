@@ -92,11 +92,12 @@ public class FragmentController {
 
 		String stateName = in.getString(STATE);
 		if (stateName == null) {
+			currentState = State.RESULT;
 			return;
 		}
 
-		State state = State.valueOf(stateName);
-		switch (state) {
+		currentState = State.valueOf(stateName);
+		switch (currentState) {
 		case RESULT:
 			RouteSummaryList result = (RouteSummaryList) in
 					.getParcelable(RESULT);
