@@ -3,6 +3,8 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,22 +17,57 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RouteViewerFragment extends MapFragment {
 
+	private static final String TAG = RouteViewerFragment.class.getName();
 	private int lineColor;
+	private boolean canShowPath;
+	private PointList pathToDisplay;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// Load color
+		lineColor = getActivity().getResources().getColor(R.color.accent_blue);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		getView().getViewTreeObserver().addOnGlobalLayoutListener(
+				new OnGlobalLayoutListener() {
 
-		// Load color
-		lineColor = getActivity().getResources().getColor(R.color.accent_blue);
+					@Override
+					public void onGlobalLayout() {
+						RouteViewerFragment.this.getView()
+								.getViewTreeObserver()
+								.removeOnGlobalLayoutListener(this);
+						canShowPath = true;
+						if (pathToDisplay != null) {
+							mDisplayPath(pathToDisplay);
+						}
+					}
+				});
+	}
 
-		// Disable interaction
+	@Override
+	public void onStart() {
+		super.onStart();
+
 		GoogleMap map = getMap();
-		if (map != null) {
+
+		if (map == null) {
+			Log.e(TAG, "map is not available");
+		} else {
 			UiSettings settings = map.getUiSettings();
 			settings.setAllGesturesEnabled(false);
-			settings.setZoomControlsEnabled(false);
+			settings.setMyLocationButtonEnabled(false);
 		}
+	}
+
+	@Override
+	public void onPause() {
+		canShowPath = false;
+		super.onPause();
 	}
 
 	/**
@@ -40,7 +77,15 @@ public class RouteViewerFragment extends MapFragment {
 	 * @param points
 	 *            - the list of points composing the route
 	 */
-	public void showRoute(PointList points) {
+	public void showPath(PointList points) {
+		if (canShowPath) {
+			mDisplayPath(points);
+		} else {
+			pathToDisplay = points;
+		}
+	}
+
+	private void mDisplayPath(PointList points) {
 		// Add line
 		GoogleMap map = getMap();
 
@@ -53,6 +98,8 @@ public class RouteViewerFragment extends MapFragment {
 			LatLngBounds bnd = bound(points);
 			CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bnd, 10);
 			getMap().moveCamera(update);
+		} else {
+			Log.e(TAG, "map is not available");
 		}
 	}
 

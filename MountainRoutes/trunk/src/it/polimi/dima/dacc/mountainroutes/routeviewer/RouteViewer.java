@@ -34,21 +34,24 @@ public class RouteViewer extends Activity implements
 
 	private final static int TOAST_DURATION = Toast.LENGTH_SHORT;
 
+	// State
 	private Route displayedRoute;
+
+	// View elements
 	private RouteViewerFragment fragment;
 	private View overlay;
-
 	private Button startButton;
 	private Button saveButton;
 	private Button deleteButton;
-
 	private DifficultyView difficultyView;
 	private TextView lengthView;
 	private TextView gapView;
 	private TextView durationView;
 
-	private RouteLoader loader;
+	// Loader Factory
+	private RouteLoader.Factory loaderFactory;
 
+	// Strings
 	private StringRepository stringRepo;
 
 	@Override
@@ -66,54 +69,44 @@ public class RouteViewer extends Activity implements
 		overlay = findViewById(R.id.overlay);
 		fragment = (RouteViewerFragment) getFragmentManager().findFragmentById(
 				R.id.viewer_map);
-
 		startButton = (Button) findViewById(R.id.route_viewer_start);
 		saveButton = (Button) findViewById(R.id.route_viewer_save);
 		deleteButton = (Button) findViewById(R.id.route_viewer_delete);
 
 		// Load strings
 		stringRepo = new StringRepository(this);
-
 		stringRepo.loadString(R.string.error_deleting_route);
 		stringRepo.loadString(R.string.error_saving_route);
 		stringRepo.loadString(R.string.route_deleted);
 		stringRepo.loadString(R.string.route_saved);
 
 		// Load route from remote
-		if (savedState != null && savedState.getParcelable(ROUTE) != null) {
-			Route r = (Route) savedState.getParcelable(ROUTE);
-			displayRoute(r);
-		} else {
+		if (savedState == null) {
 			RouteID id = (RouteID) getIntent().getParcelableExtra(ROUTE_ID);
-			loader = new RouteLoader(this, id);
+			loaderFactory = new RouteLoader.Factory(this, id);
 			getLoaderManager().initLoader(LOAD_ROUTE_LOADER_ID, null, this);
 		}
 	}
 
 	@Override
 	protected void onStart() {
-		Log.d(TAG, "onStart");
 		super.onStart();
-	}
-	
-	@Override
-	protected void onResume() {
-		Log.d(TAG, "onResume");
-		super.onResume();
-	}
-	
-	@Override
-	protected void onStop() {
-		Log.d(TAG, "onStop");
-		super.onStop();
+		if (displayedRoute != null) {
+			displayRoute(displayedRoute);
+		}
 	}
 
 	@Override
-	protected void onDestroy() {
-		Log.d(TAG, "onDestroy");
-		super.onDestroy();
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState != null) {
+			Route route = (Route) savedInstanceState.getParcelable(ROUTE);
+			if (route != null) {
+				displayRoute(route);
+			}
+		}
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// Save displayed route to restore it later
@@ -121,7 +114,7 @@ public class RouteViewer extends Activity implements
 		outState.putParcelable(ROUTE, displayedRoute);
 		Log.d(TAG, "onSaveInstanceState");
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -142,7 +135,7 @@ public class RouteViewer extends Activity implements
 	};
 
 	/* -- ROUTE DISPLAY -- */
-	private void displayRoute(Route route) {
+	private void displayRoute(final Route route) {
 		this.displayedRoute = route;
 
 		// Add save button listener
@@ -155,9 +148,9 @@ public class RouteViewer extends Activity implements
 		difficultyView.setDifficulty(route.getDifficulty());
 		gapView.setText(route.getGapInMeters() + " m");
 		lengthView.setText(route.getLengthInMeters() + " m");
-		durationView.setText(route.getDurationInMinutes() + "min");
-		fragment.showRoute(route.getPath());
-
+		durationView.setText(route.getDurationInMinutes() + " min");
+		fragment.showPath(route.getPath());
+		
 		// Show save/delete button
 		if (route.getSource() == Route.Source.STORAGE) {
 			deleteButton.setVisibility(View.VISIBLE);
@@ -253,7 +246,7 @@ public class RouteViewer extends Activity implements
 	public Loader<LoadResult<Route>> onCreateLoader(int id, Bundle args) {
 		switch (id) {
 		case LOAD_ROUTE_LOADER_ID:
-			return loader;
+			return loaderFactory.createLoader();
 		case SAVE_ROUTE_LOADER_ID:
 			return new SaveRouteLoader(this, displayedRoute);
 		case DELETE_ROUTE_LOADER_ID:
