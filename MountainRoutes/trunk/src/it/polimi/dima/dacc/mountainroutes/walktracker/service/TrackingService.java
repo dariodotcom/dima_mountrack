@@ -1,53 +1,70 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.service;
 
+import it.polimi.dima.dacc.mountainroutes.types.Route;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SyncResult;
-import android.location.LocationManager;
+import android.os.Binder;
 import android.os.IBinder;
-import android.os.Looper;
-import android.util.Log;
 
 public class TrackingService extends Service {
 
-	private final static String TAG = "tracking-service";
-
 	private TrackingWorker tWorker;
-
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		return super.onStartCommand(intent, flags, startId);
-	}
+	private LaggardBackup laggardBackup;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		// Create and register laggard backup
+		laggardBackup = new LaggardBackup(this);
+		laggardBackup.register();
+
 		// Create and start tracking worker thread
 		tWorker = new TrackingWorker(this);
-		
-		// Retrieve route to track from resources
-		
-
-		// Register Location Listener
-
-		Log.d(TAG, "service created");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (tWorker.isTracking()) {
-			Log.e(TAG, "Tracking service destroyed with worker still tracking");
-			tWorker.stopTracking();
+		tWorker.quit();
+		laggardBackup.unregister();
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return START_STICKY;
+	}
+
+	// Tracking control - allows the activity that binds to the service to
+	// control its operations
+	@Override
+	public IBinder onBind(Intent intent) {
+		return new TrackingControl();
+	}
+
+	public class TrackingControl extends Binder {
+		public void startTracking(Route route) {
+			tWorker.startTracking(route);
 		}
 
-		Log.d(TAG, "service destroyed");
+		public void pause() {
+			tWorker.pause();
+		}
+
+		public void resume() {
+			tWorker.resume();
+		}
+
+		public void stop() {
+			TrackingService.this.stopSelf();
+		}
+
+		public boolean isTracking() {
+			return tWorker.isTracking();
+		}
+
+		public LaggardBackup getLaggardBackup() {
+			return laggardBackup;
+		}
 	}
 }

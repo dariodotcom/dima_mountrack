@@ -11,16 +11,9 @@ import java.util.Map;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 public class TrackerListenerManager {
-
-	private static IntentFilter intentFilter;
-
-	static {
-		intentFilter = new IntentFilter();
-	}
 
 	private Map<TrackerListener, ListenerAdapter> mappings;
 	private Context context;
@@ -34,6 +27,7 @@ public class TrackerListenerManager {
 		if (listener == null) {
 			throw new NullPointerException("Listener must not be null.");
 		}
+
 		if (mappings.keySet().contains(listener)) {
 			return;
 		}
@@ -41,7 +35,7 @@ public class TrackerListenerManager {
 		ListenerAdapter adapter = new ListenerAdapter(listener);
 		mappings.put(listener, adapter);
 		LocalBroadcastManager bMan = LocalBroadcastManager.getInstance(context);
-		bMan.registerReceiver(adapter, intentFilter);
+		bMan.registerReceiver(adapter, BroadcastFactory.getCompleteIntentFilter());
 	}
 
 	public void unregisterReceiver(TrackerListener listener) {
@@ -65,7 +59,7 @@ public class TrackerListenerManager {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String[] parts = intent.getAction().split(".");
+			String[] parts = intent.getAction().split("\\.");
 			String action = parts[parts.length - 1];
 
 			if (action.equals(BroadcastFactory.ACTION_START)) {

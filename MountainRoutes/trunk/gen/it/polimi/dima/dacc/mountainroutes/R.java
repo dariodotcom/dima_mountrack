@@ -315,47 +315,51 @@ containing a value of this type.
         public static final int tab_unselected=0x7f02002b;
     }
     public static final class id {
-        public static final int action_settings=0x7f050028;
-        public static final int by_name_list_fragment=0x7f050018;
-        public static final int delete_button=0x7f050027;
+        public static final int action_settings=0x7f05002c;
+        public static final int by_name_list_fragment=0x7f05001c;
+        public static final int delete_button=0x7f05002b;
         public static final int difficulty_value=0x7f05000b;
-        public static final int emptylist_result=0x7f050020;
+        public static final int emptylist_result=0x7f050024;
         public static final int estimated_time_value=0x7f05000e;
         public static final int gap_value=0x7f05000d;
         public static final int hybrid=0x7f050004;
         public static final int lenght_value=0x7f05000c;
-        public static final int loading_progressbar=0x7f050026;
+        public static final int loading_progressbar=0x7f05002a;
         public static final int loading_spinner=0x7f050013;
+        public static final int logging_view=0x7f050016;
         public static final int main_my_excursions_button=0x7f050007;
         public static final int main_my_routes_button=0x7f050006;
         public static final int main_start_walk_button=0x7f050005;
-        public static final int message_overlay=0x7f050024;
-        public static final int message_view=0x7f050025;
-        public static final int near_me_list_fragment=0x7f050019;
+        public static final int message_overlay=0x7f050028;
+        public static final int message_view=0x7f050029;
+        public static final int near_me_list_fragment=0x7f05001d;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int overlay=0x7f050012;
         public static final int overlay_message=0x7f050014;
         public static final int pager=0x7f050009;
-        public static final int route_list=0x7f05001f;
-        public static final int route_list_animator=0x7f05001e;
-        public static final int route_name=0x7f05001d;
+        public static final int route_list=0x7f050023;
+        public static final int route_list_animator=0x7f050022;
+        public static final int route_name=0x7f050021;
         public static final int route_viewer_delete=0x7f050011;
         public static final int route_viewer_save=0x7f050010;
         public static final int route_viewer_start=0x7f05000f;
         public static final int satellite=0x7f050002;
-        public static final int saved_list_fragment=0x7f05001c;
+        public static final int saved_list_fragment=0x7f050020;
         public static final int saved_route_list=0x7f050015;
-        public static final int saved_route_search_term=0x7f05001b;
-        public static final int search_term=0x7f050017;
+        public static final int saved_route_search_term=0x7f05001f;
+        public static final int search_term=0x7f05001b;
+        public static final int service_pause=0x7f050019;
+        public static final int service_resume=0x7f05001a;
+        public static final int service_start=0x7f050017;
+        public static final int service_stop=0x7f050018;
         public static final int tabs=0x7f050008;
         public static final int terrain=0x7f050003;
-        public static final int test_list_fragment=0x7f050016;
-        public static final int update_button=0x7f05001a;
+        public static final int update_button=0x7f05001e;
         public static final int viewer_map=0x7f05000a;
-        public static final int waiting_overlay=0x7f050021;
-        public static final int waiting_progressbar=0x7f050022;
-        public static final int waiting_textview=0x7f050023;
+        public static final int waiting_overlay=0x7f050025;
+        public static final int waiting_progressbar=0x7f050026;
+        public static final int waiting_textview=0x7f050027;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -512,6 +516,12 @@ containing a value of this type.
         public static final int route_viewer_save=0x7f060039;
         public static final int route_viewer_start=0x7f060038;
         public static final int routelist_waiting_text=0x7f06001b;
+        public static final int service_pause=0x7f060043;
+        public static final int service_resume=0x7f060044;
+        /**  service test 
+         */
+        public static final int service_start=0x7f060041;
+        public static final int service_stop=0x7f060042;
         /**  Route viewer 
          */
         public static final int title_activity_route_selector=0x7f060031;

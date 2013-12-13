@@ -8,7 +8,7 @@ import android.os.Parcelable;
 public class ExcursionReport implements Parcelable {
 
 	private RouteID id;
-	private float completeIndex;
+	private float completionIndex;
 	private int elapsedSeconds;
 	private Date date;
 	private int gap;
@@ -18,12 +18,12 @@ public class ExcursionReport implements Parcelable {
 		this.id = id;
 	}
 
-	public float getCompleteIndex() {
-		return completeIndex;
+	public float getCompletionIndex() {
+		return completionIndex;
 	}
 
-	public void setCompleteIndex(float completeIndex) {
-		this.completeIndex = completeIndex;
+	public void setCompletionIndex(float completionIndex) {
+		this.completionIndex = completionIndex;
 	}
 
 	public int getElapsedSeconds() {
@@ -69,7 +69,7 @@ public class ExcursionReport implements Parcelable {
 
 	/* -- Parcelable Methods -- */
 	private ExcursionReport(Parcel in) {
-		completeIndex = in.readFloat();
+		completionIndex = in.readFloat();
 		date = new Date(in.readLong());
 		elapsedSeconds = in.readInt();
 		gap = in.readInt();
@@ -79,7 +79,7 @@ public class ExcursionReport implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeFloat(completeIndex);
+		dest.writeFloat(completionIndex);
 		dest.writeLong(date.getTime());
 		dest.writeInt(elapsedSeconds);
 		dest.writeInt(gap);

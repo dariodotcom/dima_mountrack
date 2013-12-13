@@ -1,14 +1,50 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".TestActivity" >
 
-    <fragment
-        android:id="@+id/test_list_fragment"
+    <ListView
+        android:id="@+id/logging_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment"
-        tools:layout="@layout/route_list_fragment" />
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+    </ListView>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+
+        <Button
+            android:id="@+id/service_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_start"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/service_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_stop"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/service_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_pause"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/service_resume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_resume"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+
+</LinearLayout>
