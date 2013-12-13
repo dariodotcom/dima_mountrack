@@ -52,4 +52,10 @@
     <string name="route_saved">Route saved</string>
     <string name="route_deleted">Route deleted</string>
 
+    <!-- service test -->
+    <string name="service_start">Start</string>
+    <string name="service_stop">Stop</string>
+    <string name="service_pause">Pause</string>
+    <string name="service_resume">Resume</string>
+    
 </resources>
