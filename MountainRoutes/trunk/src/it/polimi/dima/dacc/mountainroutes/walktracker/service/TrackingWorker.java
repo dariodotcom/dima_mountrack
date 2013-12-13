@@ -5,11 +5,13 @@ import com.google.android.gms.maps.model.LatLng;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 /**
@@ -59,6 +61,10 @@ public class TrackingWorker implements Runnable, LocationListener {
 		locMan.requestLocationUpdates(pvdName, MIN_TIME_MILLIS,
 				MIN_DISTANCE_METERS, this, looper);
 
+		// Send start broadcast
+		Intent i = BroadcastFactory.createTrackingStartBroadcast(route);
+		sendBroadcast(i);
+
 		Log.d(TAG, "Now tracking route " + route);
 	}
 
@@ -66,6 +72,13 @@ public class TrackingWorker implements Runnable, LocationListener {
 		locMan.removeUpdates(this); // Remove location listener
 		looper.quit(); // Stop tracking worker
 		isTracking = false;
+
+		// Send stop broadcast
+		Intent i = BroadcastFactory.createTrackingStopBroadcast(null);
+		sendBroadcast(i);
+
+		Log.d(TAG, "Tracking worker stopped");
+
 		return;
 	}
 
@@ -89,11 +102,28 @@ public class TrackingWorker implements Runnable, LocationListener {
 		}
 
 		LatLng position = latLngFrom(location);
-		try {
-			float newCompletionIndex = computeCompletionIndex(position);
-		} catch (ExcursionException e) {
+		float newCompletionIndex;
 
+		try {
+			newCompletionIndex = computeCompletionIndex(position);
+		} catch (DepartedFromRouteException e) {
+			UpdateType update = UpdateType.FAR_FROM_ROUTE;
+			Intent i = BroadcastFactory.createStatusBroadcast(update);
+			sendBroadcast(i);
+			return;
 		}
+
+		if (newCompletionIndex < completionIndex) {
+			UpdateType update = UpdateType.GOING_BACKWARDS;
+			Intent intent = BroadcastFactory.createStatusBroadcast(update);
+			sendBroadcast(intent);
+			return;
+		}
+
+		completionIndex = newCompletionIndex;
+		Intent intent = BroadcastFactory
+				.createTrackingUpdateBroadcast(completionIndex);
+		sendBroadcast(intent);
 	}
 
 	@Override
@@ -114,12 +144,17 @@ public class TrackingWorker implements Runnable, LocationListener {
 	// Helper methods called from location listener methods, thus running on the
 	// tracking thread;
 	private float computeCompletionIndex(LatLng point)
-			throws ExcursionException {
+			throws DepartedFromRouteException {
+		// TODO find out how to compute completion index
 		return 0.0f;
 	}
 
 	private LatLng latLngFrom(Location l) {
 		return new LatLng(l.getLatitude(), l.getLongitude());
+	}
+
+	private void sendBroadcast(Intent intent) {
+		LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 	}
 
 }

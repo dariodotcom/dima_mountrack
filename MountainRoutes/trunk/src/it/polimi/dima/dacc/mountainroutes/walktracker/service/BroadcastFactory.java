@@ -6,19 +6,29 @@ import android.content.Intent;
 
 public class BroadcastFactory {
 
-	public static Intent createTrackingUpdateBroadcast(float completeIndex){
+	public static final String ACTION_START = "START";
+	public static final String ACTION_STOP = "STOP";
+	public static final String ACTION_UPDATE = "UPDATE";
+	public static final String ACTION_TRACKING = "TRACKING";
+
+	public static final String EXTRA_ROUTE = "ROUTE";
+	public static final String EXTRA_COMPLETION_INDEX = "COMPLETION_INDEX";
+	public static final String EXTRA_REPORT = "REPORT";
+	public static final String EXTRA_UPDATE = "UPDATE";
+
+	public static Intent createTrackingUpdateBroadcast(float completeIndex) {
 		return null;
 	}
-	
-	public static Intent createTrackingStartBroadcast(Route route){
+
+	public static Intent createTrackingStartBroadcast(Route route) {
 		return null;
 	}
-	
-	public static Intent createTrackingStopBroadcast(ExcursionReport report){
+
+	public static Intent createTrackingStopBroadcast(ExcursionReport report) {
 		return null;
 	}
-	
-	public static Intent createStatusUpdateBroadcast(UpdateType update){
+
+	public static Intent createStatusBroadcast(UpdateType update) {
 		return null;
-	}	
+	}
 }
