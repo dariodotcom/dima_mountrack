@@ -56,6 +56,7 @@ public class TrackingService extends Service {
 		}
 
 		public void stop() {
+			tWorker.quit();
 			TrackingService.this.stopSelf();
 		}
 

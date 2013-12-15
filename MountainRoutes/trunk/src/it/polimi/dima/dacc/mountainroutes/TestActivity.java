@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes;
 
+import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
+import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
@@ -69,12 +71,13 @@ public class TestActivity extends FragmentActivity {
 		stopButton.setOnClickListener(stopListener);
 		pauseButton.setOnClickListener(pauseListener);
 		resumeButton.setOnClickListener(resumeListener);
-		
+
 		trackMan = new TrackerListenerManager(this);
 		trackMan.registerListener(viewController);
 		trackMan.registerListener(loggerController);
 
 		Intent i = new Intent(this, TrackingService.class);
+		startService(i);
 		bindService(i, serviceConnection, BIND_AUTO_CREATE);
 
 		stopButton.setEnabled(false);
@@ -88,12 +91,14 @@ public class TestActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.test, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onDestroy() {
-		if(control != null){
+		if (control != null) {
 			control.stop();
 		}
+		unbindService(serviceConnection);
+		super.onDestroy();
 	}
 
 	private TrackerListener viewController = new TrackerListener() {
@@ -172,8 +177,16 @@ public class TestActivity extends FragmentActivity {
 			if (control == null) {
 				logMessage("[LISTENER] service not connected");
 			} else {
-				Route dummy = new Route(new RouteID("asdsa:sdsad"),
-						Route.Source.REMOTE);
+				RouteID id = new RouteID(
+						"e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+				Route dummy;
+				try {
+					dummy = RoutePersistence.create(TestActivity.this)
+							.loadRoute(id);
+				} catch (PersistenceException e) {
+					e.printStackTrace();
+					return;
+				}
 				control.startTracking(dummy);
 			}
 		}
