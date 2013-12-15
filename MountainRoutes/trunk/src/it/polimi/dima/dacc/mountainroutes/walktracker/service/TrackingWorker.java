@@ -6,6 +6,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.Tracker;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException.Type;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -47,7 +51,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 	private LocationManager locMan;
 	private State currentState;
 
-	private Route trackingRoute;
+	private Tracker tracker;
 	private ExcursionReport report;
 	private Looper looper;
 
@@ -93,7 +97,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		assertState(State.READY);
 
-		this.trackingRoute = route;
+		this.tracker = new Tracker(route.getPath());
 		this.report = new ExcursionReport(route.getId());
 
 		// Start worker
@@ -162,9 +166,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 			return;
 		}
 
-		locMan.removeUpdates(this); // Remove location listener
-		looper.quit(); // Stop tracking worker and its thread
-		currentState = State.FINALIZED;
+		stopOperations();
 
 		// Send stop broadcast
 		Intent i = BroadcastFactory
@@ -197,7 +199,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		LatLng position = latLngFrom(location);
 
 		if (currentState == State.TRACKING) {
-			handleUpdateInTracking(position);
+			handleUpdate(position);
 		} else {
 			handleUpdateInPause(position);
 		}
@@ -220,41 +222,38 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 	// Helper methods called from location listener methods, thus running on the
 	// tracking thread;
-	private void handleUpdateInTracking(LatLng point) {
-		float newCompletionIndex;
+	private void handleUpdate(LatLng newPoint) {
+		TrackResult result;
 
 		try {
-			newCompletionIndex = computeCompletionIndex(point);
-		} catch (DepartedFromRouteException e) {
-			UpdateType update = UpdateType.FAR_FROM_ROUTE;
+			result = tracker.track(newPoint);
+		} catch (TrackerException e) {
+			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS
+					: UpdateType.FAR_FROM_ROUTE;
 			Intent i = BroadcastFactory.createStatusBroadcast(update);
 			sendBroadcast(i);
 			return;
 		}
 
-		float completionIndex = report.getCompletionIndex();
+		report.setCompletionIndex(result.getCompletionIndex());
 
-		if (newCompletionIndex < completionIndex) {
-			UpdateType update = UpdateType.GOING_BACKWARDS;
-			Intent intent = BroadcastFactory.createStatusBroadcast(update);
-			sendBroadcast(intent);
+		if (tracker.isFinished()) {
+			Intent i = BroadcastFactory.createTrackingStopBroadcast(report);
+			sendBroadcast(i);
+			stopOperations();
 			return;
 		}
 
-		report.setCompletionIndex(newCompletionIndex);
-		Intent intent = BroadcastFactory
-				.createTrackingUpdateBroadcast(newCompletionIndex);
-		sendBroadcast(intent);
+		Intent i = BroadcastFactory.createTrackingUpdateBroadcast(result
+				.getCompletionIndex());
+		sendBroadcast(i);
 	}
 
 	private void handleUpdateInPause(LatLng point) {
-
-	}
-
-	private float computeCompletionIndex(LatLng point)
-			throws DepartedFromRouteException {
-		// TODO find out how to compute completion index
-		return (float) (point.latitude + point.longitude);
+		UpdateType update = UpdateType.MOVING_WHILE_PAUSED;
+		Intent i = BroadcastFactory.createStatusBroadcast(update);
+		sendBroadcast(i);
+		return;
 	}
 
 	private LatLng latLngFrom(Location l) {
@@ -264,6 +263,12 @@ public class TrackingWorker implements Runnable, LocationListener {
 	private void sendBroadcast(Intent intent) {
 		Log.d(TAG, "sending broadcast: " + intent);
 		LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+	}
+
+	private void stopOperations() {
+		locMan.removeUpdates(this); // Remove location listener
+		looper.quit(); // Stop tracking worker and its thread
+		currentState = State.FINALIZED;
 	}
 
 	private void assertState(State... state) {
@@ -282,5 +287,4 @@ public class TrackingWorker implements Runnable, LocationListener {
 					+ currentState);
 		}
 	}
-
 }

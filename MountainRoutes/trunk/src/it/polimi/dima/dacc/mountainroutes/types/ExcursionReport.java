@@ -16,6 +16,7 @@ public class ExcursionReport implements Parcelable {
 
 	public ExcursionReport(RouteID id) {
 		this.id = id;
+		this.date = new Date();
 	}
 
 	public float getCompletionIndex() {
@@ -36,10 +37,6 @@ public class ExcursionReport implements Parcelable {
 
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public int getGap() {
