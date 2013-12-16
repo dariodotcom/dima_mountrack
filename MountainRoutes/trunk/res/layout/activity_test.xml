@@ -5,6 +5,13 @@
     android:orientation="vertical"
     tools:context=".TestActivity" >
 
+    <it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView
+        android:id="@+id/timer_view"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp" />
+
     <ListView
         android:id="@+id/logging_view"
         android:layout_width="match_parent"
@@ -15,36 +22,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/service_start"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_start"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/service_start" />
 
         <Button
             android:id="@+id/service_stop"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_stop"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/service_stop" />
 
         <Button
             android:id="@+id/service_pause"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_pause"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/service_pause" />
 
         <Button
             android:id="@+id/service_resume"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_resume"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/service_resume" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,12 +2,15 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
 import java.util.List;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 
 public class Tracker {
 
+	private final static String TAG = "tracker";
 	private static final double MAX_DISTANCE_METERS = 100;
 	private List<LatLng> path;
 	private PathSegment currentSegment;
@@ -26,20 +29,25 @@ public class Tracker {
 			throw new IllegalStateException("Tracking is finished");
 		}
 
+		// Check distance from segment
+		double distance = currentSegment.distanceTo(newPoint);
+		Log.d(TAG, "distance from segment: " + distance);
+		if (distance > MAX_DISTANCE_METERS) {
+			// The user is too distant
+			throw new TrackerException(TrackerException.Type.FAR_FROM_ROUTE);
+		}
+		
 		// Update point
 		LatLng projection = currentSegment.project(newPoint);
+		Log.d(TAG, "projection: " + projection);
 		float percent = currentSegment.percentOf(projection);
+		Log.d(TAG, "percent: " + percent);
 		if (percent < segPercent) {
 			// User is going backwards
 			throw new TrackerException(TrackerException.Type.GOING_BACKWARD);
 		}
 
-		if (currentSegment.distanceTo(newPoint) > MAX_DISTANCE_METERS) {
-			// The user is too distant
-			throw new TrackerException(TrackerException.Type.FAR_FROM_ROUTE);
-		}
-
-		if (percent > 1) {
+		if (percent >= 1) {
 			// Move to the next segment
 			edge++;
 			segPercent = 0;
@@ -47,12 +55,12 @@ public class Tracker {
 				return new TrackResult(edge, path.get(edge));
 			}
 
+			Log.d(TAG, "Moving to next segment");
 			currentSegment = nextSegment();
 			return track(newPoint); // Re-track point in new segment
 		}
 
 		segPercent = percent; // Update state;
-
 		return new TrackResult(edge + segPercent, projection);
 	}
 

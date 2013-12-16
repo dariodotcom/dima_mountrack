@@ -10,6 +10,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerMa
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -30,6 +31,7 @@ public class TestActivity extends FragmentActivity {
 	private Button stopButton;
 	private Button pauseButton;
 	private Button resumeButton;
+	private TimerView timerView;
 	private TrackingControl control;
 	private ArrayAdapter<String> adapter;
 
@@ -72,9 +74,12 @@ public class TestActivity extends FragmentActivity {
 		pauseButton.setOnClickListener(pauseListener);
 		resumeButton.setOnClickListener(resumeListener);
 
+		timerView = (TimerView) findViewById(R.id.timer_view);
+		
 		trackMan = new TrackerListenerManager(this);
 		trackMan.registerListener(viewController);
 		trackMan.registerListener(loggerController);
+		trackMan.registerListener(timerView);
 
 		Intent i = new Intent(this, TrackingService.class);
 		startService(i);
