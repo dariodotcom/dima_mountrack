@@ -306,88 +306,100 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f02001e;
         public static final int common_signin_btn_text_pressed_dark=0x7f02001f;
         public static final int common_signin_btn_text_pressed_light=0x7f020020;
-        public static final int ic_launcher=0x7f020021;
-        public static final int ic_plusone_medium_off_client=0x7f020022;
-        public static final int ic_plusone_small_off_client=0x7f020023;
-        public static final int ic_plusone_standard_off_client=0x7f020024;
-        public static final int ic_plusone_tall_off_client=0x7f020025;
-        public static final int pattern=0x7f020026;
-        public static final int repeatingpattern=0x7f020027;
-        public static final int routeinfo_line=0x7f020028;
-        public static final int tab_background=0x7f020029;
-        public static final int tab_selected=0x7f02002a;
-        public static final int tab_unselected=0x7f02002b;
+        public static final int gufo=0x7f020021;
+        public static final int ic_launcher=0x7f020022;
+        public static final int ic_plusone_medium_off_client=0x7f020023;
+        public static final int ic_plusone_small_off_client=0x7f020024;
+        public static final int ic_plusone_standard_off_client=0x7f020025;
+        public static final int ic_plusone_tall_off_client=0x7f020026;
+        public static final int pattern=0x7f020027;
+        public static final int repeatingpattern=0x7f020028;
+        public static final int routeinfo_line=0x7f020029;
+        public static final int tab_background=0x7f02002a;
+        public static final int tab_selected=0x7f02002b;
+        public static final int tab_unselected=0x7f02002c;
     }
     public static final class id {
-        public static final int action_settings=0x7f05002d;
-        public static final int by_name_list_fragment=0x7f05001d;
-        public static final int delete_button=0x7f05002c;
-        public static final int difficulty_value=0x7f05000b;
-        public static final int emptylist_result=0x7f050025;
-        public static final int estimated_time_value=0x7f05000e;
-        public static final int gap_value=0x7f05000d;
+        public static final int action_about=0x7f050031;
+        public static final int action_settings=0x7f050030;
+        public static final int app_name=0x7f050006;
+        public static final int by_name_list_fragment=0x7f050020;
+        public static final int delete_button=0x7f05002f;
+        public static final int description=0x7f050005;
+        public static final int difficulty_value=0x7f05000e;
+        public static final int emptylist_result=0x7f050028;
+        public static final int estimated_time_value=0x7f050011;
+        public static final int gap_value=0x7f050010;
         public static final int hybrid=0x7f050004;
-        public static final int lenght_value=0x7f05000c;
-        public static final int loading_progressbar=0x7f05002b;
-        public static final int loading_spinner=0x7f050013;
-        public static final int logging_view=0x7f050017;
-        public static final int main_my_excursions_button=0x7f050007;
-        public static final int main_my_routes_button=0x7f050006;
-        public static final int main_start_walk_button=0x7f050005;
-        public static final int message_overlay=0x7f050029;
-        public static final int message_view=0x7f05002a;
-        public static final int near_me_list_fragment=0x7f05001e;
+        public static final int lenght_value=0x7f05000f;
+        public static final int loading_progressbar=0x7f05002e;
+        public static final int loading_spinner=0x7f050016;
+        public static final int logging_view=0x7f05001a;
+        public static final int logo=0x7f050007;
+        public static final int main_my_excursions_button=0x7f05000a;
+        public static final int main_my_routes_button=0x7f050009;
+        public static final int main_start_walk_button=0x7f050008;
+        public static final int message_overlay=0x7f05002c;
+        public static final int message_view=0x7f05002d;
+        public static final int near_me_list_fragment=0x7f050021;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int overlay=0x7f050012;
-        public static final int overlay_message=0x7f050014;
-        public static final int pager=0x7f050009;
-        public static final int route_list=0x7f050024;
-        public static final int route_list_animator=0x7f050023;
-        public static final int route_name=0x7f050022;
-        public static final int route_viewer_delete=0x7f050011;
-        public static final int route_viewer_save=0x7f050010;
-        public static final int route_viewer_start=0x7f05000f;
+        public static final int overlay=0x7f050015;
+        public static final int overlay_message=0x7f050017;
+        public static final int pager=0x7f05000c;
+        public static final int route_list=0x7f050027;
+        public static final int route_list_animator=0x7f050026;
+        public static final int route_name=0x7f050025;
+        public static final int route_viewer_delete=0x7f050014;
+        public static final int route_viewer_save=0x7f050013;
+        public static final int route_viewer_start=0x7f050012;
         public static final int satellite=0x7f050002;
-        public static final int saved_list_fragment=0x7f050021;
-        public static final int saved_route_list=0x7f050015;
-        public static final int saved_route_search_term=0x7f050020;
-        public static final int search_term=0x7f05001c;
-        public static final int service_pause=0x7f05001a;
-        public static final int service_resume=0x7f05001b;
-        public static final int service_start=0x7f050018;
-        public static final int service_stop=0x7f050019;
-        public static final int tabs=0x7f050008;
+        public static final int saved_list_fragment=0x7f050024;
+        public static final int saved_route_list=0x7f050018;
+        public static final int saved_route_search_term=0x7f050023;
+        public static final int search_term=0x7f05001f;
+        public static final int service_pause=0x7f05001d;
+        public static final int service_resume=0x7f05001e;
+        public static final int service_start=0x7f05001b;
+        public static final int service_stop=0x7f05001c;
+        public static final int tabs=0x7f05000b;
         public static final int terrain=0x7f050003;
-        public static final int timer_view=0x7f050016;
-        public static final int update_button=0x7f05001f;
-        public static final int viewer_map=0x7f05000a;
-        public static final int waiting_overlay=0x7f050026;
-        public static final int waiting_progressbar=0x7f050027;
-        public static final int waiting_textview=0x7f050028;
+        public static final int timer_view=0x7f050019;
+        public static final int update_button=0x7f050022;
+        public static final int viewer_map=0x7f05000d;
+        public static final int waiting_overlay=0x7f050029;
+        public static final int waiting_progressbar=0x7f05002a;
+        public static final int waiting_textview=0x7f05002b;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_route_selector=0x7f030001;
-        public static final int activity_route_viewer=0x7f030002;
-        public static final int activity_saved_route_manager=0x7f030003;
-        public static final int activity_test=0x7f030004;
-        public static final int page_by_name=0x7f030005;
-        public static final int page_near_me=0x7f030006;
-        public static final int page_saved=0x7f030007;
-        public static final int route_list_element=0x7f030008;
-        public static final int route_list_fragment=0x7f030009;
-        public static final int route_list_fragment_2=0x7f03000a;
-        public static final int saved_route_list_element=0x7f03000b;
+        public static final int activity_about=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_route_selector=0x7f030002;
+        public static final int activity_route_viewer=0x7f030003;
+        public static final int activity_saved_route_manager=0x7f030004;
+        public static final int activity_test=0x7f030005;
+        public static final int page_by_name=0x7f030006;
+        public static final int page_near_me=0x7f030007;
+        public static final int page_saved=0x7f030008;
+        public static final int route_list_element=0x7f030009;
+        public static final int route_list_fragment=0x7f03000a;
+        public static final int route_list_fragment_2=0x7f03000b;
+        public static final int saved_route_list_element=0x7f03000c;
     }
     public static final class menu {
-        public static final int complete_route_selector=0x7f090000;
-        public static final int main=0x7f090001;
-        public static final int route_viewer=0x7f090002;
-        public static final int saved_route_manager=0x7f090003;
-        public static final int test=0x7f090004;
+        public static final int about=0x7f090000;
+        public static final int complete_route_selector=0x7f090001;
+        public static final int main=0x7f090002;
+        public static final int route_viewer=0x7f090003;
+        public static final int saved_route_manager=0x7f090004;
+        public static final int test=0x7f090005;
     }
     public static final class string {
+        public static final int about_description=0x7f060048;
+        public static final int about_logo=0x7f060049;
+        /**  about 
+         */
+        public static final int action_about=0x7f060047;
         public static final int action_settings=0x7f06001a;
         public static final int app_name=0x7f060019;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -493,6 +505,7 @@ containing a value of this type.
         public static final int gap_info=0x7f060034;
         public static final int general_error_message=0x7f06002c;
         public static final int gps_disabled_message=0x7f060029;
+        public static final int hello_world=0x7f060046;
         public static final int internal_error_message=0x7f06002b;
         public static final int length_info=0x7f060036;
         public static final int main_my_excursions_button_text=0x7f06001f;
@@ -527,6 +540,7 @@ containing a value of this type.
          */
         public static final int service_start=0x7f060041;
         public static final int service_stop=0x7f060042;
+        public static final int title_activity_about=0x7f060045;
         /**  Route viewer 
          */
         public static final int title_activity_route_selector=0x7f060031;
@@ -552,16 +566,20 @@ containing a value of this type.
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f080000;
-        public static final int AppContainer=0x7f08000d;
-        public static final int AppTheme=0x7f08000e;
-        public static final int CleanActionBar=0x7f08000f;
+        public static final int AppContainer=0x7f08000f;
+        public static final int AppTheme=0x7f080010;
+        public static final int CleanActionBar=0x7f080011;
+        /**  About activity 
+         */
+        public static final int about_appname=0x7f08000d;
+        public static final int about_description=0x7f08000e;
         public static final int list_container=0x7f080004;
         /**  Lists 
          */
         public static final int list_element=0x7f080008;
         public static final int overlay_background=0x7f08000a;
         public static final int overlay_text=0x7f08000b;
-        public static final int route_info_entry=0x7f080010;
+        public static final int route_info_entry=0x7f080012;
         public static final int route_list_overlay=0x7f080009;
         public static final int tab_strip=0x7f080003;
         public static final int widget_button=0x7f080006;

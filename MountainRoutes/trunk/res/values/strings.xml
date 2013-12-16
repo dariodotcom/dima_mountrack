@@ -10,7 +10,7 @@
     <string name="main_start_walk_button_text">Start walking</string>
     <string name="main_my_routes_button_text">My routes</string>
     <string name="main_my_excursions_button_text">My excursions</string>
-    
+
     <!-- Route selector -->
     <string name="page_by_name_title">By Name</string>
     <string name="page_by_name_description">Search by name</string>
@@ -57,5 +57,11 @@
     <string name="service_stop">Stop</string>
     <string name="service_pause">Pause</string>
     <string name="service_resume">Resume</string>
-    
+    <string name="title_activity_about">About</string>
+    <string name="hello_world">Hello world!</string>
+
+    <!-- about -->
+    <string name="action_about">About&#8230;</string>
+    <string name="about_description">Developed with love\n by GUFO Labs\n2013</string>
+    <string name="about_logo">Gufo Labs Logo</string>
 </resources>
