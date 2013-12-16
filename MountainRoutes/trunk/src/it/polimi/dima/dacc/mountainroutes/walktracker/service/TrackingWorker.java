@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.Tracker;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
@@ -47,13 +48,23 @@ public class TrackingWorker implements Runnable, LocationListener {
 		READY, TRACKING, PAUSED, FINALIZED
 	}
 
+	private Timer.Listener reportTimeUpdater = new Timer.Listener() {
+		
+		@Override
+		public void onTime(long millis) {
+			int secs = (int) (millis / 1000);
+			report.setElapsedSeconds(secs);
+		}
+	};
+	
 	private Context context;
 	private LocationManager locMan;
+	private Looper looper;
+	
 	private State currentState;
-
 	private Tracker tracker;
 	private ExcursionReport report;
-	private Looper looper;
+	private Timer timer;
 
 	/**
 	 * Constructs a new {@link TrackingWorker} that operates in a given
@@ -102,7 +113,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		// Start worker
 		new Thread(this).start();
-
+		
 		// Wait for the worker to be ready
 		try {
 			wait();
@@ -117,6 +128,11 @@ public class TrackingWorker implements Runnable, LocationListener {
 		locMan.requestLocationUpdates(pvdName, MIN_TIME_MILLIS,
 				MIN_DISTANCE_METERS, this, looper);
 
+		// Start timer
+		timer = new Timer(looper, reportTimeUpdater);
+		
+		timer.start();
+		
 		// Send start broadcast
 		currentState = State.TRACKING;
 		Intent i = BroadcastFactory.createTrackingStartBroadcast(route);
@@ -131,6 +147,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 	public synchronized void pause() {
 		assertState(State.TRACKING);
 		currentState = State.PAUSED;
+		timer.pause();
 		Intent i = BroadcastFactory
 				.createStatusBroadcast(UpdateType.EXCURSION_PAUSED);
 		sendBroadcast(i);
@@ -142,6 +159,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 	public synchronized void resume() {
 		assertState(State.PAUSED);
 		currentState = State.TRACKING;
+		timer.resume();
 		Intent i = BroadcastFactory
 				.createStatusBroadcast(UpdateType.EXCURSION_RESUME);
 		sendBroadcast(i);
@@ -166,6 +184,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 			return;
 		}
 
+		timer.stop();
 		stopOperations();
 
 		// Send stop broadcast
@@ -238,6 +257,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		report.setCompletionIndex(result.getCompletionIndex());
 
 		if (tracker.isFinished()) {
+			timer.stop();
 			Intent i = BroadcastFactory.createTrackingStopBroadcast(report);
 			sendBroadcast(i);
 			stopOperations();
