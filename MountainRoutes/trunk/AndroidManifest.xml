@@ -68,6 +68,10 @@
             android:name="it.polimi.dima.dacc.mountainroutes.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name="it.polimi.dima.dacc.mountainroutes.WalkingActivity"
+            android:label="@string/title_activity_waking" >
+        </activity>
     </application>
 
 </manifest>

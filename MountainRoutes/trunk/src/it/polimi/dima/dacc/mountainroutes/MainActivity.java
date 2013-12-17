@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 		Button savedRoutes = (Button) findViewById(R.id.main_my_routes_button);
 		savedRoutes.setOnClickListener(showSavedRoutesButtonListener);
 
-		Intent i = new Intent(this, TestActivity.class);
+		Intent i = new Intent(this, WalkingActivity.class);
 		startActivity(i);
 	}
 
