@@ -7,6 +7,7 @@ import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
+import it.polimi.dima.dacc.mountainroutes.walktracker.service.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
@@ -44,6 +45,11 @@ public class TestActivity extends FragmentActivity {
 			Toast.makeText(TestActivity.this, "Service disconnected",
 					Toast.LENGTH_SHORT).show();
 			control = null;
+
+			trackMan.unregisterListener(viewController);
+			trackMan.unregisterListener(loggerController);
+			trackMan.unregisterListener(timerView);
+			trackMan = null;
 		}
 
 		@Override
@@ -51,6 +57,11 @@ public class TestActivity extends FragmentActivity {
 			Toast.makeText(TestActivity.this, "Service connected",
 					Toast.LENGTH_SHORT).show();
 			control = (TrackingControl) service;
+			trackMan = TrackerListenerManager.create(TestActivity.this,
+					control.getLaggardBackup());
+			trackMan.registerListener(viewController);
+			trackMan.registerListener(loggerController);
+			trackMan.registerListener(timerView);
 		}
 	};
 
@@ -75,11 +86,6 @@ public class TestActivity extends FragmentActivity {
 		resumeButton.setOnClickListener(resumeListener);
 
 		timerView = (TimerView) findViewById(R.id.timer_view);
-		
-		trackMan = new TrackerListenerManager(this);
-		trackMan.registerListener(viewController);
-		trackMan.registerListener(loggerController);
-		trackMan.registerListener(timerView);
 
 		Intent i = new Intent(this, TrackingService.class);
 		startService(i);
@@ -145,6 +151,18 @@ public class TestActivity extends FragmentActivity {
 		public void onTrackingUpdate(float completionIndex) {
 
 		}
+
+		@Override
+		public void onRegister(LaggardBackup backup) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onUnregister() {
+			// TODO Auto-generated method stub
+
+		}
 	};
 
 	private TrackerListener loggerController = new TrackerListener() {
@@ -167,6 +185,18 @@ public class TestActivity extends FragmentActivity {
 		@Override
 		public void onStartTracking(Route route) {
 			logMessage("[SERVICE] start tracking");
+		}
+
+		@Override
+		public void onRegister(LaggardBackup backup) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onUnregister() {
+			// TODO Auto-generated method stub
+
 		}
 	};
 

@@ -5,6 +5,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
+import it.polimi.dima.dacc.mountainroutes.walktracker.service.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import android.content.Context;
 import android.content.res.Resources;
@@ -74,6 +75,18 @@ public class TimerView extends TextView implements TrackerListener {
 	@Override
 	public void onTrackingUpdate(float completionIndex) {
 		// Do nothing!
+	}
+
+	@Override
+	public void onRegister(LaggardBackup backup) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onUnregister() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void init() {
