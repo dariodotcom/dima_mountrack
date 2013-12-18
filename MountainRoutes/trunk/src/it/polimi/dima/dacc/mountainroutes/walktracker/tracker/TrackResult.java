@@ -7,11 +7,19 @@ import android.os.Parcelable;
 
 public class TrackResult implements Parcelable {
 
+	private float completionIndex;
+	private LatLng pointOnPath;
+	private LatLng realPosition;
+
+	private TrackResult() {
+
+	}
+
 	public float getCompletionIndex() {
 		return completionIndex;
 	}
 
-	public void setCompletionIndex(float completionIndex) {
+	private void setCompletionIndex(float completionIndex) {
 		this.completionIndex = completionIndex;
 	}
 
@@ -19,21 +27,30 @@ public class TrackResult implements Parcelable {
 		return pointOnPath;
 	}
 
-	public void setPointOnPath(LatLng pointOnPath) {
+	private void setPointOnPath(LatLng pointOnPath) {
 		this.pointOnPath = pointOnPath;
 	}
 
-	private float completionIndex;
-	private LatLng pointOnPath;
-
-	public TrackResult(float completionIndex, LatLng pointOnPath) {
-		this.completionIndex = completionIndex;
-		this.pointOnPath = pointOnPath;
+	public LatLng getRealPosition() {
+		return realPosition;
 	}
 
+	private void setRealPosition(LatLng realPosition) {
+		this.realPosition = realPosition;
+	}
+
+	@Override
+	public String toString() {
+		String format = "Track result: %s, onPath: %s, realPoint: %s";
+		return String.format(format, completionIndex, pointOnPath, realPosition);
+	}
+
+	// Parcelable
 	private TrackResult(Parcel source) {
 		completionIndex = source.readFloat();
-		pointOnPath = source.readParcelable(LatLng.class.getClassLoader());
+		ClassLoader cl = LatLng.class.getClassLoader();
+		pointOnPath = source.readParcelable(cl);
+		realPosition = source.readParcelable(cl);
 	}
 
 	@Override
@@ -45,6 +62,7 @@ public class TrackResult implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeFloat(completionIndex);
 		dest.writeParcelable(pointOnPath, 0);
+		dest.writeParcelable(realPosition, 0);
 	}
 
 	public static Creator<TrackResult> CREATOR = new Creator<TrackResult>() {
@@ -61,4 +79,31 @@ public class TrackResult implements Parcelable {
 		}
 	};
 
+	public static class Builder {
+
+		private TrackResult result;
+
+		public Builder() {
+			this.result = new TrackResult();
+		}
+
+		public Builder completionIndex(float completionIndex) {
+			result.setCompletionIndex(completionIndex);
+			return this;
+		}
+
+		public Builder pointOnPath(LatLng pointOnPath) {
+			result.setPointOnPath(pointOnPath);
+			return this;
+		}
+
+		public Builder realPosition(LatLng realPosition) {
+			result.setRealPosition(realPosition);
+			return this;
+		}
+
+		public TrackResult build() {
+			return result;
+		}
+	}
 }

@@ -4,6 +4,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.BroadcastFactory;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,11 +41,9 @@ public class TrackerReceiver extends BroadcastReceiver {
 		}
 
 		if (action.equals(BroadcastFactory.ACTION_TRACKING)) {
-			float completionIndex = intent.getFloatExtra(
-					BroadcastFactory.EXTRA_COMPLETION_INDEX, -1);
-			if (completionIndex != -1) {
-				listener.onTrackingUpdate(completionIndex);
-			}
+			String extraName = BroadcastFactory.EXTRA_TRACK_RESULT;
+			TrackResult result = intent.getParcelableExtra(extraName);
+			listener.onTrackingUpdate(result);
 		}
 
 		if (action.equals(BroadcastFactory.ACTION_UPDATE)) {

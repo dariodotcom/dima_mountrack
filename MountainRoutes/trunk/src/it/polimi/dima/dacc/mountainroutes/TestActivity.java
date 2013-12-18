@@ -11,6 +11,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerMa
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -147,7 +148,7 @@ public class TestActivity extends FragmentActivity {
 		}
 
 		@Override
-		public void onTrackingUpdate(float completionIndex) {
+		public void onTrackingUpdate(TrackResult result) {
 
 		}
 
@@ -158,7 +159,7 @@ public class TestActivity extends FragmentActivity {
 		}
 
 		@Override
-		public void onUnregister() {
+		public void onUnregister(LaggardBackup backup) {
 			// TODO Auto-generated method stub
 
 		}
@@ -167,8 +168,8 @@ public class TestActivity extends FragmentActivity {
 	private TrackerListener loggerController = new TrackerListener() {
 
 		@Override
-		public void onTrackingUpdate(float completionIndex) {
-			logMessage("[SERVICE] completion index update: " + completionIndex);
+		public void onTrackingUpdate(TrackResult result) {
+			logMessage("[SERVICE] completion index update: " + result);
 		}
 
 		@Override
@@ -193,7 +194,7 @@ public class TestActivity extends FragmentActivity {
 		}
 
 		@Override
-		public void onUnregister() {
+		public void onUnregister(LaggardBackup backup) {
 			// TODO Auto-generated method stub
 
 		}

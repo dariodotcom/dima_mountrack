@@ -1,11 +1,11 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -14,32 +14,11 @@ public class RouteWalkController {
 
 	private static final String TAG = "RouteWalkerController";
 
-	private static final String COMPLETION_INDEX = "completion_index";
-	private static final String ROUTE = "route";
-
 	private float completionIndex;
-	private Route routeToDisplay;
 
 	private LinkedList<LatLng> pending, walked;
 	private int currentEdge;
 	private boolean hasInterpolationPoint;
-
-	public static RouteWalkController loadFromSavedState(Bundle savedState) {
-		if (savedState == null) {
-			return null;
-		}
-
-		float completionIndex = savedState.getFloat(COMPLETION_INDEX, -1);
-		Route route = savedState.getParcelable(ROUTE);
-
-		if (route == null || completionIndex == -1) {
-			return null;
-		}
-
-		RouteWalkController ctrl = new RouteWalkController(route);
-		ctrl.setCompletionIndex(completionIndex);
-		return ctrl;
-	}
 
 	// Initialization
 	public RouteWalkController(Route route) {
@@ -47,18 +26,21 @@ public class RouteWalkController {
 			throw new NullPointerException("route must not be null");
 		}
 
-		this.routeToDisplay = route;
-
 		List<LatLng> path = route.getPath().getList();
 
 		int edge = this.currentEdge = intPart(completionIndex);
 		int size = path.size();
 
 		walked = new LinkedList<LatLng>(path.subList(0, edge + 1));
-		pending = new LinkedList<LatLng>(path.subList(edge + 1, size));
+		pending = new LinkedList<LatLng>(path.subList(edge, size));
 	}
 
-	public void setCompletionIndex(float completionIndex) {
+	public void update(TrackResult result){
+		setCompletionIndex(result.getCompletionIndex());
+	}
+	
+	
+	private void setCompletionIndex(float completionIndex) {
 		int edge = intPart(completionIndex);
 
 		if (edge < currentEdge) {
@@ -72,27 +54,32 @@ public class RouteWalkController {
 			walked.removeLast();
 			pending.removeFirst();
 			hasInterpolationPoint = false;
+		} else {
+			pending.removeFirst();
 		}
 
 		if (edge > currentEdge) {
-			LatLng pivot = pending.removeFirst();
-			walked.addFirst(pivot);
+			int n = edge - currentEdge;
+			while (n > 0) {
+				LatLng pivot = pending.removeFirst();
+				walked.addLast(pivot);
+				n--;
+			}
+			
 			currentEdge = edge;
 		}
 
 		float coeff = completionIndex - edge;
 		if (coeff > 0) {
-			LatLng start = walked.getLast(), end = walked.getFirst();
+			LatLng start = walked.getLast(), end = pending.getFirst();
 			LatLng interpolated = interpolate(start, end, coeff);
 			walked.addLast(interpolated);
 			pending.addFirst(interpolated);
 			hasInterpolationPoint = true;
+		} else {
+			LatLng last = walked.getLast();
+			pending.addFirst(last);
 		}
-	}
-
-	public void saveState(Bundle out) {
-		out.putFloat(COMPLETION_INDEX, completionIndex);
-		out.putParcelable(ROUTE, routeToDisplay);
 	}
 
 	public List<LatLng> getWalkedPath() {

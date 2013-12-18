@@ -53,9 +53,5 @@ public class TrackingService extends Service {
 			tWorker.quit();
 			TrackingService.this.stopSelf();
 		}
-
-		public boolean isTracking() {
-			return tWorker.isTracking();
-		}
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mountain Routes</string>
+    <string name="app_name">Mountrack</string>
     <string name="action_settings">Settings</string>
     <string name="routelist_waiting_text">Loading routes&#8230;</string>
     <string name="title_activity_test">Test Activity</string>

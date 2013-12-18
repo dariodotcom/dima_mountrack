@@ -49,18 +49,18 @@ public class TrackingWorker implements Runnable, LocationListener {
 	}
 
 	private Timer.Listener reportTimeUpdater = new Timer.Listener() {
-		
+
 		@Override
 		public void onTime(long millis) {
 			int secs = (int) (millis / 1000);
 			report.setElapsedSeconds(secs);
 		}
 	};
-	
+
 	private Context context;
 	private LocationManager locMan;
 	private Looper looper;
-	
+
 	private State currentState;
 	private Tracker tracker;
 	private ExcursionReport report;
@@ -113,7 +113,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		// Start worker
 		new Thread(this).start();
-		
+
 		// Wait for the worker to be ready
 		try {
 			wait();
@@ -130,9 +130,8 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		// Start timer
 		timer = new Timer(looper, reportTimeUpdater);
-		
 		timer.start();
-		
+
 		// Send start broadcast
 		currentState = State.TRACKING;
 		Intent i = BroadcastFactory.createTrackingStartBroadcast(route);
@@ -264,8 +263,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 			return;
 		}
 
-		Intent i = BroadcastFactory.createTrackingUpdateBroadcast(result
-				.getCompletionIndex());
+		Intent i = BroadcastFactory.createTrackingBroadcast(result);
 		sendBroadcast(i);
 	}
 
@@ -281,7 +279,6 @@ public class TrackingWorker implements Runnable, LocationListener {
 	}
 
 	private void sendBroadcast(Intent intent) {
-		Log.d(TAG, "sending broadcast: " + intent);
 		LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 	}
 
