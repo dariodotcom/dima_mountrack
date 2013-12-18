@@ -2,7 +2,6 @@ package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
-import it.polimi.dima.dacc.mountainroutes.walktracker.service.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment;
@@ -32,6 +31,10 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_walking);
 
+		trackMan = TrackerListenerManager.inject(this);
+		trackMan.registerListener(walkFragment);
+		trackMan.registerListener(timerView);
+
 		if (!trackingInitialized) {
 			if (savedState != null) {
 				routeToTrack = savedState.getParcelable(TRACKING_ROUTE);
@@ -59,24 +62,28 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		if (trackMan != null) {
-			trackMan.registerListener(walkFragment);
-		}
+	protected void onStart() {
+		super.onStart();
+		trackMan.registerListener(timerView);
+		trackMan.registerListener(walkFragment);
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		if (trackMan != null) {
-			trackMan.unregisterListener(walkFragment);
-		}
+	protected void onStop() {
+		super.onStop();
+		trackMan.unregisterListener(timerView);
+		trackMan.unregisterListener(walkFragment);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		TrackerListenerManager.clear(this);
+		trackMan = null;
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.waking, menu);
 		return true;
 	}
@@ -85,25 +92,16 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		control = (TrackingControl) service;
-		LaggardBackup backup = control.getLaggardBackup();
-		trackMan = TrackerListenerManager.create(this, backup);
-		trackMan.registerListener(walkFragment);
-		trackMan.unregisterListener(timerView);
-
-		control.startTracking(routeToTrack);
-		routeToTrack = null;
 
 		if (!trackingInitialized) {
 			trackingInitialized = true;
 			control.startTracking(routeToTrack);
+			routeToTrack = null;
 		}
 	}
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		control = null;
-		trackMan.unregisterListener(walkFragment);
-		trackMan.unregisterListener(timerView);
-		trackMan = null;
 	}
 }

@@ -7,8 +7,8 @@ import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
-import it.polimi.dima.dacc.mountainroutes.walktracker.service.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 
 import android.content.res.Resources;
 import android.os.Bundle;

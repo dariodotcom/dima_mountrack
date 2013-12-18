@@ -5,9 +5,9 @@ import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
-import it.polimi.dima.dacc.mountainroutes.walktracker.service.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
@@ -57,8 +57,7 @@ public class TestActivity extends FragmentActivity {
 			Toast.makeText(TestActivity.this, "Service connected",
 					Toast.LENGTH_SHORT).show();
 			control = (TrackingControl) service;
-			trackMan = TrackerListenerManager.create(TestActivity.this,
-					control.getLaggardBackup());
+			trackMan = TrackerListenerManager.inject(TestActivity.this);
 			trackMan.registerListener(viewController);
 			trackMan.registerListener(loggerController);
 			trackMan.registerListener(timerView);
