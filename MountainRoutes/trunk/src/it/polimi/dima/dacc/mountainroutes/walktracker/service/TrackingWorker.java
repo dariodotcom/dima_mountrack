@@ -255,6 +255,9 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		report.setCompletionIndex(result.getCompletionIndex());
 
+		Intent update = BroadcastFactory.createTrackingBroadcast(result);
+		sendBroadcast(update);
+
 		if (tracker.isFinished()) {
 			timer.stop();
 			Intent i = BroadcastFactory.createTrackingStopBroadcast(report);
@@ -262,9 +265,6 @@ public class TrackingWorker implements Runnable, LocationListener {
 			stopOperations();
 			return;
 		}
-
-		Intent i = BroadcastFactory.createTrackingBroadcast(result);
-		sendBroadcast(i);
 	}
 
 	private void handleUpdateInPause(LatLng point) {
