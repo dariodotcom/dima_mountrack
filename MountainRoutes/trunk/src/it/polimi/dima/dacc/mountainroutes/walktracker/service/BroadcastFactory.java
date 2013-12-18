@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.service;
 
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.content.Intent;
 import android.content.IntentFilter;
 
@@ -15,7 +16,7 @@ public class BroadcastFactory {
 	public static final String ACTION_TRACKING = "TRACKING";
 
 	public static final String EXTRA_ROUTE = "ROUTE";
-	public static final String EXTRA_COMPLETION_INDEX = "COMPLETION_INDEX";
+	public static final String EXTRA_TRACK_RESULT = "TRACK_RESULT";
 	public static final String EXTRA_REPORT = "REPORT";
 	public static final String EXTRA_UPDATE = "UPDATE";
 
@@ -35,9 +36,9 @@ public class BroadcastFactory {
 		return intentFilter;
 	}
 
-	public static Intent createTrackingUpdateBroadcast(float completeIndex) {
+	public static Intent createTrackingBroadcast(TrackResult result) {
 		Intent i = createIntent(ACTION_TRACKING);
-		i.putExtra(EXTRA_COMPLETION_INDEX, completeIndex);
+		i.putExtra(EXTRA_TRACK_RESULT, result);
 		return i;
 	}
 

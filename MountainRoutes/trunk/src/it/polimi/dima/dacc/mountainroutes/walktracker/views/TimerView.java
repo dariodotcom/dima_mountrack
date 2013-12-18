@@ -7,22 +7,17 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class TimerView extends TextView implements TrackerListener {
+public class TimerView extends TextView implements TrackerListener,
+		Timer.Listener {
 
 	int pausedColor, runningColor;
 	private Timer timer;
-	private Timer.Listener timerListener = new Timer.Listener() {
-
-		@Override
-		public void onTime(long millis) {
-			setTime(millis);
-		}
-	};
 
 	// Default contructors
 	public TimerView(Context context, AttributeSet attrs, int defStyle) {
@@ -43,14 +38,12 @@ public class TimerView extends TextView implements TrackerListener {
 	// Tracker updates listener
 	@Override
 	public void onStartTracking(Route route) {
-		timer.start();
 		setTextColor(runningColor);
 	}
 
 	@Override
 	public void onStopTracking(ExcursionReport report) {
-		timer.stop();
-		setTextColor(pausedColor);
+
 	}
 
 	@Override
@@ -73,32 +66,23 @@ public class TimerView extends TextView implements TrackerListener {
 	}
 
 	@Override
-	public void onTrackingUpdate(float completionIndex) {
+	public void onTrackingUpdate(TrackResult result) {
 		// Do nothing!
 	}
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		// TODO Auto-generated method stub
-
+		backup.registerTimerListener(this);
 	}
 
 	@Override
-	public void onUnregister() {
-		// TODO Auto-generated method stub
-
+	public void onUnregister(LaggardBackup backup) {
+		backup.unregisterTimerListener(this);
 	}
 
-	private void init() {
-		timer = new Timer(timerListener);
-		Resources r = getContext().getResources();
-		pausedColor = r.getColor(R.color.timer_paused_text);
-		runningColor = r.getColor(R.color.timer_running_text);
-		setTime(0);
-	}
-
-	// Helpers
-	private void setTime(long millis) {
+	// Timer methods
+	@Override
+	public void onTime(long millis) {
 		String pattern = "%s:%s:%s";
 		int seconds = (int) (millis / 1000);
 		int minutes = (int) Math.floor(seconds / 60);
@@ -115,6 +99,13 @@ public class TimerView extends TextView implements TrackerListener {
 		setText(String.format(pattern, pan(hours), pan(minutes), pan(seconds)));
 	}
 
+	private void init() {
+		Resources r = getContext().getResources();
+		pausedColor = r.getColor(R.color.timer_paused_text);
+		runningColor = r.getColor(R.color.timer_running_text);
+		onTime(0L);
+	}
+
 	private String pan(int n) {
 		if (n > 9) {
 			return Integer.toString(n);
@@ -122,4 +113,5 @@ public class TimerView extends TextView implements TrackerListener {
 
 		return "0" + n;
 	}
+
 }

@@ -29,6 +29,9 @@ public class Tracker {
 			throw new IllegalStateException("Tracking is finished");
 		}
 
+		TrackResult.Builder resultBuilder = new TrackResult.Builder()
+				.realPosition(newPoint);
+
 		// Check distance from segment
 		double distance = currentSegment.distanceTo(newPoint);
 		Log.d(TAG, "distance from segment: " + distance);
@@ -36,7 +39,7 @@ public class Tracker {
 			// The user is too distant
 			throw new TrackerException(TrackerException.Type.FAR_FROM_ROUTE);
 		}
-		
+
 		// Update point
 		LatLng projection = currentSegment.project(newPoint);
 		Log.d(TAG, "projection: " + projection);
@@ -52,7 +55,8 @@ public class Tracker {
 			edge++;
 			segPercent = 0;
 			if (isFinished()) {
-				return new TrackResult(edge, path.get(edge));
+				return resultBuilder.completionIndex(edge)
+						.pointOnPath(path.get(edge)).build();
 			}
 
 			Log.d(TAG, "Moving to next segment");
@@ -61,7 +65,8 @@ public class Tracker {
 		}
 
 		segPercent = percent; // Update state;
-		return new TrackResult(edge + segPercent, projection);
+		return resultBuilder.completionIndex(edge + segPercent)
+				.pointOnPath(projection).build();
 	}
 
 	public boolean isFinished() {

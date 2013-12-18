@@ -1,7 +1,11 @@
 package it.polimi.dima.dacc.mountainroutes;
 
+import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
+import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
+import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +44,17 @@ public class MainActivity extends Activity {
 		Button savedRoutes = (Button) findViewById(R.id.main_my_routes_button);
 		savedRoutes.setOnClickListener(showSavedRoutesButtonListener);
 
+		RouteID id = new RouteID(
+				"e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+		Route dummy;
+		try {
+			dummy = RoutePersistence.create(this).loadRoute(id);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			return;
+		}
 		Intent i = new Intent(this, WalkingActivity.class);
+		i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
 		startActivity(i);
 	}
 

@@ -24,7 +24,9 @@ public class TrackerListenerManager {
 			return managers.get(context);
 		}
 
-		return new TrackerListenerManager(context);
+		TrackerListenerManager man = new TrackerListenerManager(context);
+		managers.put(context, man);
+		return man;
 	}
 
 	public static void clear(Context context) {
@@ -81,7 +83,7 @@ public class TrackerListenerManager {
 		TrackerReceiver adapter = mappings.get(listener);
 		mappings.remove(listener);
 		lbcMan.unregisterReceiver(adapter);
-		listener.onUnregister();
+		listener.onUnregister(backup);
 	}
 
 	private void clear() {

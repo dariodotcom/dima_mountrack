@@ -8,7 +8,7 @@
     tools:context=".WalkingActivity" >
 
     <it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView
-        android:id="@+id/timerView1"
+        android:id="@+id/timer_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"

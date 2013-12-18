@@ -8,6 +8,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 
 import android.content.res.Resources;
@@ -23,7 +24,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class RouteWalkFragment extends MapFragment implements TrackerListener {
 
 	private static final String TAG = "RouteWalkFragment";
-	
+
 	private ControllerWrapper ctrlWrapper;
 	private Polyline walkedLine, pendingLine;
 	private int pendingColor, walkedColor;
@@ -40,21 +41,9 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 
 		ctrlWrapper = new ControllerWrapper();
 
-		if (savedInstanceState != null) {
-			RouteWalkController controller = RouteWalkController
-					.loadFromSavedState(savedInstanceState);
-			ctrlWrapper.setController(controller);
-		}
-
 		Resources r = getActivity().getResources();
 		pendingColor = r.getColor(R.color.pending_line);
 		walkedColor = r.getColor(R.color.walked_line);
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		ctrlWrapper.saveState(outState);
 	}
 
 	@Override
@@ -74,23 +63,28 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 	}
 
 	@Override
-	public void onTrackingUpdate(float completionIndex) {
-		ctrlWrapper.setCompletionIndex(completionIndex);
+	public void onTrackingUpdate(TrackResult result) {
+		ctrlWrapper.update(result);
 		updateLines();
 	}
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		// TODO Auto-generated method stub
-		
+		if (backup.amILate()) {
+			Route r = backup.getRouteBeingTracked();
+			RouteWalkController ctrl = new RouteWalkController(r);
+			ctrlWrapper.setController(ctrl);
+			TrackResult lastResult = backup.getLastTrackResult();
+			ctrlWrapper.update(lastResult);
+		}
 	}
 
 	@Override
-	public void onUnregister() {
+	public void onUnregister(LaggardBackup backup) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private void updateLines() {
 		if (!linesInitialized) {
 			GoogleMap map = getMap();
@@ -117,17 +111,9 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 			this.controller = controller;
 		}
 
-		public void setCompletionIndex(float completionIndex) {
+		public void update(TrackResult result) {
 			if (controller != null) {
-				controller.setCompletionIndex(completionIndex);
-			} else {
-				Log.w(TAG, "calling setCompletionIndex but controller is null");
-			}
-		}
-
-		public void saveState(Bundle out) {
-			if (controller != null) {
-				controller.saveState(out);
+				controller.update(result);
 			} else {
 				Log.w(TAG, "calling setCompletionIndex but controller is null");
 			}

@@ -1,9 +1,15 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.receiver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
+import it.polimi.dima.dacc.mountainroutes.walktracker.Timer.Listener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
 /***
  * {@link TrackingService} observer that saves all received updates to allow
@@ -19,11 +25,14 @@ public class LaggardBackup implements TrackerListenerBase {
 	private boolean isMovingWhilePaused;
 	private boolean isGoingBackwards;
 	private boolean isGpsEnabled;
-	private long elapsedSeconds;
-	private float completionIndex;
-
+	private CompoundListener timerListeners;
+	private Timer timer;
+	private TrackResult lastTrackResult;
+	
 	/* Package */public LaggardBackup() {
 		isGpsEnabled = true;
+		timerListeners = new CompoundListener();
+		timer = new Timer(timerListeners);
 	}
 
 	public boolean amILate() {
@@ -40,10 +49,6 @@ public class LaggardBackup implements TrackerListenerBase {
 
 	public boolean isTrackingStopped() {
 		return isTrackingStopped;
-	}
-
-	public long getElapsedSeconds() {
-		return elapsedSeconds;
 	}
 
 	public boolean isTrackingStarted() {
@@ -66,8 +71,16 @@ public class LaggardBackup implements TrackerListenerBase {
 		return isGpsEnabled;
 	}
 
-	public float getCompletionIndex() {
-		return completionIndex;
+	public TrackResult getLastTrackResult(){
+		return lastTrackResult;
+	}
+
+	public void registerTimerListener(Listener listener) {
+		timerListeners.register(listener);
+	}
+
+	public void unregisterTimerListener(Listener listener) {
+		timerListeners.unregister(listener);
 	}
 
 	@Override
@@ -76,6 +89,7 @@ public class LaggardBackup implements TrackerListenerBase {
 		this.isTrackingPaused = false;
 		this.isTrackingStopped = false;
 		this.routeBeingTracked = route;
+		timer.start();
 	}
 
 	@Override
@@ -83,6 +97,7 @@ public class LaggardBackup implements TrackerListenerBase {
 		this.routeBeingTracked = null;
 		this.isTrackingPaused = false;
 		this.isTrackingStopped = true;
+		timer.stop();
 	}
 
 	@Override
@@ -90,9 +105,11 @@ public class LaggardBackup implements TrackerListenerBase {
 		switch (update) {
 		case EXCURSION_PAUSED:
 			isTrackingPaused = true;
+			timer.pause();
 			break;
 		case EXCURSION_RESUME:
 			isTrackingPaused = false;
+			timer.resume();
 			break;
 		case FAR_FROM_ROUTE:
 			isFarFromRoute = true;
@@ -110,6 +127,7 @@ public class LaggardBackup implements TrackerListenerBase {
 			break;
 		case FORCE_QUIT:
 			isTrackingStopped = true;
+			timer.stop();
 			break;
 		default:
 			break;
@@ -117,10 +135,35 @@ public class LaggardBackup implements TrackerListenerBase {
 	}
 
 	@Override
-	public void onTrackingUpdate(float completionIndex) {
-		this.completionIndex = completionIndex;
+	public void onTrackingUpdate(TrackResult result) {
+		this.lastTrackResult = result;
 		isGoingBackwards = false;
 		isMovingWhilePaused = false;
 		isFarFromRoute = false;
+	}
+	
+	private class CompoundListener implements Timer.Listener{
+
+		private List<Timer.Listener> registeredListeners;
+		
+		public CompoundListener(){
+			registeredListeners = new ArrayList<Timer.Listener>();
+		}
+		
+		public void register(Timer.Listener listener){
+			registeredListeners.add(listener);
+		}
+		
+		public void unregister(Timer.Listener listener){
+			registeredListeners.remove(listener);
+		}
+		
+		@Override
+		public void onTime(long millis) {
+			for(Timer.Listener l : registeredListeners){
+				l.onTime(millis);
+			}
+		}
+		
 	}
 }
