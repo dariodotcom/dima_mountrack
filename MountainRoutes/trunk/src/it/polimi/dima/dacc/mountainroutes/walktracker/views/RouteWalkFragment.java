@@ -15,8 +15,12 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -44,6 +48,14 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 		Resources r = getActivity().getResources();
 		pendingColor = r.getColor(R.color.pending_line);
 		walkedColor = r.getColor(R.color.walked_line);
+
+		getMap().setOnCameraChangeListener(new OnCameraChangeListener() {
+
+			@Override
+			public void onCameraChange(CameraPosition position) {
+				Log.d("map", position.toString());
+			}
+		});
 	}
 
 	@Override
@@ -65,7 +77,13 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 	@Override
 	public void onTrackingUpdate(TrackResult result) {
 		ctrlWrapper.update(result);
+		centerMap(result.getPointOnPath());
 		updateLines();
+	}
+
+	private void centerMap(LatLng pointOnPath) {
+		CameraUpdate u = CameraUpdateFactory.newLatLngZoom(pointOnPath, 19);
+		getMap().moveCamera(u);
 	}
 
 	@Override
@@ -82,7 +100,6 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 	@Override
 	public void onUnregister(LaggardBackup backup) {
 		// TODO Auto-generated method stub
-
 	}
 
 	private void updateLines() {
