@@ -9,15 +9,10 @@ import android.os.IBinder;
 public class TrackingService extends Service {
 
 	private TrackingWorker tWorker;
-	private LaggardBackup laggardBackup;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
-		// Create and register laggard backup
-		laggardBackup = new LaggardBackup(this);
-		laggardBackup.register();
 
 		// Create and start tracking worker thread
 		tWorker = new TrackingWorker(this);
@@ -27,7 +22,6 @@ public class TrackingService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		tWorker.quit();
-		laggardBackup.unregister();
 	}
 
 	@Override
@@ -62,10 +56,6 @@ public class TrackingService extends Service {
 
 		public boolean isTracking() {
 			return tWorker.isTracking();
-		}
-
-		public LaggardBackup getLaggardBackup() {
-			return laggardBackup;
 		}
 	}
 }
