@@ -34,6 +34,8 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	private TimerView timerView;
 	private TrackingControlWrapper controlWrapper;
 	private PauseResumeButton pauseResumeButton;
+	
+	private String quitMessage;
 
 	private boolean trackingInitialized = false;
 	private boolean finalizeOnDestroy = false;
@@ -55,6 +57,8 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		controlWrapper = new TrackingControlWrapper();
 		pauseResumeButton.attachToControl(controlWrapper);
 
+		quitMessage = getResources().getString(R.string.walking_quit_notify);
+		
 		// Load state
 		if (savedState != null) {
 			trackingInitialized = savedState.getBoolean(TRACKING_INITIALIZED);
@@ -184,7 +188,7 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 
 	private void confirmAndQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("message")
+		builder.setMessage(quitMessage)
 				.setCancelable(false)
 				.setPositiveButton(android.R.string.yes,
 						new DialogInterface.OnClickListener() {

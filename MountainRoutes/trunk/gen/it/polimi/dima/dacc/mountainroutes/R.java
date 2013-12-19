@@ -566,7 +566,10 @@ containing a value of this type.
         public static final int walking_activity_hiked_over_metres=0x7f06004c;
         public static final int walking_activity_pause=0x7f06004e;
         public static final int walking_activity_resume=0x7f06004f;
+        /**  walking 
+         */
         public static final int walking_activity_time_to_arrive=0x7f06004b;
+        public static final int walking_quit_notify=0x7f060050;
     }
     public static final class style {
         public static final int ActionBar=0x7f080001;
