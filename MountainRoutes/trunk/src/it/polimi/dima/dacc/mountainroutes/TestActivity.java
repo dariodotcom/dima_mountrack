@@ -46,7 +46,7 @@ public class TestActivity extends FragmentActivity {
 			Toast.makeText(TestActivity.this, "Service disconnected",
 					Toast.LENGTH_SHORT).show();
 			control = null;
-
+			
 			trackMan.unregisterListener(viewController);
 			trackMan.unregisterListener(loggerController);
 			trackMan.unregisterListener(timerView);

@@ -65,10 +65,13 @@
     <string name="about_description">Developed with love\n by GUFO Labs\n2013</string>
     <string name="about_logo">Gufo Labs Logo</string>
     <string name="title_activity_waking">WakingActivity</string>
+
+    <!-- walking -->
     <string name="walking_activity_time_to_arrive">Time to arrive</string>
     <string name="walking_activity_hiked_over_metres">Hiked over metres</string>
     <string name="walking_activity_end_walk">End walk</string>
     <string name="walking_activity_pause">Pause</string>
     <string name="walking_activity_resume">Resume</string>
+    <string name="walking_quit_notify">Are you sure you want to quit? You will lose your excursion progress.</string>
 
 </resources>
