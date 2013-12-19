@@ -17,13 +17,7 @@ public class TrackingService extends Service {
 		// Create and start tracking worker thread
 		tWorker = new TrackingWorker(this);
 	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		tWorker.quit();
-	}
-
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return START_STICKY;

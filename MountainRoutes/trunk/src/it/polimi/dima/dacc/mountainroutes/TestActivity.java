@@ -58,7 +58,8 @@ public class TestActivity extends FragmentActivity {
 			Toast.makeText(TestActivity.this, "Service connected",
 					Toast.LENGTH_SHORT).show();
 			control = (TrackingControl) service;
-			trackMan = TrackerListenerManager.inject(TestActivity.this);
+
+			// TODO load trackMan
 			trackMan.registerListener(viewController);
 			trackMan.registerListener(loggerController);
 			trackMan.registerListener(timerView);

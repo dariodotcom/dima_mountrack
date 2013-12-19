@@ -11,35 +11,36 @@ import android.support.v4.content.LocalBroadcastManager;
 
 public class TrackerListenerManager {
 
-	private static final Map<Context, TrackerListenerManager> managers = new HashMap<Context, TrackerListenerManager>();
+	private static TrackerListenerManager singletonInstance;
+	private static Object singletonLock;
+	
+	static {
+		singletonLock = new Object();
+	}
+	
 	private static final IntentFilter intentFilter = BroadcastFactory
 			.getCompleteIntentFilter();
 
-	public static TrackerListenerManager inject(Context context) {
+	public static TrackerListenerManager instantiate(Context context) {
 		if (context == null) {
 			throw new NullPointerException("context is null");
 		}
 
-		if (managers.keySet().contains(context)) {
-			return managers.get(context);
+		synchronized (singletonLock) {
+			if(singletonInstance == null){
+				Context appCtx = context.getApplicationContext();
+				singletonInstance = new TrackerListenerManager(appCtx);
+			}
+			
+			return singletonInstance;
 		}
-
-		TrackerListenerManager man = new TrackerListenerManager(context);
-		managers.put(context, man);
-		return man;
 	}
-
-	public static void clear(Context context) {
-		if (context == null) {
-			throw new NullPointerException("context is null");
+	
+	public static void unload(){
+		synchronized (singletonLock) {
+			singletonInstance.clear();
+			singletonInstance = null;
 		}
-
-		if (!managers.keySet().contains(context)) {
-			return;
-		}
-
-		managers.get(context).clear();
-		managers.remove(context);
 	}
 
 	private Map<TrackerListener, TrackerReceiver> mappings;
@@ -88,9 +89,12 @@ public class TrackerListenerManager {
 
 	private void clear() {
 		for (TrackerListener listener : mappings.keySet()) {
-			unregisterListener(listener);
+			TrackerReceiver adapter = mappings.get(listener);
+			lbcMan.unregisterReceiver(adapter);
+			listener.onUnregister(backup);
 		}
 
+		mappings.clear();
 		lbcMan.unregisterReceiver(backupReceiver);
 	}
 }

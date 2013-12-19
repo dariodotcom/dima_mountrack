@@ -9,12 +9,16 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.TrackingControlWrapper;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.util.Log;
@@ -28,9 +32,11 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	private RouteWalkFragment walkFragment;
 	private TrackerListenerManager trackMan;
 	private TimerView timerView;
-	private TrackingControl control;
+	private TrackingControlWrapper controlWrapper;
+	private PauseResumeButton pauseResumeButton;
 
-	private boolean trackingInitialized;
+	private boolean trackingInitialized = false;
+	private boolean finalizeOnDestroy = false;
 	private Route routeToTrack;
 
 	@Override
@@ -38,14 +44,21 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_walking);
 
+		// Load UI elements
 		walkFragment = (RouteWalkFragment) getFragmentManager()
 				.findFragmentById(R.id.walking_map);
 		timerView = (TimerView) findViewById(R.id.timer_view);
+		pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
 
-		trackMan = TrackerListenerManager.inject(this);
+		// Load components
+		trackMan = TrackerListenerManager.instantiate(this);
+		controlWrapper = new TrackingControlWrapper();
+		pauseResumeButton.attachToControl(controlWrapper);
 
-		trackingInitialized = savedState == null ? false : savedState
-				.getBoolean(TRACKING_INITIALIZED);
+		// Load state
+		if (savedState != null) {
+			trackingInitialized = savedState.getBoolean(TRACKING_INITIALIZED);
+		}
 
 		if (!trackingInitialized) {
 			if (savedState != null) {
@@ -55,8 +68,8 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 			}
 
 			if (routeToTrack == null) {
-				throw new IllegalStateException(
-						"Service not initialized but route to track not available");
+				String msg = "Service not initialized but route to track not available";
+				throw new IllegalStateException(msg);
 			}
 		}
 
@@ -75,28 +88,21 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
+	protected void onResume() {
+		super.onResume();
 		trackMan.registerListener(timerView);
 		trackMan.registerListener(walkFragment);
 		trackMan.registerListener(logger);
+		trackMan.registerListener(pauseResumeButton);
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
+	protected void onPause() {
+		super.onPause();
 		trackMan.unregisterListener(timerView);
 		trackMan.unregisterListener(walkFragment);
 		trackMan.unregisterListener(logger);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		TrackerListenerManager.clear(this);
-		unbindService(this);
-		Log.d("WalkingActivity", "destroyed!");
-		trackMan = null;
+		trackMan.unregisterListener(pauseResumeButton);
 	}
 
 	@Override
@@ -108,7 +114,8 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	// Service connection
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
-		control = (TrackingControl) service;
+		TrackingControl control = (TrackingControl) service;
+		controlWrapper.setControl(control);
 
 		if (!trackingInitialized) {
 			trackingInitialized = true;
@@ -119,7 +126,25 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		control = null;
+		controlWrapper.setControl(null);
+	}
+
+	@Override
+	public void onBackPressed() {
+		confirmAndQuit();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		if (finalizeOnDestroy) {
+			controlWrapper.stop(); // Stop service
+			trackMan = null;
+			TrackerListenerManager.unload(); // Unload manager
+		}
+
+		unbindService(this); // detach from service
 	}
 
 	private TrackerListener logger = new TrackerListener() {
@@ -156,4 +181,22 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 			Log.d(TAG, "registered! am i late? " + backup.amILate());
 		}
 	};
+
+	private void confirmAndQuit() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("message")
+				.setCancelable(false)
+				.setPositiveButton(android.R.string.yes,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finalizeOnDestroy = true;
+								WalkingActivity.super.onBackPressed();
+							}
+						}).setNegativeButton(android.R.string.cancel, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
 }

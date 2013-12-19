@@ -17,7 +17,6 @@ public class TimerView extends TextView implements TrackerListener,
 		Timer.Listener {
 
 	int pausedColor, runningColor;
-	private Timer timer;
 
 	// Default contructors
 	public TimerView(Context context, AttributeSet attrs, int defStyle) {
@@ -51,14 +50,11 @@ public class TimerView extends TextView implements TrackerListener,
 		switch (update) {
 		case EXCURSION_PAUSED:
 			setTextColor(pausedColor);
-			timer.pause();
 			break;
 		case EXCURSION_RESUME:
 			setTextColor(runningColor);
-			timer.resume();
 			break;
 		case FORCE_QUIT:
-			timer.stop();
 			break;
 		default:
 			break;
