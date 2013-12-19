@@ -1,5 +1,8 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
@@ -16,7 +19,8 @@ import android.widget.TextView;
 public class TimerView extends TextView implements TrackerListener,
 		Timer.Listener {
 
-	int pausedColor, runningColor;
+	private int pausedColor, runningColor;
+	private DateFormat format;
 
 	// Default contructors
 	public TimerView(Context context, AttributeSet attrs, int defStyle) {
@@ -79,35 +83,16 @@ public class TimerView extends TextView implements TrackerListener,
 	// Timer methods
 	@Override
 	public void onTime(long millis) {
-		String pattern = "%s:%s:%s";
-		int seconds = (int) (millis / 1000);
-		int minutes = (int) Math.floor(seconds / 60);
-		int hours = (int) Math.floor(minutes / 60);
-
-		if (seconds >= 60) {
-			seconds = seconds % 60;
-		}
-
-		if (minutes >= 60) {
-			minutes = minutes % 60;
-		}
-
-		setText(String.format(pattern, pan(hours), pan(minutes), pan(seconds)));
+		Date d = new Date(millis);
+		String text = format.format(d);
+		setText(text);
 	}
 
 	private void init() {
 		Resources r = getContext().getResources();
 		pausedColor = r.getColor(R.color.timer_paused_text);
 		runningColor = r.getColor(R.color.timer_running_text);
+		format = android.text.format.DateFormat.getTimeFormat(getContext());
 		onTime(0L);
 	}
-
-	private String pan(int n) {
-		if (n > 9) {
-			return Integer.toString(n);
-		}
-
-		return "0" + n;
-	}
-
 }
