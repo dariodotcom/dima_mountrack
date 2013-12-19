@@ -108,7 +108,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 
 		assertState(State.READY);
 
-		this.tracker = new Tracker(route.getPath());
+		this.tracker = Tracker.create(route);
 		this.report = new ExcursionReport(route.getId());
 
 		// Start worker

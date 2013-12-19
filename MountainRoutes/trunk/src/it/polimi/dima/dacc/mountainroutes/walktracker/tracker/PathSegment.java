@@ -8,11 +8,11 @@ public abstract class PathSegment {
 		// No other subclasses, thanks!
 	}
 
-	public static PathSegment create(LatLng start, LatLng end) {
+	public static PathSegment create(LatLng start, LatLng end, int index) {
 		if (start.longitude == end.longitude) {
-			return new VerticalPathSegment(start, end);
+			return new VerticalPathSegment(start, end, index);
 		} else {
-			return new GenericPathSegment(start, end);
+			return new GenericPathSegment(start, end, index);
 		}
 	}
 
@@ -22,19 +22,25 @@ public abstract class PathSegment {
 
 	public abstract double distanceTo(LatLng p);
 
+	public abstract int getIndex();
+
 	// Implementation for non vertical segments
 	private static class GenericPathSegment extends PathSegment {
 		private LatLng start, end;
 		private double slope, perpSlope, yntercept;
+		private int index;
 
-		private GenericPathSegment(LatLng start, LatLng end) {
+		private GenericPathSegment(LatLng start, LatLng end, int index) {
 			this.start = start;
 			this.end = end;
+			this.index = index;
+
 			this.slope = GeomUtils.slope(start, end);
 			this.perpSlope = GeomUtils.perpendicularSlope(slope);
 			this.yntercept = GeomUtils.yntercept(start, slope);
 		}
 
+		@Override
 		public LatLng project(LatLng point) {
 			double perpYntercept = GeomUtils.yntercept(point, perpSlope);
 			double xp = -(yntercept - perpYntercept) / (slope - perpSlope);
@@ -43,12 +49,19 @@ public abstract class PathSegment {
 			return GeomUtils.toLatLng(xp, yp);
 		}
 
+		@Override
 		public float percentOf(LatLng point) {
 			return GeomUtils.percent(start, end, point);
 		}
 
+		@Override
 		public double distanceTo(LatLng p) {
 			return 0.0;
+		}
+
+		@Override
+		public int getIndex() {
+			return index;
 		}
 	}
 
@@ -56,10 +69,12 @@ public abstract class PathSegment {
 	private static class VerticalPathSegment extends PathSegment {
 
 		private LatLng start, end;
+		private int index;
 
-		private VerticalPathSegment(LatLng start, LatLng end) {
+		private VerticalPathSegment(LatLng start, LatLng end, int index) {
 			this.start = start;
 			this.end = end;
+			this.index = index;
 		}
 
 		@Override
@@ -76,6 +91,11 @@ public abstract class PathSegment {
 		public double distanceTo(LatLng p) {
 			// TODO Auto-generated method stub
 			return 0;
+		}
+
+		@Override
+		public int getIndex() {
+			return index;
 		}
 	}
 }
