@@ -71,24 +71,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <Button
-                android:id="@+id/resume_walk"
+            <it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton
+                android:id="@+id/pause_resume_button"
                 style="@style/widget_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:text="@string/walking_activity_resume"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/pause_walk"
-                style="@style/widget_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:text="@string/walking_activity_pause" />
+                android:layout_alignParentLeft="true" />
 
             <Button
                 android:id="@+id/end_walk"

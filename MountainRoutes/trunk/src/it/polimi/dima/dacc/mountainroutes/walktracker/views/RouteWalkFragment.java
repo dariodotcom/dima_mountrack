@@ -93,7 +93,9 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 			RouteWalkController ctrl = new RouteWalkController(r);
 			ctrlWrapper.setController(ctrl);
 			TrackResult lastResult = backup.getLastTrackResult();
-			ctrlWrapper.update(lastResult);
+			if (lastResult != null) {
+				ctrlWrapper.update(lastResult);
+			}
 		}
 	}
 
