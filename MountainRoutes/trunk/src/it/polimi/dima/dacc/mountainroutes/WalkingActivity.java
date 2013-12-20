@@ -1,14 +1,15 @@
 package it.polimi.dima.dacc.mountainroutes;
 
-import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
+import java.util.ArrayList;
+import java.util.List;
+
 import it.polimi.dima.dacc.mountainroutes.types.Route;
-import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
-import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
-import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
@@ -21,20 +22,20 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 public class WalkingActivity extends Activity implements ServiceConnection {
 
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";
 	private static final String TRACKING_INITIALIZED = "tracking_initialized";
 
-	private RouteWalkFragment walkFragment;
+	private List<TrackerListener> listeners;
 	private TrackerListenerManager trackMan;
-	private TimerView timerView;
 	private TrackingControlWrapper controlWrapper;
-	private PauseResumeButton pauseResumeButton;
-	
+	private NotificationsEmitter emitter;
+
 	private String quitMessage;
 
 	private boolean trackingInitialized = false;
@@ -47,18 +48,29 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		setContentView(R.layout.activity_walking);
 
 		// Load UI elements
-		walkFragment = (RouteWalkFragment) getFragmentManager()
+		RouteWalkFragment walkFragment = (RouteWalkFragment) getFragmentManager()
 				.findFragmentById(R.id.walking_map);
-		timerView = (TimerView) findViewById(R.id.timer_view);
-		pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
+		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
+		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
+		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
+		Button endWalk = (Button) findViewById(R.id.end_walk);
+		endWalk.setOnClickListener(quitButtonListener);
+
+		// Add listeners to list
+		listeners = new ArrayList<TrackerListener>();
+		listeners.add(timerView);
+		listeners.add(walkFragment);
+		listeners.add(pauseResumeButton);
+		listeners.add(missingTimeView);
 
 		// Load components
-		trackMan = TrackerListenerManager.instantiate(this);
+		trackMan = TrackerListenerManager.getManager(this);
+		emitter = NotificationsEmitter.getEmitter(this);
 		controlWrapper = new TrackingControlWrapper();
 		pauseResumeButton.attachToControl(controlWrapper);
 
 		quitMessage = getResources().getString(R.string.walking_quit_notify);
-		
+
 		// Load state
 		if (savedState != null) {
 			trackingInitialized = savedState.getBoolean(TRACKING_INITIALIZED);
@@ -94,19 +106,34 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		trackMan.registerListener(timerView);
-		trackMan.registerListener(walkFragment);
-		trackMan.registerListener(logger);
-		trackMan.registerListener(pauseResumeButton);
+		
+		emitter.dismiss();
+		for (TrackerListener listener : listeners) {
+			trackMan.registerListener(listener);
+		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		trackMan.unregisterListener(timerView);
-		trackMan.unregisterListener(walkFragment);
-		trackMan.unregisterListener(logger);
-		trackMan.unregisterListener(pauseResumeButton);
+		
+		emitter.turnOn();
+		for (TrackerListener listener : listeners) {
+			trackMan.unregisterListener(listener);
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		// Detach this activity from service
+		unbindService(this);
+
+		if (finalizeOnDestroy) {
+			controlWrapper.stop();
+			TrackerListenerManager.unload();
+		}
+
+		super.onDestroy();
 	}
 
 	@Override
@@ -131,76 +158,35 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		controlWrapper.setControl(null);
+		trackMan = null;
+		TrackerListenerManager.unload();
 	}
 
-	@Override
-	public void onBackPressed() {
-		confirmAndQuit();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
-		if (finalizeOnDestroy) {
-			controlWrapper.stop(); // Stop service
-			trackMan = null;
-			TrackerListenerManager.unload(); // Unload manager
-		}
-
-		unbindService(this); // detach from service
-	}
-
-	private TrackerListener logger = new TrackerListener() {
-
-		private final static String TAG = "ServiceListener";
+	// Helpers
+	private View.OnClickListener quitButtonListener = new View.OnClickListener() {
 
 		@Override
-		public void onTrackingUpdate(TrackResult result) {
-			Log.d(TAG, "tracking update: " + result);
-		}
-
-		@Override
-		public void onStopTracking(ExcursionReport report) {
-			Log.d(TAG, "stop tracking:" + report);
-		}
-
-		@Override
-		public void onStatusUpdate(UpdateType update) {
-			Log.d(TAG, "update: " + update);
-		}
-
-		@Override
-		public void onStartTracking(Route route) {
-			Log.d(TAG, "onStartTracking: " + route);
-		}
-
-		@Override
-		public void onUnregister(LaggardBackup backup) {
-			Log.d(TAG, "unregistered!");
-		}
-
-		@Override
-		public void onRegister(LaggardBackup backup) {
-			Log.d(TAG, "registered! am i late? " + backup.amILate());
+		public void onClick(View arg0) {
+			assureUserWantsToQuit();
 		}
 	};
 
-	private void confirmAndQuit() {
+	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(quitMessage)
-				.setCancelable(false)
-				.setPositiveButton(android.R.string.yes,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								finalizeOnDestroy = true;
-								WalkingActivity.super.onBackPressed();
-							}
-						}).setNegativeButton(android.R.string.cancel, null);
+		builder.setMessage(quitMessage).setCancelable(false)
+				.setPositiveButton(android.R.string.yes, quitter)
+				.setNegativeButton(android.R.string.cancel, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
+
+	private DialogInterface.OnClickListener quitter = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface arg0, int arg1) {
+			WalkingActivity activity = WalkingActivity.this;
+			activity.finalizeOnDestroy = true;
+			activity.setResult(RESULT_CANCELED);
+			activity.finish();
+		}
+	};
 }
