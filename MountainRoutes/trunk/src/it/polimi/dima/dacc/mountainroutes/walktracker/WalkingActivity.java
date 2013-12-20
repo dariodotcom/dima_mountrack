@@ -1,8 +1,9 @@
-package it.polimi.dima.dacc.mountainroutes;
+package it.polimi.dima.dacc.mountainroutes.walktracker;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;

@@ -6,6 +6,7 @@ import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
+import it.polimi.dima.dacc.mountainroutes.walktracker.WalkingActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
