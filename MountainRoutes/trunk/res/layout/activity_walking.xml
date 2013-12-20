@@ -38,12 +38,11 @@
             android:text="@string/walking_activity_time_to_arrive"
             android:textSize="20sp" />
 
-        <TextView
+        <it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView
             android:id="@+id/time_to_arrive_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/walking_activity_time_to_arrive" />
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -73,8 +72,8 @@
         android:layout_height="wrap_content" >
 
         <it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton
-            style="@style/widget_button"
             android:id="@+id/pause_resume_button"
+            style="@style/widget_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -88,7 +87,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="@string/walking_activity_end_walk" />
-
     </RelativeLayout>
 
 </LinearLayout>

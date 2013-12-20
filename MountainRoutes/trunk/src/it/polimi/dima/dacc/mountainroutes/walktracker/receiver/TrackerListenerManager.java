@@ -21,7 +21,7 @@ public class TrackerListenerManager {
 	private static final IntentFilter intentFilter = BroadcastFactory
 			.getCompleteIntentFilter();
 
-	public static TrackerListenerManager instantiate(Context context) {
+	public static TrackerListenerManager getManager(Context context) {
 		if (context == null) {
 			throw new NullPointerException("context is null");
 		}
