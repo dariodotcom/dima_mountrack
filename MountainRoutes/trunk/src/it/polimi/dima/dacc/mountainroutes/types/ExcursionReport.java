@@ -19,6 +19,11 @@ public class ExcursionReport implements Parcelable {
 		this.date = new Date();
 	}
 
+	public ExcursionReport(RouteID id, Date date) {
+		this.id = id;
+		this.date = date;
+	}
+
 	public float getCompletionIndex() {
 		return completionIndex;
 	}

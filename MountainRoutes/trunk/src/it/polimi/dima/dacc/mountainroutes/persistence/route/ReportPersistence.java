@@ -4,9 +4,8 @@ import java.util.Date;
 
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
 
+import it.polimi.dima.dacc.mountainroutes.types.ExcursionList;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
-import it.polimi.dima.dacc.mountainroutes.types.ExcursionSummary;
-import it.polimi.dima.dacc.mountainroutes.types.ExcursionSummaryList;
 
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 
@@ -18,9 +17,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ReportPersistence {
 
-	private static String[] allColumns = { DbHelper.COLUMN_ROUTE_ID,
-			DbHelper.COLUMN_KEY, DbHelper.COLUMN_COMPLETION_INDEX,
-			DbHelper.COLUMN_ELAPSED_SECONDS, DbHelper.COLUMN_DATE,
+	private static String[] allColumns = { DbHelper.COLUMN_ROUTE_ID, DbHelper.COLUMN_KEY,
+			DbHelper.COLUMN_COMPLETION_INDEX, DbHelper.COLUMN_ELAPSED_SECONDS, DbHelper.COLUMN_DATE,
 			DbHelper.COLUMN_GAP, DbHelper.COLUMN_LENGTH_IN_METERS };
 
 	private DbHelper helper;
@@ -41,46 +39,26 @@ public class ReportPersistence {
 		this.helper.close();
 	}
 
-	public ExcursionSummaryList getAvailableExcursions()
-			throws PersistenceException {
-		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, null,
-				null, null, null, null);
-		ExcursionSummaryList summaryList = new ExcursionSummaryList();
+	public ExcursionList getAvailableExcursions() throws PersistenceException {
+		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, null, null, null, null, null);
+		ExcursionList summaryList = new ExcursionList();
 
 		while (c.moveToNext()) {
-			summaryList.addExcursionSummary(excursionSummaryFromCursor(c,
-					context));
+			ExcursionReport report = excursionReportFromCursor(c, context);
+			summaryList.addExcursionReport(report);
 		}
 
 		return summaryList;
 	}
 
-	public ExcursionReport loadExcursion(int excursionId)
-			throws PersistenceException {
-		String where = DbHelper.COLUMN_KEY + "= ?";
-		String[] whereArgs = new String[] { String.valueOf(excursionId) };
-		Cursor c = database.query(DbHelper.DATABASE_TABLE, allColumns, where,
-				whereArgs, null, null, null);
-
-		if (!c.moveToFirst()) {
-			return null;
-		}
-
-		return excursionFromCursor(c, context);
-	}
-
-	public void persistExcursion(ExcursionReport excursion)
-			throws PersistenceException {
+	public void persistExcursionReport(ExcursionReport excursion) throws PersistenceException {
 
 		ContentValues values = new ContentValues();
 		values.put(DbHelper.COLUMN_ROUTE_ID, excursion.getId().toString());
-		values.put(DbHelper.COLUMN_COMPLETION_INDEX,
-				excursion.getCompletionIndex());
+		values.put(DbHelper.COLUMN_COMPLETION_INDEX, excursion.getCompletionIndex());
 		values.put(DbHelper.COLUMN_DATE, excursion.getDate().toString());
-		values.put(DbHelper.COLUMN_ELAPSED_SECONDS,
-				excursion.getElapsedSeconds());
-		values.put(DbHelper.COLUMN_LENGTH_IN_METERS,
-				excursion.getLengthInMeters());
+		values.put(DbHelper.COLUMN_ELAPSED_SECONDS, excursion.getElapsedSeconds());
+		values.put(DbHelper.COLUMN_LENGTH_IN_METERS, excursion.getLengthInMeters());
 		values.put(DbHelper.COLUMN_GAP, excursion.getGap());
 
 		if (database.insert(DbHelper.DATABASE_TABLE, null, values) == -1) {
@@ -95,21 +73,18 @@ public class ReportPersistence {
 		database.delete(DbHelper.DATABASE_TABLE, where, whereArgs);
 	}
 
-	private static ExcursionReport excursionFromCursor(Cursor cursor,
-			Context context) throws PersistenceException {
+	private static ExcursionReport excursionReportFromCursor(Cursor cursor, Context context)
+			throws PersistenceException {
 		// Route ID
-		int routeIdIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_ROUTE_ID);
+		int routeIdIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ROUTE_ID);
 		RouteID routeId = new RouteID(cursor.getString(routeIdIndex));
 
 		// Completion index
-		int completionIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_COMPLETION_INDEX);
-		float completion = cursor.getFloat(completionIndex);
+		int completionIndexIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_COMPLETION_INDEX);
+		float completionIndex = cursor.getFloat(completionIndexIndex);
 
 		// Elapsed seconds
-		int elapsedIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_ELAPSED_SECONDS);
+		int elapsedIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ELAPSED_SECONDS);
 		int elapsed = cursor.getInt(elapsedIndex);
 
 		// Date
@@ -121,60 +96,16 @@ public class ReportPersistence {
 		int gap = cursor.getInt(gapIndex);
 
 		// Length in meters
-		int lengthIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_LENGTH_IN_METERS);
+		int lengthIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_LENGTH_IN_METERS);
 		int length = cursor.getInt(lengthIndex);
 
-		ExcursionReport excursionReport = new ExcursionReport(routeId);
+		ExcursionReport excursionReport = new ExcursionReport(routeId, date);
 		excursionReport.setCompletionIndex(completionIndex);
 		excursionReport.setElapsedSeconds(elapsed);
 		excursionReport.setGap(gap);
 		excursionReport.setLengthInMeters(length);
 
 		return excursionReport;
-	}
-
-	private static ExcursionSummary excursionSummaryFromCursor(Cursor cursor,
-			Context context) throws PersistenceException {
-
-		// Route ID
-		int routeIdIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_ROUTE_ID);
-		RouteID routeId = new RouteID(cursor.getString(routeIdIndex));
-
-		// Completion index
-		int completionIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_COMPLETION_INDEX);
-		float completion = cursor.getFloat(completionIndex);
-
-		// Elapsed seconds
-		int elapsedIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_ELAPSED_SECONDS);
-		int elapsed = cursor.getInt(elapsedIndex);
-
-		// Date
-		int dateIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_DATE);
-		Date date = new Date(cursor.getLong(dateIndex));
-
-		// Gap
-		int gapIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_GAP);
-		int gap = cursor.getInt(gapIndex);
-
-		// Length in meters
-		int lengthIndex = cursor
-				.getColumnIndexOrThrow(DbHelper.COLUMN_LENGTH_IN_METERS);
-		int length = cursor.getInt(lengthIndex);
-
-		ExcursionSummary summary = new ExcursionSummary();
-
-		summary.setRouteId(routeId);
-		summary.setCompletionIndex(completionIndex);
-		summary.setElapsedSeconds(elapsed);
-		summary.setDate(date);
-		summary.setGap(gap);
-		summary.setLengthInMeters(length);
-
-		return summary;
 	}
 
 	// Class to handle the database
@@ -192,19 +123,17 @@ public class ReportPersistence {
 		public static final String COLUMN_LENGTH_IN_METERS = "length_in_meters";
 
 		public static final String DATABASE_CREATE_SQL = String.format(
-				"CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT,"
-						+ " %s TEXT NOT NULL," + // Report ID
+				"CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," + " %s TEXT NOT NULL," + // Report
+																									// ID
 						" %s REAL NOT NULL," + // Completion Index
 						" %s INTEGER NOT NULL," + // Elapsed seconds
 						" %s INTEGER NOT NULL," + // Date
 						" %s INTEGER NOT NULL," + // Gap
 						" %s INTEGER NOT NULL);", // Length in meters
-				DATABASE_TABLE, COLUMN_KEY, COLUMN_ROUTE_ID,
-				COLUMN_COMPLETION_INDEX, COLUMN_ELAPSED_SECONDS, COLUMN_DATE,
-				COLUMN_GAP, COLUMN_LENGTH_IN_METERS);
+				DATABASE_TABLE, COLUMN_KEY, COLUMN_ROUTE_ID, COLUMN_COMPLETION_INDEX, COLUMN_ELAPSED_SECONDS,
+				COLUMN_DATE, COLUMN_GAP, COLUMN_LENGTH_IN_METERS);
 
-		public static final String DATABASE_DROP_SQL = "DROP TABLE IF EXISTS "
-				+ DATABASE_TABLE;
+		public static final String DATABASE_DROP_SQL = "DROP TABLE IF EXISTS " + DATABASE_TABLE;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
