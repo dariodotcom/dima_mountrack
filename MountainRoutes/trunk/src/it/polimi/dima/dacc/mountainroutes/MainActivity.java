@@ -1,7 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
-import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.Route;

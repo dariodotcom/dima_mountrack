@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.persistence;
+package it.polimi.dima.dacc.mountainroutes.persistence.route;
 
 import org.json.JSONArray;
 import org.json.JSONException;
