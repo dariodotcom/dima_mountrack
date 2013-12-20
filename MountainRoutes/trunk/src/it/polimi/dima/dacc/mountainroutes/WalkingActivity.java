@@ -8,6 +8,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
@@ -16,17 +17,17 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TrackingControlWrapper;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
-public class WalkingActivity extends Activity implements ServiceConnection {
+public class WalkingActivity extends FragmentActivity implements ServiceConnection {
 
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";
 	private static final String TRACKING_INITIALIZED = "tracking_initialized";
@@ -48,13 +49,13 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		setContentView(R.layout.activity_walking);
 
 		// Load UI elements
-		RouteWalkFragment walkFragment = (RouteWalkFragment) getFragmentManager()
-				.findFragmentById(R.id.walking_map);
+		RouteWalkFragment walkFragment = (RouteWalkFragment) getFragmentManager().findFragmentById(R.id.walking_map);
 		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
 		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
 		Button endWalk = (Button) findViewById(R.id.end_walk);
 		endWalk.setOnClickListener(quitButtonListener);
+		AltitudeViewFragment altitudeView = (AltitudeViewFragment) getSupportFragmentManager().findFragmentById(R.id.altitude_view_fragment);
 
 		// Add listeners to list
 		listeners = new ArrayList<TrackerListener>();
@@ -62,6 +63,7 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 		listeners.add(walkFragment);
 		listeners.add(pauseResumeButton);
 		listeners.add(missingTimeView);
+		listeners.add(altitudeView);
 
 		// Load components
 		trackMan = TrackerListenerManager.getManager(this);
@@ -106,7 +108,7 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		emitter.dismiss();
 		for (TrackerListener listener : listeners) {
 			trackMan.registerListener(listener);
@@ -116,7 +118,7 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+
 		emitter.turnOn();
 		for (TrackerListener listener : listeners) {
 			trackMan.unregisterListener(listener);
@@ -173,8 +175,7 @@ public class WalkingActivity extends Activity implements ServiceConnection {
 
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(quitMessage).setCancelable(false)
-				.setPositiveButton(android.R.string.yes, quitter)
+		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter)
 				.setNegativeButton(android.R.string.cancel, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();

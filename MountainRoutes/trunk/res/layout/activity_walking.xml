@@ -59,12 +59,12 @@
             android:layout_alignParentLeft="true"
             android:text="@string/walking_activity_hiked_over_metres" />
 
-        <TextView
-            android:id="@+id/hiked_over_metres_value"
+        <fragment
+            android:id="@+id/altitude_view_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/walking_activity_hiked_over_metres" />
+            class="it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment" />
     </RelativeLayout>
 
     <RelativeLayout
