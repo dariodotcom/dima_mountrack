@@ -6,7 +6,7 @@ import android.util.Log;
 import it.polimi.dima.dacc.mountainroutes.loader.GenericLoader;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
-import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentConnector;
 import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentManager;
 import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;

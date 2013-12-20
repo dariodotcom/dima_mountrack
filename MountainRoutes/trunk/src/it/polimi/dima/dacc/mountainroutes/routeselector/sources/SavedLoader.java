@@ -5,7 +5,7 @@ import android.widget.EditText;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
-import it.polimi.dima.dacc.mountainroutes.persistence.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 /**

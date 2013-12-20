@@ -1,6 +1,7 @@
-package it.polimi.dima.dacc.mountainroutes.persistence;
+package it.polimi.dima.dacc.mountainroutes.persistence.route;
 
-import it.polimi.dima.dacc.mountainroutes.persistence.PointListConverter.ConverterException;
+import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
+import it.polimi.dima.dacc.mountainroutes.persistence.route.PointListConverter.ConverterException;
 import it.polimi.dima.dacc.mountainroutes.types.Difficulty;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
