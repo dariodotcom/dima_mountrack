@@ -28,7 +28,6 @@ public class RouteSummary implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
 		dest.writeString(id.toString());
 		dest.writeString(name);
 		dest.writeString(difficulty.name());
