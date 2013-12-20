@@ -1,4 +1,4 @@
-package it.polimi.dima.dacc.mountainroutes.persistence.route;
+package it.polimi.dima.dacc.mountainroutes.persistence.report;
 
 import java.util.Date;
 
