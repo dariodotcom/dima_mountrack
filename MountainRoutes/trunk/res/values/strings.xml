@@ -73,4 +73,7 @@
     <string name="walking_activity_pause">Pause</string>
     <string name="walking_activity_resume">Resume</string>
     <string name="walking_quit_notify">Are you sure you want to quit? You will lose your excursion progress.</string>
+    <string name="title_activity_report_selector">ReportSelectorActivity</string>
+    <string name="title_activity_report_viewer">ReportViewer</string>
+
 </resources>

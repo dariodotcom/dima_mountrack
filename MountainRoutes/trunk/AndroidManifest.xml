@@ -69,8 +69,16 @@
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name="it.polimi.dima.dacc.mountainroutes.WalkingActivity"
+            android:name="it.polimi.dima.dacc.mountainroutes.walktracker.WalkingActivity"
             android:label="@string/title_activity_waking" >
+        </activity>
+        <activity
+            android:name="it.polimi.dima.dacc.mountainroutes.reportviewer.ReportSelectorActivity"
+            android:label="@string/title_activity_report_selector" >
+        </activity>
+        <activity
+            android:name="it.polimi.dima.dacc.mountainroutes.reportviewer.ReportViewer"
+            android:label="@string/title_activity_report_viewer" >
         </activity>
     </application>
 

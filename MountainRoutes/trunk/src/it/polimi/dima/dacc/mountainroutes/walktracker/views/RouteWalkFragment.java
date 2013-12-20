@@ -21,18 +21,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RouteWalkFragment extends MapFragment implements TrackerListener {
 
+	private static final int RADIUS = 5;
+
 	private static final String TAG = "RouteWalkFragment";
 
 	private ControllerWrapper ctrlWrapper;
 	private Polyline walkedLine, pendingLine;
 	private int pendingColor, walkedColor;
-	private boolean linesInitialized = false;
+	private boolean shapesInitialized = false;
 
 	// Default constructor
 	public RouteWalkFragment() {
@@ -62,6 +65,7 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 	public void onStartTracking(Route route) {
 		RouteWalkController controller = new RouteWalkController(route);
 		ctrlWrapper.setController(controller);
+		updateLines();
 	}
 
 	@Override
@@ -96,6 +100,7 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 			if (lastResult != null) {
 				ctrlWrapper.update(lastResult);
 			}
+			updateLines();
 		}
 	}
 
@@ -104,18 +109,35 @@ public class RouteWalkFragment extends MapFragment implements TrackerListener {
 		// TODO Auto-generated method stub
 	}
 
-	private void updateLines() {
-		if (!linesInitialized) {
-			GoogleMap map = getMap();
-			walkedLine = map.addPolyline(new PolylineOptions()
-					.color(walkedColor));
-			pendingLine = map.addPolyline(new PolylineOptions()
-					.color(pendingColor));
-			linesInitialized = true;
+	private void initializeShapes() {
+		if (shapesInitialized) {
+			return;
 		}
 
 		List<LatLng> walkedPath = ctrlWrapper.getWalkedPath();
 		List<LatLng> pendingPath = ctrlWrapper.getPendingPath();
+
+		GoogleMap map = getMap();
+
+		walkedLine = map.addPolyline(new PolylineOptions().color(walkedColor).addAll(walkedPath));
+		pendingLine = map.addPolyline(new PolylineOptions().color(pendingColor).addAll(pendingPath));
+
+		LatLng startPoint = walkedPath.get(0);
+		LatLng endPoint = walkedPath.get(walkedPath.size() - 1);
+
+		map.addCircle(new CircleOptions().fillColor(walkedColor).center(startPoint).radius(RADIUS));
+		map.addCircle(new CircleOptions().fillColor(pendingColor).center(endPoint).radius(RADIUS));
+
+		shapesInitialized = true;
+	}
+
+	private void updateLines() {
+		List<LatLng> walkedPath = ctrlWrapper.getWalkedPath();
+		List<LatLng> pendingPath = ctrlWrapper.getPendingPath();
+
+		if (!shapesInitialized) {
+			initializeShapes();
+		}
 
 		if (walkedPath != null && pendingPath != null) {
 			walkedLine.setPoints(walkedPath);
