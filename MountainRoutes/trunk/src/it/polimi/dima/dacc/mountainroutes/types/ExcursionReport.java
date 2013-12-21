@@ -7,21 +7,31 @@ import android.os.Parcelable;
 
 public class ExcursionReport implements Parcelable {
 
-	private RouteID id;
+	private int id;
+	private RouteID routeId;
 	private float completionIndex;
 	private int elapsedSeconds;
 	private Date date;
 	private int gap;
 	private int lengthInMeters;
 
-	public ExcursionReport(RouteID id) {
-		this.id = id;
+	public ExcursionReport(RouteID routeId) {
+		this.routeId = routeId;
 		this.date = new Date();
+		
 	}
 
 	public ExcursionReport(RouteID id, Date date) {
-		this.id = id;
+		this.routeId = id;
 		this.date = date;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId(){
+		return id;
 	}
 
 	public float getCompletionIndex() {
@@ -60,8 +70,8 @@ public class ExcursionReport implements Parcelable {
 		this.lengthInMeters = lengthInMeters;
 	}
 
-	public RouteID getId() {
-		return id;
+	public RouteID getRouteId() {
+		return routeId;
 	}
 
 	@Override
@@ -75,7 +85,7 @@ public class ExcursionReport implements Parcelable {
 		date = new Date(in.readLong());
 		elapsedSeconds = in.readInt();
 		gap = in.readInt();
-		id = in.readParcelable(RouteID.class.getClassLoader());
+		routeId = in.readParcelable(RouteID.class.getClassLoader());
 		lengthInMeters = in.readInt();
 	}
 
@@ -85,7 +95,7 @@ public class ExcursionReport implements Parcelable {
 		dest.writeLong(date.getTime());
 		dest.writeInt(elapsedSeconds);
 		dest.writeInt(gap);
-		dest.writeParcelable(id, 0);
+		dest.writeParcelable(routeId, 0);
 		dest.writeInt(lengthInMeters);
 	}
 

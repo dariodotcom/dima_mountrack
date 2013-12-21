@@ -76,4 +76,6 @@
     <string name="title_activity_report_selector">ReportSelectorActivity</string>
     <string name="title_activity_report_viewer">ReportViewer</string>
 
+    <string name="title_activity_report_list">ReportListActivity</string>
+
 </resources>
