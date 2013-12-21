@@ -54,7 +54,7 @@ public class ReportPersistence {
 	public void persistExcursionReport(ExcursionReport excursion) throws PersistenceException {
 
 		ContentValues values = new ContentValues();
-		values.put(DbHelper.COLUMN_ROUTE_ID, excursion.getId().toString());
+		values.put(DbHelper.COLUMN_ROUTE_ID, excursion.getRouteId().toString());
 		values.put(DbHelper.COLUMN_COMPLETION_INDEX, excursion.getCompletionIndex());
 		values.put(DbHelper.COLUMN_DATE, excursion.getDate().toString());
 		values.put(DbHelper.COLUMN_ELAPSED_SECONDS, excursion.getElapsedSeconds());
@@ -75,6 +75,10 @@ public class ReportPersistence {
 
 	private static ExcursionReport excursionReportFromCursor(Cursor cursor, Context context)
 			throws PersistenceException {
+		// Key
+		int keyIndex = cursor.getColumnIndex(DbHelper.COLUMN_KEY);
+		int key = cursor.getInt(keyIndex);
+		
 		// Route ID
 		int routeIdIndex = cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ROUTE_ID);
 		RouteID routeId = new RouteID(cursor.getString(routeIdIndex));
@@ -100,6 +104,7 @@ public class ReportPersistence {
 		int length = cursor.getInt(lengthIndex);
 
 		ExcursionReport excursionReport = new ExcursionReport(routeId, date);
+		excursionReport.setId(key);
 		excursionReport.setCompletionIndex(completionIndex);
 		excursionReport.setElapsedSeconds(elapsed);
 		excursionReport.setGap(gap);
