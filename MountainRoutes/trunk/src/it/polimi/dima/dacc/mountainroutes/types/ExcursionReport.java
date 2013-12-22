@@ -8,29 +8,61 @@ import android.os.Parcelable;
 public class ExcursionReport implements Parcelable {
 
 	private int id;
-	private RouteID routeId;
 	private float completionIndex;
 	private int elapsedSeconds;
 	private Date date;
 	private int gap;
 	private int lengthInMeters;
+	private PointList path;
+	private int originalSeconds;
+	private int originalGap;
+	private int originalMeters;
 
-	public ExcursionReport(RouteID routeId) {
-		this.routeId = routeId;
-		this.date = new Date();
+	public ExcursionReport() {
 		
 	}
 
-	public ExcursionReport(RouteID id, Date date) {
-		this.routeId = id;
+	public PointList getPath() {
+		return path;
+	}
+
+	public void setPath(PointList path) {
+		this.path = path;
+	}
+
+	public int getOriginalSeconds() {
+		return originalSeconds;
+	}
+
+	public void setOriginalSeconds(int originalSeconds) {
+		this.originalSeconds = originalSeconds;
+	}
+
+	public int getOriginalGap() {
+		return originalGap;
+	}
+
+	public void setOriginalGap(int originalGap) {
+		this.originalGap = originalGap;
+	}
+
+	public int getOriginalMeters() {
+		return originalMeters;
+	}
+
+	public void setOriginalMeters(int originalMeters) {
+		this.originalMeters = originalMeters;
+	}
+
+	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
 	}
 
@@ -70,10 +102,6 @@ public class ExcursionReport implements Parcelable {
 		this.lengthInMeters = lengthInMeters;
 	}
 
-	public RouteID getRouteId() {
-		return routeId;
-	}
-
 	@Override
 	public int describeContents() {
 		return 0;
@@ -85,7 +113,6 @@ public class ExcursionReport implements Parcelable {
 		date = new Date(in.readLong());
 		elapsedSeconds = in.readInt();
 		gap = in.readInt();
-		routeId = in.readParcelable(RouteID.class.getClassLoader());
 		lengthInMeters = in.readInt();
 	}
 
@@ -95,7 +122,6 @@ public class ExcursionReport implements Parcelable {
 		dest.writeLong(date.getTime());
 		dest.writeInt(elapsedSeconds);
 		dest.writeInt(gap);
-		dest.writeParcelable(routeId, 0);
 		dest.writeInt(lengthInMeters);
 	}
 
