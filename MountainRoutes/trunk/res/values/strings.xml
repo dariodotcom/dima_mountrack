@@ -79,5 +79,11 @@
 
     <!-- Report viewer -->
     <string name="report_list_empty">No excursion available.\nGo outside and start walking!</string>
+    <string name="spent_time_info">Spent time</string>
+    <string name="spent_time_value">blabla</string>
+    <string name="traveled_meters_info">Traveled meters</string>
+    <string name="traveled_meters_value">blaaaa</string>
+    <string name="gap_info">Gap</string>
+    <string name="gap_value">bau</string>
 
 </resources>
