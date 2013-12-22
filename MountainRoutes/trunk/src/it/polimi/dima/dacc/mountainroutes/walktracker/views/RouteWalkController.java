@@ -14,7 +14,6 @@ public class RouteWalkController {
 
 	private static final String TAG = "RouteWalkerController";
 
-	private float completionIndex;
 
 	private LinkedList<LatLng> pending, walked;
 	private int currentEdge;
@@ -28,7 +27,7 @@ public class RouteWalkController {
 
 		List<LatLng> path = route.getPath().getList();
 
-		int edge = this.currentEdge = intPart(completionIndex);
+		int edge = this.currentEdge = 0;
 		int size = path.size();
 
 		walked = new LinkedList<LatLng>(path.subList(0, edge + 1));
@@ -47,8 +46,6 @@ public class RouteWalkController {
 			Log.e(TAG, "Received inconsistend update");
 			return;
 		}
-
-		this.completionIndex = completionIndex;
 
 		if (hasInterpolationPoint) {
 			walked.removeLast();

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        class="it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment" />
+        class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
 
     <RelativeLayout
         android:layout_width="match_parent"
