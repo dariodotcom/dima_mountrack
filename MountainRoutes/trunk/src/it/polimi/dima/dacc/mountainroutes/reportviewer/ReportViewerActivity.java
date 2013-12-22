@@ -2,7 +2,6 @@ package it.polimi.dima.dacc.mountainroutes.reportviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
-import it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewerFragment;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import android.os.Bundle;
 import android.app.Activity;
@@ -50,9 +49,15 @@ public class ReportViewerActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		fragment.setPath(displayedReport.getPath());
+		spentTime.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedDuration(),
+				displayedReport.getRouteDuration()));
+		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(),
+				displayedReport.getRouteLenght()));
+		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(),
+				displayedReport.getRouteGap()));
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
