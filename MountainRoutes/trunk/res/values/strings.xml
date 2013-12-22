@@ -83,7 +83,7 @@
     <string name="spent_time_value">blabla</string>
     <string name="traveled_meters_info">Traveled meters</string>
     <string name="traveled_meters_value">blaaaa</string>
-    <string name="gap_info">Gap</string>
-    <string name="gap_value">bau</string>
+    <string name="altitude_gap_info">Altitude Gap</string>
+    <string name="altitude_gap_value">bau</string>
 
 </resources>

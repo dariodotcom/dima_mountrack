@@ -1,90 +1,85 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".ReportViewerActivity" >
+
+    <fragment
+        android:id="@+id/viewer_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        class="it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewerFragment" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin"
-        tools:context=".ReportViewerActivity" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="vertical" >
 
-        <fragment
-            android:id="@+id/viewer_map"
+        <RelativeLayout
+            style="@style/route_info_entry"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            class="it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewerFragment" />
+            android:layout_height="wrap_content" >
 
-        <LinearLayout
+            <TextView
+                android:id="@+id/spent_time_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/spent_time_info" />
+
+            <TextView
+                android:id="@+id/spent_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/spent_time_value" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/route_info_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content" >
 
-            <RelativeLayout
-                style="@style/route_info_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/traveled_meters_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/traveled_meters_info" />
 
-                <TextView
-                    android:id="@+id/spent_time_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/spent_time_info" />
+            <TextView
+                android:id="@+id/traveled_meters_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/traveled_meters_value" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/spent_time_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/spent_time_value" />
-            </RelativeLayout>
+        <RelativeLayout
+            style="@style/route_info_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-            <RelativeLayout
-                style="@style/route_info_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/gap_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/altitude_gap_info" />
 
-                <TextView
-                    android:id="@+id/traveled_meters_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/traveled_meters_info" />
-
-                <TextView
-                    android:id="@+id/traveled_meters_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/traveled_meters_value" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                style="@style/route_info_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/gap_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/gap_info" />
-
-                <TextView
-                    android:id="@+id/gap_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/gap_value" />
-            </RelativeLayout>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/gap_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/altitude_gap_info" />
+        </RelativeLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
