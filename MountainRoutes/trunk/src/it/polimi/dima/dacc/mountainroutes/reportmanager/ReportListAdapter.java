@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.reportmanager;
 
+import java.text.DateFormat;
+
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import android.content.Context;
@@ -43,8 +45,9 @@ public class ReportListAdapter extends ArrayAdapter<ExcursionReport> {
 		TextView excursionDate = (TextView) view.findViewById(R.id.excursion_date);
 		Button button = (Button) view.findViewById(R.id.delete_button);
 
-		excursionName.setText(excursionReport.getRouteId().toString());
-		excursionDate.setText(excursionReport.getDate().toString());
+		excursionName.setText(excursionReport.getRouteName());
+		DateFormat format = android.text.format.DateFormat.getDateFormat(getContext());
+		excursionDate.setText(format.format(excursionReport.getDate()));
 
 		button.setOnClickListener(new OnClickListener() {
 

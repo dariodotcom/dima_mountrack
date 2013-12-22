@@ -8,18 +8,45 @@ import android.os.Parcelable;
 public class ExcursionReport implements Parcelable {
 
 	private int id;
-	private float completionIndex;
-	private int elapsedSeconds;
-	private Date date;
-	private int gap;
-	private int lengthInMeters;
+	private String routeName;
 	private PointList path;
-	private int originalSeconds;
-	private int originalGap;
-	private int originalMeters;
+	private Date date;
+	private float completionIndex;
+	private int elapsedDuration;
+	private int elapsedLenght;
+	private int elapsedGap;
+	private int routeDuration;
+	private int routeGap;
+	private int routeLenght;
 
 	public ExcursionReport() {
-		
+
+	}
+
+	public ExcursionReport(Route r) {
+		this.date = new Date();
+		this.routeName = r.getName();
+		this.path = r.getPath();
+		this.routeDuration = r.getDurationInMinutes();
+		this.routeGap = r.getGapInMeters();
+		this.routeLenght = r.getLengthInMeters();
+	}
+
+	// Setters and Getters
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getRouteName() {
+		return routeName;
+	}
+
+	public void setRouteName(String name) {
+		this.routeName = name;
 	}
 
 	public PointList getPath() {
@@ -30,40 +57,12 @@ public class ExcursionReport implements Parcelable {
 		this.path = path;
 	}
 
-	public int getOriginalSeconds() {
-		return originalSeconds;
-	}
-
-	public void setOriginalSeconds(int originalSeconds) {
-		this.originalSeconds = originalSeconds;
-	}
-
-	public int getOriginalGap() {
-		return originalGap;
-	}
-
-	public void setOriginalGap(int originalGap) {
-		this.originalGap = originalGap;
-	}
-
-	public int getOriginalMeters() {
-		return originalMeters;
-	}
-
-	public void setOriginalMeters(int originalMeters) {
-		this.originalMeters = originalMeters;
-	}
-
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
-		return id;
+	public Date getDate() {
+		return date;
 	}
 
 	public float getCompletionIndex() {
@@ -74,32 +73,52 @@ public class ExcursionReport implements Parcelable {
 		this.completionIndex = completionIndex;
 	}
 
-	public int getElapsedSeconds() {
-		return elapsedSeconds;
+	public int getElapsedDuration() {
+		return elapsedDuration;
 	}
 
-	public void setElapsedSeconds(int elapsedSeconds) {
-		this.elapsedSeconds = elapsedSeconds;
+	public void setElapsedDuration(int elapsedSeconds) {
+		this.elapsedDuration = elapsedSeconds;
 	}
 
-	public Date getDate() {
-		return date;
+	public int getElapsedLength() {
+		return elapsedLenght;
 	}
 
-	public int getGap() {
-		return gap;
+	public void setElapsedLength(int elapsedMeters) {
+		this.elapsedLenght = elapsedMeters;
 	}
 
-	public void setGap(int gap) {
-		this.gap = gap;
+	public int getElapsedGap() {
+		return elapsedGap;
 	}
 
-	public int getLengthInMeters() {
-		return lengthInMeters;
+	public void setElapsedGap(int elapsedGap) {
+		this.elapsedGap = elapsedGap;
 	}
 
-	public void setLengthInMeters(int lengthInMeters) {
-		this.lengthInMeters = lengthInMeters;
+	public int getRouteDuration() {
+		return routeDuration;
+	}
+
+	public void setRouteDuration(int routeDuration) {
+		this.routeDuration = routeDuration;
+	}
+
+	public int getRouteGap() {
+		return routeGap;
+	}
+
+	public void setRouteGap(int routeGap) {
+		this.routeGap = routeGap;
+	}
+
+	public int getRouteLenght() {
+		return routeLenght;
+	}
+
+	public void setRouteLength(int routeLenght) {
+		this.routeLenght = routeLenght;
 	}
 
 	@Override
@@ -109,20 +128,32 @@ public class ExcursionReport implements Parcelable {
 
 	/* -- Parcelable Methods -- */
 	private ExcursionReport(Parcel in) {
-		completionIndex = in.readFloat();
+		id = in.readInt();
+		routeName = in.readString();
+		path = in.readParcelable(PointList.class.getClassLoader());
 		date = new Date(in.readLong());
-		elapsedSeconds = in.readInt();
-		gap = in.readInt();
-		lengthInMeters = in.readInt();
+		completionIndex = in.readFloat();
+		elapsedDuration = in.readInt();
+		elapsedLenght = in.readInt();
+		elapsedGap = in.readInt();
+		routeDuration = in.readInt();
+		routeGap = in.readInt();
+		routeLenght = in.readInt();
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeFloat(completionIndex);
+		dest.writeInt(id);
+		dest.writeString(routeName);
+		dest.writeParcelable(path, 0);
 		dest.writeLong(date.getTime());
-		dest.writeInt(elapsedSeconds);
-		dest.writeInt(gap);
-		dest.writeInt(lengthInMeters);
+		dest.writeFloat(completionIndex);
+		dest.writeInt(elapsedDuration);
+		dest.writeInt(elapsedLenght);
+		dest.writeInt(elapsedGap);
+		dest.writeInt(routeDuration);
+		dest.writeInt(routeGap);
+		dest.writeInt(routeLenght);
 	}
 
 	public static final Creator<ExcursionReport> CREATOR = new Creator<ExcursionReport>() {
@@ -138,5 +169,4 @@ public class ExcursionReport implements Parcelable {
 		}
 
 	};
-
 }
