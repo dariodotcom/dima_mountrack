@@ -53,7 +53,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		@Override
 		public void onTime(long millis) {
 			int secs = (int) (millis / 1000);
-			report.setElapsedSeconds(secs);
+			report.setElapsedDuration(secs % 60);
 		}
 	};
 
@@ -109,7 +109,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		assertState(State.READY);
 
 		this.tracker = Tracker.create(route);
-		this.report = new ExcursionReport(route.getId());
+		this.report = new ExcursionReport(route);
 
 		// Start worker
 		new Thread(this).start();
@@ -125,8 +125,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		String svcName = Context.LOCATION_SERVICE;
 		String pvdName = LocationManager.GPS_PROVIDER;
 		locMan = (LocationManager) context.getSystemService(svcName);
-		locMan.requestLocationUpdates(pvdName, MIN_TIME_MILLIS,
-				MIN_DISTANCE_METERS, this, looper);
+		locMan.requestLocationUpdates(pvdName, MIN_TIME_MILLIS, MIN_DISTANCE_METERS, this, looper);
 
 		// Start timer
 		timer = new Timer(looper, reportTimeUpdater);
@@ -147,8 +146,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		assertState(State.TRACKING);
 		currentState = State.PAUSED;
 		timer.pause();
-		Intent i = BroadcastFactory
-				.createStatusBroadcast(UpdateType.EXCURSION_PAUSED);
+		Intent i = BroadcastFactory.createStatusBroadcast(UpdateType.EXCURSION_PAUSED);
 		sendBroadcast(i);
 	}
 
@@ -159,8 +157,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		assertState(State.PAUSED);
 		currentState = State.TRACKING;
 		timer.resume();
-		Intent i = BroadcastFactory
-				.createStatusBroadcast(UpdateType.EXCURSION_RESUME);
+		Intent i = BroadcastFactory.createStatusBroadcast(UpdateType.EXCURSION_RESUME);
 		sendBroadcast(i);
 	}
 
@@ -187,8 +184,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		stopOperations();
 
 		// Send stop broadcast
-		Intent i = BroadcastFactory
-				.createStatusBroadcast(UpdateType.FORCE_QUIT);
+		Intent i = BroadcastFactory.createStatusBroadcast(UpdateType.FORCE_QUIT);
 		sendBroadcast(i);
 
 		Log.d(TAG, "Tracking worker was forced to stop");
@@ -246,8 +242,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		try {
 			result = tracker.track(newPoint);
 		} catch (TrackerException e) {
-			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS
-					: UpdateType.FAR_FROM_ROUTE;
+			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS : UpdateType.FAR_FROM_ROUTE;
 			Intent i = BroadcastFactory.createStatusBroadcast(update);
 			sendBroadcast(i);
 			return;
@@ -299,9 +294,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		}
 
 		if (!found) {
-			throw new IllegalStateException("Expected worker state of "
-					+ Arrays.toString(state) + " but current state is "
-					+ currentState);
+			throw new IllegalStateException("Expected worker state of " + Arrays.toString(state) + " but current state is " + currentState);
 		}
 	}
 }

@@ -19,20 +19,19 @@ public class ReportLoader extends GenericLoader<ExcursionList> {
 	public LoadResult<ExcursionList> loadInBackground() {
 		Context context = getContext();
 		ReportPersistence persistence = ReportPersistence.create(context);
-		 try {
+		try {
 			ExcursionList result = persistence.getAvailableExcursions();
 			return new LoadResult<ExcursionList>(result);
 		} catch (PersistenceException e) {
 			return new LoadResult<ExcursionList>(LoadError.INTERNAL_ERROR);
 		}
-		
+
 	}
 
 	@Override
 	protected void onReleaseResources(LoadResult<ExcursionList> result) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 }

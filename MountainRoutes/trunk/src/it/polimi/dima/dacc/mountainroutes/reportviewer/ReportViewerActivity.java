@@ -50,9 +50,7 @@ public class ReportViewerActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		spentTime.setText(displayedReport.getElapsedSeconds());
-		traveledMeters.setText(displayedReport.getLengthInMeters());
-		gap.setText(displayedReport.getGap());
+
 	}
 	
 	@Override
