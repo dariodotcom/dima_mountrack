@@ -13,14 +13,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
 
-public class SavedRouteManager extends Activity implements
-		LoaderManager.LoaderCallbacks<LoadResult<RouteSummaryList>>,
-		onDeleteRouteListener {
+public class SavedRouteManager extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<RouteSummaryList>>, onDeleteRouteListener {
 
 	private final static String TAG = "saved-route-manager";
 	private final static int LOADER_ID = 1;
 
-	private SavedRouteLoader loader;
 	private ListView list;
 	private SavedRouteListAdapter adapter;
 
@@ -31,11 +28,9 @@ public class SavedRouteManager extends Activity implements
 		list = (ListView) findViewById(R.id.saved_route_list);
 		adapter = new SavedRouteListAdapter(this);
 		list.setAdapter(adapter);
-
 		adapter.setOnDeleteRouteListener(this);
-		
+
 		Log.d(TAG, "starting loader...");
-		loader = new SavedRouteLoader(this);
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 	}
 
@@ -47,15 +42,12 @@ public class SavedRouteManager extends Activity implements
 	}
 
 	@Override
-	public Loader<LoadResult<RouteSummaryList>> onCreateLoader(int arg0,
-			Bundle arg1) {
-		Log.d(TAG, "loader initialized");
-		return loader;
+	public Loader<LoadResult<RouteSummaryList>> onCreateLoader(int arg0, Bundle arg1) {
+		return new SavedRouteLoader(SavedRouteManager.this);
 	}
 
 	@Override
-	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> arg0,
-			LoadResult<RouteSummaryList> result) {
+	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> arg0, LoadResult<RouteSummaryList> result) {
 		switch (result.getType()) {
 		case LoadResult.ERROR:
 			Log.d(TAG, "ERROR: " + result.getError());

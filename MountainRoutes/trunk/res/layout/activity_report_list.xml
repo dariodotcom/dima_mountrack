@@ -8,10 +8,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ReportListActivity" >
 
-    <ListView android:id="@+id/report_list"
+    <ListView
+        android:id="@+id/report_list"
+        style="@style/list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/list_container" >
+        android:layout_height="match_parent" >
     </ListView>
+
+    <TextView
+        android:id="@+id/empty_list_message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:text="@string/report_list_empty"
+        android:textAlignment="gravity"
+        android:visibility="gone" />
 
 </RelativeLayout>

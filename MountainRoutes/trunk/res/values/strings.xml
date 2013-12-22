@@ -75,7 +75,9 @@
     <string name="walking_quit_notify">Are you sure you want to quit? You will lose your excursion progress.</string>
     <string name="title_activity_report_selector">ReportSelectorActivity</string>
     <string name="title_activity_report_viewer">ReportViewer</string>
-
     <string name="title_activity_report_list">ReportListActivity</string>
+
+    <!-- Report viewer -->
+    <string name="report_list_empty">No excursion available.\nGo outside and start walking!</string>
 
 </resources>

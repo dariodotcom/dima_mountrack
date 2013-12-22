@@ -12,10 +12,10 @@ import android.app.LoaderManager;
 import android.content.Loader;
 
 import android.view.Menu;
+import android.view.View;
 import android.widget.ListView;
 
-public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>,
-		onDeleteExcursionListener {
+public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>, onDeleteExcursionListener {
 
 	private final static int LOADER_ID = 1;
 	private ReportListAdapter adapter;
@@ -26,11 +26,14 @@ public class ReportListActivity extends Activity implements LoaderManager.Loader
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_report_list);
 		ListView list = (ListView) findViewById(R.id.report_list);
+		View emptyView = findViewById(R.id.empty_list_message_text);
+		list.setEmptyView(emptyView);
+
 		adapter = new ReportListAdapter(this);
 		list.setAdapter(adapter);
 		adapter.setOnDeleteExcursionListener(this);
 		loader = new ReportLoader(this);
-		getLoaderManager().initLoader(LOADER_ID, null, this);
+		getLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
 	}
 
 	@Override
@@ -54,13 +57,9 @@ public class ReportListActivity extends Activity implements LoaderManager.Loader
 		case LoadResult.RESULT:
 			ExcursionList list = result.getResult();
 
-			if (list.isEmpty()) {
-
-			} else {
-				this.adapter.clear();
-				this.adapter.addAll(list.asList());
-				this.adapter.notifyDataSetChanged();
-			}
+			this.adapter.clear();
+			this.adapter.addAll(list.asList());
+			this.adapter.notifyDataSetChanged();
 
 			break;
 		}

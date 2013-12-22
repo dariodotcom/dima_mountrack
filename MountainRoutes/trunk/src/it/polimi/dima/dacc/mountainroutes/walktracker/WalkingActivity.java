@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
@@ -13,7 +14,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
-import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteProgressionController;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TimerView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.TrackingControlWrapper;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		setContentView(R.layout.activity_walking);
 
 		// Load UI elements
-		RouteWalkFragment walkFragment = (RouteWalkFragment) getFragmentManager().findFragmentById(R.id.walking_map);
+		RouteProgressionMapFragment walkFragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.walking_map);
 		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
 		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
@@ -61,7 +62,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		// Add listeners to list
 		listeners = new ArrayList<TrackerListener>();
 		listeners.add(timerView);
-		listeners.add(walkFragment);
+		listeners.add(new RouteProgressionController(walkFragment));
 		listeners.add(pauseResumeButton);
 		listeners.add(missingTimeView);
 		listeners.add(altitudeView);
@@ -176,8 +177,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter)
-				.setNegativeButton(android.R.string.cancel, null);
+		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter).setNegativeButton(android.R.string.cancel, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}

@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
 import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.reportmanager.ReportListActivity;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
@@ -34,6 +35,14 @@ public class MainActivity extends Activity {
 		}
 	};
 
+	private OnClickListener showMyExcursionsButtonListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(MainActivity.this, ReportListActivity.class);
+			startActivity(i);
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,18 +54,21 @@ public class MainActivity extends Activity {
 		Button savedRoutes = (Button) findViewById(R.id.main_my_routes_button);
 		savedRoutes.setOnClickListener(showSavedRoutesButtonListener);
 
-		RouteID id = new RouteID(
-				"e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
-		Route dummy;
-		try {
-			dummy = RoutePersistence.create(this).loadRoute(id);
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-			return;
-		}
-		Intent i = new Intent(this, WalkingActivity.class);
-		i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
-		startActivity(i);
+		Button myExcursions = (Button) findViewById(R.id.main_my_excursions_button);
+		myExcursions.setOnClickListener(showMyExcursionsButtonListener);
+
+		// RouteID id = new RouteID(
+		// "e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+		// Route dummy;
+		// try {
+		// dummy = RoutePersistence.create(this).loadRoute(id);
+		// } catch (PersistenceException e) {
+		// e.printStackTrace();
+		// return;
+		// }
+		// Intent i = new Intent(this, WalkingActivity.class);
+		// i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
+		// startActivity(i);
 	}
 
 	@Override
