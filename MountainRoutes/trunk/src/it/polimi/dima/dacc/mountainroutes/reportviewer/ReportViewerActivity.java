@@ -22,6 +22,8 @@ public class ReportViewerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_report_viewer);
+
 		Intent intent = getIntent();
 		if (intent != null) {
 			displayedReport = intent.getParcelableExtra(REPORT_TO_DISPLAY);
@@ -35,8 +37,6 @@ public class ReportViewerActivity extends Activity {
 		spentTime = (TextView) findViewById(R.id.spent_time_value);
 		traveledMeters = (TextView) findViewById(R.id.traveled_meters_value);
 		gap = (TextView) findViewById(R.id.gap_value);
-
-		setContentView(R.layout.activity_report_viewer);
 	}
 
 	@Override
@@ -50,12 +50,9 @@ public class ReportViewerActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		fragment.setPath(displayedReport.getPath());
-		spentTime.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedDuration(),
-				displayedReport.getRouteDuration()));
-		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(),
-				displayedReport.getRouteLenght()));
-		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(),
-				displayedReport.getRouteGap()));
+		spentTime.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedDuration(), displayedReport.getRouteDuration()));
+		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(), displayedReport.getRouteLenght()));
+		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(), displayedReport.getRouteGap()));
 	}
 
 	@Override

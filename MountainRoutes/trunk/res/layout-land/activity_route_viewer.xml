@@ -18,7 +18,7 @@
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
-            class="it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewerFragment" />
+            class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
 
         <RelativeLayout
             android:layout_width="0dip"
