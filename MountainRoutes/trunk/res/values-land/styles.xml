@@ -8,4 +8,9 @@
         <item name="indicatorColor">@color/accent.blue</item>
     </style>
 
+    <style name="widget_button_main" parent="@style/widget_button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
