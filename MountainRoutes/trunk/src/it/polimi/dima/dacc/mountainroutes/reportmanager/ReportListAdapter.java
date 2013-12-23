@@ -58,6 +58,7 @@ public class ReportListAdapter extends ArrayAdapter<ExcursionReport> {
 				}
 			}
 		});
+
 		return view;
 	}
 

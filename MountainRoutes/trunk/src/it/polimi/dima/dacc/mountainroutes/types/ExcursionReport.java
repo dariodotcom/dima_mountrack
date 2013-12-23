@@ -77,8 +77,8 @@ public class ExcursionReport implements Parcelable {
 		return elapsedDuration;
 	}
 
-	public void setElapsedDuration(int elapsedSeconds) {
-		this.elapsedDuration = elapsedSeconds;
+	public void setElapsedDuration(int elapsedMinutes) {
+		this.elapsedDuration = elapsedMinutes;
 	}
 
 	public int getElapsedLength() {
