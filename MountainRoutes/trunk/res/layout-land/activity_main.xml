@@ -7,33 +7,34 @@
     tools:context=".MainActivity" >
 
     <LinearLayout
-        style="@style/AppContainer"
+        android:background="#aaffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:padding="@dimen/activity_margin" >
+        android:padding="@dimen/activity_margin"
+       android:gravity="center_vertical">
 
         <Button
             android:id="@+id/main_start_walk_button"
             style="@style/widget_button_main"
             android:layout_marginBottom="@dimen/activity_margin"
-            android:gravity="fill_vertical"
+          
             android:text="@string/main_start_walk_button_text" />
 
         <Button
             android:id="@+id/main_my_routes_button"
             style="@style/widget_button_main"
             android:layout_marginBottom="@dimen/activity_margin"
-            android:gravity="fill_vertical"
+          
             android:text="@string/main_my_routes_button_text" />
 
         <Button
             android:id="@+id/main_my_excursions_button"
             style="@style/widget_button_main"
-            android:gravity="fill_vertical"
+            
             android:text="@string/main_my_excursions_button_text" />
     </LinearLayout>
 
