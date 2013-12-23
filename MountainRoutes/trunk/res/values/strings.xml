@@ -73,11 +73,10 @@
     <string name="walking_activity_pause">Pause</string>
     <string name="walking_activity_resume">Resume</string>
     <string name="walking_quit_notify">Are you sure you want to quit? You will lose your excursion progress.</string>
-    <string name="title_activity_report_selector">ReportSelectorActivity</string>
-    <string name="title_activity_report_viewer">ReportViewer</string>
-    <string name="title_activity_report_list">ReportListActivity</string>
 
     <!-- Report viewer -->
+    <string name="title_activity_report_viewer">ReportViewer</string>
+    <string name="title_activity_report_list">My Excursions</string>
     <string name="report_list_empty">No excursion available.\nGo outside and start walking!</string>
     <string name="spent_time_info">Spent time</string>
     <string name="spent_time_value">blabla</string>

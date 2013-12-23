@@ -3,23 +3,30 @@ package it.polimi.dima.dacc.mountainroutes.reportmanager;
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.reportmanager.ReportListAdapter.onDeleteExcursionListener;
+import it.polimi.dima.dacc.mountainroutes.reportviewer.ReportViewerActivity;
 
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionList;
+import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>, onDeleteExcursionListener {
 
+	private static final String DELENDUM_REPORT_ID = "id_to_delete";
 	private final static int LOADER_ID = 1;
+	private final static int DELETE_LOADER_ID = 2;
 	private ReportListAdapter adapter;
-	private ReportLoader loader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +35,12 @@ public class ReportListActivity extends Activity implements LoaderManager.Loader
 		ListView list = (ListView) findViewById(R.id.report_list);
 		View emptyView = findViewById(R.id.empty_list_message_text);
 		list.setEmptyView(emptyView);
+		list.setOnItemClickListener(reportClickListener);
 
 		adapter = new ReportListAdapter(this);
 		list.setAdapter(adapter);
 		adapter.setOnDeleteExcursionListener(this);
-		loader = new ReportLoader(this);
+
 		getLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
 	}
 
@@ -45,7 +53,15 @@ public class ReportListActivity extends Activity implements LoaderManager.Loader
 
 	@Override
 	public Loader<LoadResult<ExcursionList>> onCreateLoader(int id, Bundle args) {
-		return loader;
+		switch (id) {
+		case LOADER_ID:
+			return new ReportLoader(this);
+		case DELETE_LOADER_ID:
+			int reportId = args.getInt(DELENDUM_REPORT_ID);
+			return new ReportDeleteLoader(this, reportId);
+		default:
+			return null;
+		}
 	}
 
 	@Override
@@ -74,8 +90,20 @@ public class ReportListActivity extends Activity implements LoaderManager.Loader
 
 	@Override
 	public void onDelete(int excursionId) {
-		// TODO Auto-generated method stub
-
+		Bundle b = new Bundle();
+		b.putInt(DELENDUM_REPORT_ID, excursionId);
+		getLoaderManager().restartLoader(DELETE_LOADER_ID, b, this).forceLoad();
 	}
 
+	private OnItemClickListener reportClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view, int index, long id) {
+			Log.d("ReportListAvtivity", "click!");
+			ExcursionReport report = (ExcursionReport) adapter.getItemAtPosition(index);
+			Intent i = new Intent(ReportListActivity.this, ReportViewerActivity.class);
+			i.putExtra(ReportViewerActivity.REPORT_TO_DISPLAY, report);
+			startActivity(i);
+		}
+	};
 }
