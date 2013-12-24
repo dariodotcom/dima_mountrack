@@ -7,13 +7,35 @@
     android:orientation="horizontal"
     android:padding="@dimen/activity_horizontal_margin" >
 
-    <fragment
-        android:id="@+id/walking_map"
+    <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_weight="1"
-        class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
+        android:layout_weight="1" >
+
+        <fragment
+            android:id="@+id/walking_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
+
+        <Button
+            android:id="@+id/button_pan"
+            style="@style/widget_button_white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:drawableTop="@android:drawable/ic_menu_view" />
+
+        <Button
+            android:id="@+id/button_zoom"
+            style="@style/widget_button_white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_toLeftOf="@+id/button_pan"
+            android:drawableTop="@android:drawable/ic_menu_search" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="0dip"
@@ -63,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                class="it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteWalkFragment" />
+                class="it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment" />
         </RelativeLayout>
 
         <RelativeLayout

@@ -27,6 +27,7 @@ import android.content.ServiceConnection;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class WalkingActivity extends FragmentActivity implements ServiceConnection {
@@ -34,6 +35,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";
 	private static final String TRACKING_INITIALIZED = "tracking_initialized";
 
+	private RouteProgressionMapFragment walkFragment;
 	private List<TrackerListener> listeners;
 	private TrackerListenerManager trackMan;
 	private TrackingControlWrapper controlWrapper;
@@ -51,14 +53,32 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		setContentView(R.layout.activity_walking);
 
 		// Load UI elements
-		RouteProgressionMapFragment walkFragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.walking_map);
+		walkFragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.walking_map);
 		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
 		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
 		Button endWalk = (Button) findViewById(R.id.end_walk);
 		endWalk.setOnClickListener(quitButtonListener);
 		AltitudeViewFragment altitudeView = (AltitudeViewFragment) getSupportFragmentManager().findFragmentById(R.id.altitude_view_fragment);
+		Button panButton = (Button) findViewById(R.id.button_pan);
+		Button zoomButton = (Button) findViewById(R.id.button_zoom);
 
+		panButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				walkFragment.panToPath();
+			}
+		});
+		
+		zoomButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				walkFragment.zoomToUser();
+			}
+		});
+		
 		// Add listeners to list
 		listeners = new ArrayList<TrackerListener>();
 		listeners.add(timerView);

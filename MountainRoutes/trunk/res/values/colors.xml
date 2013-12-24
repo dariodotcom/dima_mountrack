@@ -3,9 +3,9 @@
 
     <color name="button.pressed.color">#aac240</color>
     <color name="button.default.color">#7e8f2f</color>
+    <color name="button.light.color">#ffffff</color>
     <color name="button.shade.color">#25000000</color>
     <color name="button.text.color">#ffffff</color>
-    
     <color name="accent.blue">#38a8ff</color>
 
     <!-- TABS -->
@@ -16,8 +16,9 @@
     <!-- Text colors -->
     <color name="timer_paused_text">#7d7d7d</color>
     <color name="timer_running_text">#000000</color>
-    
+
     <!-- lines -->
     <color name="walked_line">#009cff</color>
     <color name="pending_line">#abe2ff</color>
+
 </resources>

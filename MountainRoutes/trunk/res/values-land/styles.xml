@@ -11,10 +11,10 @@
     <style name="widget_button_main" parent="@style/widget_button">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name = "android:background">@drawable/background_listcontainer</item>
-        <item name = "android:textColor">#6B8E23</item>
+        <item name="android:background">@drawable/background_button_white</item>
+        <item name="android:textColor">#6B8E23</item>
+        <item name="android:paddingLeft">@dimen/activity_margin</item>
+        <item name="android:paddingRight">@dimen/activity_margin</item>
     </style>
-    
-    
 
 </resources>

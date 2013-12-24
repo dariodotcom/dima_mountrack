@@ -8,16 +8,19 @@ import it.polimi.dima.dacc.mountainroutes.types.PointList;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -29,8 +32,9 @@ public class RouteProgressionMapFragment extends MapFragment {
 	private static final String TAG = "RouteWalkFragment";
 
 	private ProgressingPath progressingPath;
+	private LatLngBounds pathBounds; // Cache for path LatLngBounds
 
-	private boolean shapesInitialized;
+	private boolean shapesInitialized, zoomed;
 	private Polyline walkedLine, pendingLine;
 	private Marker arrow;
 	private int pendingColor, walkedColor, transparent;
@@ -49,20 +53,97 @@ public class RouteProgressionMapFragment extends MapFragment {
 		walkedColor = r.getColor(R.color.walked_line);
 		transparent = r.getColor(android.R.color.transparent);
 		shapesInitialized = false;
+		zoomed = false;
 
-//		UiSettings settings = getMap().getUiSettings();
-//		settings.setAllGesturesEnabled(false);
-//		settings.setZoomControlsEnabled(false);
+		UiSettings settings = getMap().getUiSettings();
+		settings.setAllGesturesEnabled(false);
+		settings.setZoomControlsEnabled(false);
 	}
 
 	public void setPath(PointList pointList) {
 		progressingPath = new ProgressingPath(pointList);
+
+		// Compute bounds
+		Double minLat = Double.POSITIVE_INFINITY, minLng = Double.POSITIVE_INFINITY;
+		Double maxLat = Double.NEGATIVE_INFINITY, maxLng = Double.NEGATIVE_INFINITY;
+
+		for (LatLng point : pointList) {
+			if (point.latitude < minLat) {
+				minLat = point.latitude;
+			}
+
+			if (point.latitude > maxLat) {
+				maxLat = point.latitude;
+			}
+
+			if (point.longitude < minLng) {
+				minLng = point.longitude;
+			}
+
+			if (point.longitude > maxLng) {
+				maxLng = point.longitude;
+			}
+		}
+
+		pathBounds = new LatLngBounds(new LatLng(minLat, minLng), new LatLng(maxLat, maxLng));
+
 		updateShapes();
 	}
 
 	public void setCompletionIndex(float completionIndex) {
 		this.progressingPath.setCompletionIndex(completionIndex);
 		updateShapes();
+		if(zoomed){
+			zoomToUser();
+		}
+	}
+
+	public void panToPath() {
+		final GoogleMap map = getMap();
+
+		if (map == null || pathBounds == null) {
+			return;
+		}
+
+		final CameraUpdate update = CameraUpdateFactory.newLatLngBounds(pathBounds, 16);
+		try {
+			map.moveCamera(update);
+			zoomed = false;
+		} catch (IllegalStateException e) {
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					map.moveCamera(update);
+					zoomed = false;
+				}
+			}, 100);
+		}
+	}
+
+	public void zoomToUser() {
+		final GoogleMap map = getMap();
+		LatLng userPosition = progressingPath.getWalked().getLast();
+		if (map == null || userPosition == null) {
+			return;
+		}
+
+		final CameraUpdate update = CameraUpdateFactory.newLatLngZoom(userPosition, 18);
+
+		try {
+			map.moveCamera(update);
+			zoomed = true;
+		} catch (IllegalStateException e) {
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					map.moveCamera(update);
+					zoomed = true;
+				}
+			}, 100);
+		}
+
 	}
 
 	private void updateShapes() {
