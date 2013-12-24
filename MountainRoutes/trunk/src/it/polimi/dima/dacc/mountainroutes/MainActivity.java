@@ -59,29 +59,29 @@ public class MainActivity extends Activity {
 		Button myExcursions = (Button) findViewById(R.id.main_my_excursions_button);
 		myExcursions.setOnClickListener(showMyExcursionsButtonListener);
 
-//		RouteID id = new RouteID("e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
-//		Route dummy;
-//		try {
-//			dummy = RoutePersistence.create(this).loadRoute(id);
-//		} catch (PersistenceException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//
-//		ExcursionReport r = new ExcursionReport(dummy);
-//		r.setElapsedDuration(123);
-//		r.setElapsedGap(321);
-//		r.setElapsedLength(222);
-//
-//		try {
-//			ReportPersistence.create(this).persistExcursionReport(r);
-//		} catch (PersistenceException e) {
-//			e.printStackTrace();
-//		}
+		RouteID id = new RouteID("e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+		Route dummy;
+		try {
+			dummy = RoutePersistence.create(this).loadRoute(id);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			return;
+		}
 
-		// Intent i = new Intent(this, WalkingActivity.class);
-		// i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
-		// startActivity(i);
+		ExcursionReport r = new ExcursionReport(dummy);
+		r.setElapsedDuration(123);
+		r.setElapsedGap(321);
+		r.setElapsedLength(222);
+
+		try {
+			ReportPersistence.create(this).persistExcursionReport(r);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+		}
+
+		 Intent i = new Intent(this, WalkingActivity.class);
+		 i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
+		 startActivity(i);
 	}
 
 	@Override

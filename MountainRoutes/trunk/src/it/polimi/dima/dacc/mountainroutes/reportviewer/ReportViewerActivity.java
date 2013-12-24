@@ -50,6 +50,8 @@ public class ReportViewerActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		fragment.setPath(displayedReport.getPath());
+		fragment.panToPath();
+
 		spentTime.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedDuration(), displayedReport.getRouteDuration()));
 		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(), displayedReport.getRouteLenght()));
 		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(), displayedReport.getRouteGap()));
