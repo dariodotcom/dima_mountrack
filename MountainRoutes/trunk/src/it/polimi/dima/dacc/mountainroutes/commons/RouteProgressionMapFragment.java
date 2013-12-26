@@ -93,7 +93,7 @@ public class RouteProgressionMapFragment extends MapFragment {
 	public void setCompletionIndex(float completionIndex) {
 		this.progressingPath.setCompletionIndex(completionIndex);
 		updateShapes();
-		if(zoomed){
+		if (zoomed) {
 			zoomToUser();
 		}
 	}
@@ -158,7 +158,7 @@ public class RouteProgressionMapFragment extends MapFragment {
 		getMap().moveCamera(update);
 
 		if (progressingPath.getCompletionIndex() > 0) {
-			arrow.setVisible(true);
+			//arrow.setVisible(true);
 			arrow.setPosition(progressingPath.getCurrentEdge());
 			arrow.setRotation(progressingPath.getBearing());
 		}
@@ -226,8 +226,6 @@ public class RouteProgressionMapFragment extends MapFragment {
 				return;
 			}
 
-			currentCompletionIndex = completionIndex;
-
 			if (hasInterpolationPoint) {
 				walked.removeLast();
 				pending.removeFirst();
@@ -261,6 +259,8 @@ public class RouteProgressionMapFragment extends MapFragment {
 				LatLng last = walked.getLast();
 				pending.addFirst(last);
 			}
+
+			currentCompletionIndex = completionIndex;
 		}
 
 		public float getBearing() {
@@ -286,10 +286,10 @@ public class RouteProgressionMapFragment extends MapFragment {
 			} else if (slope == Double.NEGATIVE_INFINITY) {
 				bearing = -Math.PI / 2;
 			} else {
-				bearing = Math.tan(slope);
+				bearing = Math.atan(slope);
 			}
 
-			return (float) Math.toDegrees(bearing) - 90;
+			return (float) Math.toDegrees(bearing);
 		}
 	}
 }
