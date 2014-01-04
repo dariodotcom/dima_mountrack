@@ -249,6 +249,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 		}
 
 		report.setCompletionIndex(result.getCompletionIndex());
+		report.setElapsedLength(result.getElapsedMeters());
 
 		Intent update = BroadcastFactory.createTrackingBroadcast(result);
 		sendBroadcast(update);
