@@ -8,13 +8,13 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class OldTracker extends Tracker{
+public class OldTracker extends Tracker {
 
 	private final static String TAG = "tracker";
 	private static final double MAX_DISTANCE_METERS = 100;
 	private List<LatLng> path;
 	private PathSegment currentSegment;
-	private int edge;
+	private int edge, elapsedMeters;
 	private float segPercent;
 
 	public OldTracker(PointList path) {
@@ -29,8 +29,7 @@ public class OldTracker extends Tracker{
 			throw new IllegalStateException("Tracking is finished");
 		}
 
-		TrackResult.Builder resultBuilder = new TrackResult.Builder()
-				.realPosition(newPoint);
+		TrackResult.Builder resultBuilder = new TrackResult.Builder().realPosition(newPoint);
 
 		// Check distance from segment
 		double distance = currentSegment.distanceTo(newPoint);
@@ -42,9 +41,7 @@ public class OldTracker extends Tracker{
 
 		// Update point
 		LatLng projection = currentSegment.project(newPoint);
-		Log.d(TAG, "projection: " + projection);
 		float percent = currentSegment.percentOf(projection);
-		Log.d(TAG, "percent: " + percent);
 		if (percent < segPercent) {
 			// User is going backwards
 			throw new TrackerException(TrackerException.Type.GOING_BACKWARD);
@@ -54,9 +51,13 @@ public class OldTracker extends Tracker{
 			// Move to the next segment
 			edge++;
 			segPercent = 0;
+			elapsedMeters += currentSegment.getLengthInMeters();
 			if (isFinished()) {
-				return resultBuilder.completionIndex(edge)
-						.pointOnPath(path.get(edge)).build();
+				return resultBuilder
+						.completionIndex(edge)
+						.pointOnPath(path.get(edge))
+						.elapsedMeters(elapsedMeters)
+						.build();
 			}
 
 			Log.d(TAG, "Moving to next segment");
@@ -65,8 +66,12 @@ public class OldTracker extends Tracker{
 		}
 
 		segPercent = percent; // Update state;
-		return resultBuilder.completionIndex(edge + segPercent)
-				.pointOnPath(projection).build();
+		int segmentLength = currentSegment.getLengthInMeters();
+		return resultBuilder
+				.completionIndex(edge + segPercent)
+				.pointOnPath(projection)
+				.elapsedMeters((int) (elapsedMeters + segmentLength * percent))
+				.build();
 	}
 
 	public boolean isFinished() {
@@ -76,5 +81,5 @@ public class OldTracker extends Tracker{
 	private PathSegment nextSegment() {
 		return PathSegment.create(path.get(edge), path.get(edge + 1), 0);
 	}
-	
+
 }

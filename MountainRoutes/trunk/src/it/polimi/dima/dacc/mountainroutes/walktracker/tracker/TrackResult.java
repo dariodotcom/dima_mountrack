@@ -10,6 +10,15 @@ public class TrackResult implements Parcelable {
 	private float completionIndex;
 	private LatLng pointOnPath;
 	private LatLng realPosition;
+	private int elapsedMeters;
+
+	public int getElapsedMeters() {
+		return elapsedMeters;
+	}
+
+	public void setElapsedMeters(int elapsedMeters) {
+		this.elapsedMeters = elapsedMeters;
+	}
 
 	private TrackResult() {
 
@@ -51,6 +60,7 @@ public class TrackResult implements Parcelable {
 		ClassLoader cl = LatLng.class.getClassLoader();
 		pointOnPath = source.readParcelable(cl);
 		realPosition = source.readParcelable(cl);
+		elapsedMeters = source.readInt();
 	}
 
 	@Override
@@ -63,6 +73,7 @@ public class TrackResult implements Parcelable {
 		dest.writeFloat(completionIndex);
 		dest.writeParcelable(pointOnPath, 0);
 		dest.writeParcelable(realPosition, 0);
+		dest.writeInt(elapsedMeters);
 	}
 
 	public static Creator<TrackResult> CREATOR = new Creator<TrackResult>() {
@@ -99,6 +110,11 @@ public class TrackResult implements Parcelable {
 
 		public Builder realPosition(LatLng realPosition) {
 			result.setRealPosition(realPosition);
+			return this;
+		}
+
+		public Builder elapsedMeters(int elapsedMeters) {
+			result.setElapsedMeters(elapsedMeters);
 			return this;
 		}
 

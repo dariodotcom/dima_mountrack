@@ -45,12 +45,6 @@ public class RouteSelector extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_selector);
 
-		// Set up the action bar.
-//		final ActionBar actionBar = getActionBar();
-//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
 		pagerAdapter = new SelectorPagerAdapter(getSupportFragmentManager(),
 				this, true);
 

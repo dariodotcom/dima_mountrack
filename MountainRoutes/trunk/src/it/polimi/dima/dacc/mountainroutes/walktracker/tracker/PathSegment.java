@@ -24,8 +24,11 @@ public abstract class PathSegment {
 
 	public abstract int getIndex();
 
+	public abstract int getLengthInMeters();
+
 	// Implementation for non vertical segments
 	private static class GenericPathSegment extends PathSegment {
+		private Integer length;
 		private LatLng start, end;
 		private double slope, perpSlope, yntercept;
 		private int index;
@@ -63,11 +66,21 @@ public abstract class PathSegment {
 		public int getIndex() {
 			return index;
 		}
+
+		@Override
+		public int getLengthInMeters() {
+			if (length == null) {
+				length = (int) GeomUtils.haversineDistance(start, end);
+			}
+
+			return length;
+		}
 	}
 
 	// Implementation for vertical segments
 	private static class VerticalPathSegment extends PathSegment {
 
+		private Integer length;
 		private LatLng start, end;
 		private int index;
 
@@ -96,6 +109,15 @@ public abstract class PathSegment {
 		@Override
 		public int getIndex() {
 			return index;
+		}
+
+		@Override
+		public int getLengthInMeters() {
+			if (length == null) {
+				length = (int) GeomUtils.haversineDistance(start, end);
+			}
+
+			return length;
 		}
 	}
 }

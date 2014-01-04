@@ -1,6 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
 import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.commons.Utils;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
@@ -91,20 +92,6 @@ public class TimerView extends TextView implements TrackerListener,
 	}
 
 	protected String parseMillis(long millis) {
-		int seconds = (int) millis / 1000;
-		int minutes = seconds / 60;
-		int hours = minutes / 60;
-		minutes = minutes % 60;
-		seconds = seconds % 60;
-
-		String pattern = "%s:%s:%s";
-		return String.format(pattern, pan(hours), pan(minutes), pan(seconds));
-	}
-
-	private String pan(int n) {
-		if (n < 10) {
-			return "0" + n;
-		}
-		return String.valueOf(n);
+		return Utils.formatMillis(millis);
 	}
 }

@@ -1,8 +1,14 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
+import it.polimi.dima.dacc.mountainroutes.types.PointList;
+
+import java.util.List;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class GeomUtils {
+
+	private static final int EARTH_RADIUS = 6371;
 
 	public static double slope(LatLng p1, LatLng p2) {
 		return (p1.latitude - p2.latitude) / (p1.longitude - p2.longitude);
@@ -38,5 +44,36 @@ public class GeomUtils {
 		} else {
 			throw new IllegalArgumentException("Start and end matches");
 		}
+	}
+
+	public static double haversineDistance(LatLng p1, LatLng p2) {
+		double lat2 = p2.latitude, lat1 = p1.latitude, lng2 = p2.longitude, lng1 = p1.longitude, dLat = Math.toRadians(lat2 - lat1), dLon = Math.toRadians(lng2 - lng1);
+
+		lat1 = Math.toRadians(lat1);
+		lat2 = Math.toRadians(lat2);
+
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return EARTH_RADIUS * c;
+	}
+
+	public static int lengthOf(PointList path, float completionIndex) {
+		int result = 0, size = path.size() - 1, index = 1;
+		List<LatLng> points = path.getList();
+
+		if (points.size() < 2) {
+			return result;
+		}
+
+		for (; index < completionIndex; index++) {
+			result += haversineDistance(points.get(index - 1), points.get(index));
+		}
+
+		if (completionIndex > size) {
+			float percent = completionIndex - size;
+			result += percent * haversineDistance(points.get(index + 1), points.get(index));
+		}
+
+		return result;
 	}
 }

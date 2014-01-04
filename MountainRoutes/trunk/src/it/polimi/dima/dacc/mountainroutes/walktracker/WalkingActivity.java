@@ -5,11 +5,15 @@ import java.util.List;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
+import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
+import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
@@ -30,10 +34,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class WalkingActivity extends FragmentActivity implements ServiceConnection {
+public class WalkingActivity extends FragmentActivity implements ServiceConnection, TrackerListener {
 
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";
 	private static final String TRACKING_INITIALIZED = "tracking_initialized";
+	public static final String WALKING_REPORT = "walking_report";
 
 	private RouteProgressionMapFragment walkFragment;
 	private List<TrackerListener> listeners;
@@ -86,6 +91,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		listeners.add(pauseResumeButton);
 		listeners.add(missingTimeView);
 		listeners.add(altitudeView);
+		listeners.add(this);
 
 		// Load components
 		trackMan = TrackerListenerManager.getManager(this);
@@ -211,4 +217,32 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 			activity.finish();
 		}
 	};
+
+	@Override
+	public void onStartTracking(Route route) {
+	}
+
+	@Override
+	public void onStopTracking(ExcursionReport report) {
+		Intent i = new Intent();
+		i.putExtra(WALKING_REPORT, report);
+		setResult(RESULT_OK, i);
+		finish();
+	}
+
+	@Override
+	public void onStatusUpdate(UpdateType update) {		
+	}
+
+	@Override
+	public void onTrackingUpdate(TrackResult result) {
+	}
+
+	@Override
+	public void onRegister(LaggardBackup backup) {
+	}
+
+	@Override
+	public void onUnregister(LaggardBackup backup) {
+	}
 }

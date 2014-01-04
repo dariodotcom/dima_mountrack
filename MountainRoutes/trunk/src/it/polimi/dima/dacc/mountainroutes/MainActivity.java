@@ -1,9 +1,9 @@
 package it.polimi.dima.dacc.mountainroutes;
 
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
-import it.polimi.dima.dacc.mountainroutes.persistence.report.ReportPersistence;
 import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.reportmanager.ReportListActivity;
+import it.polimi.dima.dacc.mountainroutes.reportviewer.ReportViewerActivity;
 import it.polimi.dima.dacc.mountainroutes.routeselector.RouteSelector;
 import it.polimi.dima.dacc.mountainroutes.savedroutemanager.SavedRouteManager;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
@@ -21,11 +21,14 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
+	private static final int SELECT_ROUTE = 0;
+	private static final int TRACK_WALKING = 1;
+
 	private OnClickListener startWalkingButtonListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(MainActivity.this, RouteSelector.class);
-			startActivity(i);
+			startActivityForResult(i, SELECT_ROUTE);
 		}
 	};
 
@@ -44,6 +47,32 @@ public class MainActivity extends Activity {
 			startActivity(i);
 		}
 	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case SELECT_ROUTE: {
+			if (resultCode == RESULT_CANCELED) {
+				return;
+			}
+
+			Route selectedRoute = data.getParcelableExtra(RouteSelector.SELECTED_ROUTE);
+			Intent i = new Intent(this, WalkingActivity.class);
+			i.putExtra(WalkingActivity.TRACKING_ROUTE, selectedRoute);
+			startActivityForResult(i, TRACK_WALKING);
+			return;
+		}
+		case TRACK_WALKING: {
+			if (resultCode == RESULT_CANCELED) {
+				return;
+			}
+
+			Intent i = new Intent(this, ReportViewerActivity.class);
+			ExcursionReport report = data.getParcelableExtra(WalkingActivity.WALKING_REPORT);
+			i.putExtra(ReportViewerActivity.REPORT_TO_DISPLAY, report);
+			startActivity(i);
+		}
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +97,13 @@ public class MainActivity extends Activity {
 			return;
 		}
 
-		ExcursionReport r = new ExcursionReport(dummy);
-		r.setElapsedDuration(123);
-		r.setElapsedGap(321);
-		r.setElapsedLength(222);
-
-		try {
-			ReportPersistence.create(this).persistExcursionReport(r);
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-		}
-
-		 Intent i = new Intent(this, WalkingActivity.class);
-		 i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
-		 startActivity(i);
+		Intent i = new Intent(this, WalkingActivity.class);
+		i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
+		startActivityForResult(i, TRACK_WALKING);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
