@@ -15,6 +15,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.Tr
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.ElapsedMeters;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
@@ -64,6 +65,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
 		Button endWalk = (Button) findViewById(R.id.end_walk);
 		endWalk.setOnClickListener(quitButtonListener);
+		ElapsedMeters elapsedMeters = (ElapsedMeters) findViewById(R.id.elapsed_meters_view_fragment);
 		AltitudeViewFragment altitudeView = (AltitudeViewFragment) getSupportFragmentManager().findFragmentById(R.id.altitude_view_fragment);
 		Button panButton = (Button) findViewById(R.id.button_pan);
 		Button zoomButton = (Button) findViewById(R.id.button_zoom);
@@ -90,6 +92,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		listeners.add(new RouteProgressionController(walkFragment));
 		listeners.add(pauseResumeButton);
 		listeners.add(missingTimeView);
+		listeners.add(elapsedMeters);
 		listeners.add(altitudeView);
 		listeners.add(this);
 
