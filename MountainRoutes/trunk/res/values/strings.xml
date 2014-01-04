@@ -84,5 +84,6 @@
     <string name="traveled_meters_value">blaaaa</string>
     <string name="altitude_gap_info">Altitude Gap</string>
     <string name="altitude_gap_value">bau</string>
+    <string name="walking_activity_altitude">Altitude</string>
 
 </resources>
