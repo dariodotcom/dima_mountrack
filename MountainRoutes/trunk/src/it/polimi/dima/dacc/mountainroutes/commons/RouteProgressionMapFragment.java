@@ -246,7 +246,9 @@ public class RouteProgressionMapFragment extends MapFragment {
 				currentEdge = edge;
 			}
 
-			bearing = computeBearing(walked.getLast(), pending.getFirst());
+			if(edge < maxCompletionIndex){
+				bearing = computeBearing(walked.getLast(), pending.getFirst());
+			}
 
 			float coeff = completionIndex - edge;
 			if (coeff > 0) {

@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.mountainroutes.reportviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
+import it.polimi.dima.dacc.mountainroutes.commons.Utils;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,9 +31,11 @@ public class ReportViewerActivity extends Activity {
 		} else if (savedInstanceState != null) {
 			displayedReport = savedInstanceState.getParcelable(REPORT_TO_DISPLAY);
 		}
+
 		if (displayedReport == null) {
 			throw new IllegalStateException("no route to display");
 		}
+
 		fragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.viewer_map);
 		spentTime = (TextView) findViewById(R.id.spent_time_value);
 		traveledMeters = (TextView) findViewById(R.id.traveled_meters_value);
@@ -50,9 +53,13 @@ public class ReportViewerActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		fragment.setPath(displayedReport.getPath());
+		fragment.setCompletionIndex(displayedReport.getCompletionIndex());
 		fragment.panToPath();
 
-		spentTime.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedDuration(), displayedReport.getRouteDuration()));
+		String total = Utils.formatMinutes(displayedReport.getRouteDuration());
+		String elapsed = Utils.formatSeconds(displayedReport.getElapsedDuration());
+
+		spentTime.setText(String.format("%s" + "/" + "%s", elapsed, total));
 		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(), displayedReport.getRouteLenght()));
 		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(), displayedReport.getRouteGap()));
 	}
