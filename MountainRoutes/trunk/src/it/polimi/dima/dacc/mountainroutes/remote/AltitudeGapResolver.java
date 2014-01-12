@@ -88,7 +88,6 @@ public class AltitudeGapResolver extends AsyncTask<LatLng, Void, LoadResult<Alti
 
 	private HttpEntity performRequest(LatLng point) throws ClientProtocolException, IOException {
 		String endpoint = String.format(ENDPOINT_FORMAT, point.latitude, point.longitude);
-		Log.d(TAG, "endpoint: " + endpoint);
 		HttpGet get = new HttpGet(endpoint);
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse response = client.execute(get);
@@ -105,7 +104,6 @@ public class AltitudeGapResolver extends AsyncTask<LatLng, Void, LoadResult<Alti
 			line = reader.readLine();
 		}
 
-		Log.d(TAG, "result: " + builder.toString());
 		return builder.toString();
 	}
 
@@ -118,7 +116,6 @@ public class AltitudeGapResolver extends AsyncTask<LatLng, Void, LoadResult<Alti
 		}
 
 		Double altitude = root.getJSONArray(RESPONSE_RESULT).getJSONObject(0).getDouble(RESPONSE_ELEVATION);
-		Log.d(TAG, "altitude: " + altitude);
 		return altitude;
 	}
 }
