@@ -23,7 +23,7 @@ import android.util.Log;
  */
 public class NotificationsEmitter implements TrackerListener {
 
-	private final static String TAG = NotificationsEmitter.class.getName();
+	private final static String TAG = "NotificationsEmitter";
 
 	private static NotificationsEmitter instance;
 	private static Object instanceLock;
@@ -121,7 +121,11 @@ public class NotificationsEmitter implements TrackerListener {
 	public void onUnregister(LaggardBackup backup) {
 		// Do nothing
 	}
-
+	
+	@Override
+	public void onAltitudeGapUpdate(int altitude) {
+		
+	}
 	private static enum Notification {
 		FAR_FROM_ROUTE, TRACKING_PROBLEM, GOING_BACKWARDS, QUIT, MOVING_WHILE_PAUSED, ARRIVED
 	}
@@ -129,4 +133,6 @@ public class NotificationsEmitter implements TrackerListener {
 	private void sendNotification(Notification notification) {
 		Log.d(TAG, "sent " + notification.name());
 	}
+
+
 }

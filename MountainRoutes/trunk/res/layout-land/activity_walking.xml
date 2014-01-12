@@ -54,7 +54,11 @@
         <RelativeLayout
             style="@style/route_info_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/routeinfo_line"
+            android:paddingBottom="2dp"
+            android:paddingTop="8dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -72,7 +76,31 @@
         <RelativeLayout
             style="@style/route_info_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/routeinfo_line"
+            android:paddingBottom="2dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/walking_activity_altitude" />
+
+            <it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeView
+                android:id="@+id/altitude_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/route_info_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/routeinfo_line"
+            android:paddingBottom="2dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,33 +108,34 @@
                 android:layout_alignParentLeft="true"
                 android:text="@string/walking_activity_hiked_over_metres" />
 
-            <fragment
-                android:id="@+id/altitude_view_fragment"
+            <it.polimi.dima.dacc.mountainroutes.walktracker.views.ElapsedMeters
+                android:id="@+id/elapsed_meters_view_fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                class="it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment" />
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingBottom="2dp" >
 
             <it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton
                 android:id="@+id/pause_resume_button"
                 style="@style/widget_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" />
 
             <Button
                 android:id="@+id/end_walk"
                 style="@style/widget_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/walking_activity_end_walk" />
         </RelativeLayout>
     </LinearLayout>

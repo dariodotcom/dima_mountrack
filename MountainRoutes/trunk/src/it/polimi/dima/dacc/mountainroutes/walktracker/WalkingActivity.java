@@ -14,7 +14,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
-import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.ElapsedMeters;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
@@ -63,29 +63,18 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
 		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
-		Button endWalk = (Button) findViewById(R.id.end_walk);
-		endWalk.setOnClickListener(quitButtonListener);
 		ElapsedMeters elapsedMeters = (ElapsedMeters) findViewById(R.id.elapsed_meters_view_fragment);
-		AltitudeViewFragment altitudeView = (AltitudeViewFragment) getSupportFragmentManager().findFragmentById(R.id.altitude_view_fragment);
+		AltitudeView altitudeView = (AltitudeView) findViewById(R.id.altitude_view);
+
+		// Buttons
+		Button endWalk = (Button) findViewById(R.id.end_walk);
 		Button panButton = (Button) findViewById(R.id.button_pan);
 		Button zoomButton = (Button) findViewById(R.id.button_zoom);
 
-		panButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				walkFragment.panToPath();
-			}
-		});
-		
-		zoomButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				walkFragment.zoomToUser();
-			}
-		});
-		
+		endWalk.setOnClickListener(quitButtonListener);
+		panButton.setOnClickListener(panButtonListener);
+		zoomButton.setOnClickListener(zoomButtonListener);
+
 		// Add listeners to list
 		listeners = new ArrayList<TrackerListener>();
 		listeners.add(timerView);
@@ -204,6 +193,22 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		}
 	};
 
+	private OnClickListener panButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			walkFragment.panToPath();
+		}
+	};
+
+	private OnClickListener zoomButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			walkFragment.zoomToUser();
+		}
+	};
+
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter).setNegativeButton(android.R.string.cancel, null);
@@ -234,7 +239,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	}
 
 	@Override
-	public void onStatusUpdate(UpdateType update) {		
+	public void onStatusUpdate(UpdateType update) {
 	}
 
 	@Override
@@ -247,5 +252,9 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	@Override
 	public void onUnregister(LaggardBackup backup) {
+	}
+
+	@Override
+	public void onAltitudeGapUpdate(int altitude) {
 	}
 }

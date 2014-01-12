@@ -102,8 +102,8 @@
             android:layout_alignParentLeft="true"
             android:text="@string/walking_activity_altitude" />
 
-        <it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeViewFragment
-            android:id="@+id/altitude_view_fragment"
+        <it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeView
+            android:id="@+id/altitude_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true" />
