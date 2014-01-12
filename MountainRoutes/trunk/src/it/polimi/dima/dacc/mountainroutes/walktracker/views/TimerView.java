@@ -14,8 +14,7 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class TimerView extends TextView implements TrackerListener,
-		Timer.Listener {
+public class TimerView extends TextView implements TrackerListener, Timer.Listener {
 
 	private int pausedColor, runningColor;
 
@@ -93,5 +92,11 @@ public class TimerView extends TextView implements TrackerListener,
 
 	protected String parseMillis(long millis) {
 		return Utils.formatMillis(millis);
+	}
+
+	@Override
+	public void onAltitudeGapUpdate(int altitude) {
+		// TODO Auto-generated method stub
+
 	}
 }

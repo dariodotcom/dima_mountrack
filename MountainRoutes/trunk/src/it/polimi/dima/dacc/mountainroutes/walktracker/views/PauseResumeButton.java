@@ -148,4 +148,10 @@ public class PauseResumeButton extends Button implements TrackerListener {
 			}
 		}
 	};
+
+	@Override
+	public void onAltitudeGapUpdate(int altitude) {
+		// TODO Auto-generated method stub
+
+	}
 }

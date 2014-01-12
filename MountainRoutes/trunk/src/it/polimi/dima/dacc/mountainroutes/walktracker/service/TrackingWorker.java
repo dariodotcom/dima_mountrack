@@ -11,6 +11,9 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.Tracker;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException.Type;
+import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
+import it.polimi.dima.dacc.mountainroutes.remote.AltitudeGap;
+import it.polimi.dima.dacc.mountainroutes.remote.AltitudeGapResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -38,7 +41,7 @@ import android.util.Log;
  * broadcasts.</li>
  * </ul>
  */
-public class TrackingWorker implements Runnable, LocationListener {
+public class TrackingWorker implements Runnable, LocationListener, AltitudeGapResolver.Listener {
 
 	private final static String TAG = "tracking worker";
 	private final static int MIN_DISTANCE_METERS = 50;
@@ -65,6 +68,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 	private Tracker tracker;
 	private ExcursionReport report;
 	private Timer timer;
+	private LatLng currentPoint;
 
 	/**
 	 * Constructs a new {@link TrackingWorker} that operates in a given
@@ -135,6 +139,11 @@ public class TrackingWorker implements Runnable, LocationListener {
 		currentState = State.TRACKING;
 		Intent i = BroadcastFactory.createTrackingStartBroadcast(route);
 		sendBroadcast(i);
+
+		// Resolve altitude of first point
+		LatLng first = route.getPath().getList().get(0);
+		this.currentPoint = first;
+		AltitudeGapResolver.resolve(first, this);
 
 		Log.d(TAG, "Now tracking route " + route);
 	}
@@ -248,8 +257,12 @@ public class TrackingWorker implements Runnable, LocationListener {
 			return;
 		}
 
+		this.currentPoint = result.getPointOnPath();
+
 		report.setCompletionIndex(result.getCompletionIndex());
 		report.setElapsedLength(result.getElapsedMeters());
+
+		AltitudeGapResolver.resolve(currentPoint, this);
 
 		Intent update = BroadcastFactory.createTrackingBroadcast(result);
 		sendBroadcast(update);
@@ -275,6 +288,7 @@ public class TrackingWorker implements Runnable, LocationListener {
 	}
 
 	private void sendBroadcast(Intent intent) {
+		Log.d(TAG, "Sending broadcast " + intent.getAction());
 		LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 	}
 
@@ -297,5 +311,23 @@ public class TrackingWorker implements Runnable, LocationListener {
 		if (!found) {
 			throw new IllegalStateException("Expected worker state of " + Arrays.toString(state) + " but current state is " + currentState);
 		}
+	}
+
+	@Override
+	public void onAltitudeResolved(AltitudeGap gap) {
+		if (!gap.getPoint().equals(currentPoint)) {
+			return;
+		}
+
+		int value = gap.getValue();
+
+		report.setElapsedGap(value);
+		Intent i = BroadcastFactory.createAltitudeGapBroadcast(value);
+		sendBroadcast(i);
+	}
+
+	@Override
+	public void onAltitudeError(LoadError error) {
+		// Do nothing
 	}
 }

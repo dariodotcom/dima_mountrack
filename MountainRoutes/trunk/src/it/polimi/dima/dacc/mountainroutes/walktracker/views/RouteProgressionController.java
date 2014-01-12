@@ -52,4 +52,9 @@ public class RouteProgressionController implements TrackerListener {
 	public void onUnregister(LaggardBackup backup) {
 
 	}
+
+	@Override
+	public void onAltitudeGapUpdate(int altitude) {
+
+	}
 }

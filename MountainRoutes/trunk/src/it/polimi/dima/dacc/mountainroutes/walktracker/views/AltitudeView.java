@@ -10,51 +10,44 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class ElapsedMeters extends TextView implements TrackerListener {
+public class AltitudeView extends TextView implements TrackerListener {
 
-	private int totalMeters;
+	private double totalGap;
 
-	public ElapsedMeters(Context context) {
-		super(context);
-	}
-
-	public ElapsedMeters(Context context, AttributeSet attrs, int defStyle) {
+	public AltitudeView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public ElapsedMeters(Context context, AttributeSet attrs) {
+	public AltitudeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+	}
+
+	public AltitudeView(Context context) {
+		super(context);
 	}
 
 	@Override
 	public void onStartTracking(Route route) {
-		totalMeters = route.getLengthInMeters();
-		this.setText(String.format("%s/%s", "0", totalMeters));
+		totalGap = route.getGapInMeters();
 	}
 
 	@Override
 	public void onStopTracking(ExcursionReport report) {
-
 	}
 
 	@Override
 	public void onStatusUpdate(UpdateType update) {
-
 	}
 
 	@Override
 	public void onTrackingUpdate(TrackResult result) {
-		this.setText(String.format("%s/%s", result.getElapsedMeters(), totalMeters));
 	}
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
 		if (backup.amILate()) {
-			this.onStartTracking(backup.getRouteBeingTracked());
-			TrackResult result = backup.getLastTrackResult();
-			if (result != null) {
-				this.onTrackingUpdate(result);
-			}
+			totalGap = backup.getRouteBeingTracked().getGapInMeters();
+			updateAltitude(backup.getAltitudeGap());
 		}
 	}
 
@@ -65,8 +58,11 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	@Override
 	public void onAltitudeGapUpdate(int altitude) {
-		// TODO Auto-generated method stub
-
+		updateAltitude(altitude);
 	}
 
+	private void updateAltitude(int gap) {
+		String message = String.format("%s / %s", gap, totalGap);
+		setText(message);
+	}
 }

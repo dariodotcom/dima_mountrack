@@ -25,10 +25,11 @@ public class LaggardBackup implements TrackerListenerBase {
 	private boolean isMovingWhilePaused;
 	private boolean isGoingBackwards;
 	private boolean isGpsEnabled;
+	private int altitudeGap;
 	private CompoundListener timerListeners;
 	private Timer timer;
 	private TrackResult lastTrackResult;
-	
+
 	/* Package */public LaggardBackup() {
 		isGpsEnabled = true;
 		timerListeners = new CompoundListener();
@@ -55,6 +56,10 @@ public class LaggardBackup implements TrackerListenerBase {
 		return isTrackingStarted;
 	}
 
+	public int getAltitudeGap() {
+		return altitudeGap;
+	}
+
 	public boolean isFarFromRoute() {
 		return isFarFromRoute;
 	}
@@ -71,7 +76,7 @@ public class LaggardBackup implements TrackerListenerBase {
 		return isGpsEnabled;
 	}
 
-	public TrackResult getLastTrackResult(){
+	public TrackResult getLastTrackResult() {
 		return lastTrackResult;
 	}
 
@@ -141,29 +146,33 @@ public class LaggardBackup implements TrackerListenerBase {
 		isMovingWhilePaused = false;
 		isFarFromRoute = false;
 	}
-	
-	private class CompoundListener implements Timer.Listener{
+
+	private class CompoundListener implements Timer.Listener {
 
 		private List<Timer.Listener> registeredListeners;
-		
-		public CompoundListener(){
+
+		public CompoundListener() {
 			registeredListeners = new ArrayList<Timer.Listener>();
 		}
-		
-		public void register(Timer.Listener listener){
+
+		public void register(Timer.Listener listener) {
 			registeredListeners.add(listener);
 		}
-		
-		public void unregister(Timer.Listener listener){
+
+		public void unregister(Timer.Listener listener) {
 			registeredListeners.remove(listener);
 		}
-		
+
 		@Override
 		public void onTime(long millis) {
-			for(Timer.Listener l : registeredListeners){
+			for (Timer.Listener l : registeredListeners) {
 				l.onTime(millis);
 			}
 		}
-		
+	}
+
+	@Override
+	public void onAltitudeGapUpdate(int altitudeGap) {
+		this.altitudeGap = altitudeGap;
 	}
 }

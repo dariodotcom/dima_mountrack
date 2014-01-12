@@ -14,11 +14,13 @@ public class BroadcastFactory {
 	public static final String ACTION_STOP = "STOP";
 	public static final String ACTION_UPDATE = "UPDATE";
 	public static final String ACTION_TRACKING = "TRACKING";
+	public static final String ACTION_ALTITUDE_GAP = "ALTITUDE";
 
 	public static final String EXTRA_ROUTE = "ROUTE";
 	public static final String EXTRA_TRACK_RESULT = "TRACK_RESULT";
 	public static final String EXTRA_REPORT = "REPORT";
 	public static final String EXTRA_UPDATE = "UPDATE";
+	public static final String EXTRA_ALTITUDE_GAP = "ALTITUDE";
 
 	private static IntentFilter intentFilter;
 
@@ -30,6 +32,7 @@ public class BroadcastFactory {
 		intentFilter.addAction(prefix + BroadcastFactory.ACTION_STOP);
 		intentFilter.addAction(prefix + BroadcastFactory.ACTION_TRACKING);
 		intentFilter.addAction(prefix + BroadcastFactory.ACTION_UPDATE);
+		intentFilter.addAction(prefix + BroadcastFactory.ACTION_ALTITUDE_GAP);
 	}
 
 	public static IntentFilter getCompleteIntentFilter() {
@@ -39,6 +42,12 @@ public class BroadcastFactory {
 	public static Intent createTrackingBroadcast(TrackResult result) {
 		Intent i = createIntent(ACTION_TRACKING);
 		i.putExtra(EXTRA_TRACK_RESULT, result);
+		return i;
+	}
+
+	public static Intent createAltitudeGapBroadcast(int altitude) {
+		Intent i = createIntent(ACTION_ALTITUDE_GAP);
+		i.putExtra(EXTRA_ALTITUDE_GAP, altitude);
 		return i;
 	}
 

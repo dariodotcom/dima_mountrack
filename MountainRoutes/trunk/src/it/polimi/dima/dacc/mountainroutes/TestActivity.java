@@ -43,10 +43,9 @@ public class TestActivity extends FragmentActivity {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			Toast.makeText(TestActivity.this, "Service disconnected",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(TestActivity.this, "Service disconnected", Toast.LENGTH_SHORT).show();
 			control = null;
-			
+
 			trackMan.unregisterListener(viewController);
 			trackMan.unregisterListener(loggerController);
 			trackMan.unregisterListener(timerView);
@@ -55,8 +54,7 @@ public class TestActivity extends FragmentActivity {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			Toast.makeText(TestActivity.this, "Service connected",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(TestActivity.this, "Service connected", Toast.LENGTH_SHORT).show();
 			control = (TrackingControl) service;
 
 			// TODO load trackMan
@@ -72,8 +70,7 @@ public class TestActivity extends FragmentActivity {
 		setContentView(R.layout.activity_test);
 
 		ListView loggingView = (ListView) findViewById(R.id.logging_view);
-		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 		loggingView.setAdapter(adapter);
 
 		startButton = (Button) findViewById(R.id.service_start);
@@ -164,6 +161,12 @@ public class TestActivity extends FragmentActivity {
 			// TODO Auto-generated method stub
 
 		}
+
+		@Override
+		public void onAltitudeGapUpdate(int altitude) {
+			// TODO Auto-generated method stub
+
+		}
 	};
 
 	private TrackerListener loggerController = new TrackerListener() {
@@ -190,13 +193,16 @@ public class TestActivity extends FragmentActivity {
 
 		@Override
 		public void onRegister(LaggardBackup backup) {
-			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void onUnregister(LaggardBackup backup) {
-			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAltitudeGapUpdate(int altitude) {
 
 		}
 	};
@@ -213,12 +219,10 @@ public class TestActivity extends FragmentActivity {
 			if (control == null) {
 				logMessage("[LISTENER] service not connected");
 			} else {
-				RouteID id = new RouteID(
-						"e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+				RouteID id = new RouteID("e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
 				Route dummy;
 				try {
-					dummy = RoutePersistence.create(TestActivity.this)
-							.loadRoute(id);
+					dummy = RoutePersistence.create(TestActivity.this).loadRoute(id);
 				} catch (PersistenceException e) {
 					e.printStackTrace();
 					return;

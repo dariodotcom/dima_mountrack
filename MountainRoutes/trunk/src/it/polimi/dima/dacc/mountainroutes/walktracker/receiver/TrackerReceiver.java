@@ -28,15 +28,13 @@ public class TrackerReceiver extends BroadcastReceiver {
 		String action = parts[parts.length - 1];
 
 		if (action.equals(BroadcastFactory.ACTION_START)) {
-			Route route = (Route) intent
-					.getParcelableExtra(BroadcastFactory.EXTRA_ROUTE);
+			Route route = (Route) intent.getParcelableExtra(BroadcastFactory.EXTRA_ROUTE);
 			listener.onStartTracking(route);
 			return;
 		}
 
 		if (action.equals(BroadcastFactory.ACTION_STOP)) {
-			ExcursionReport report = (ExcursionReport) intent
-					.getParcelableExtra(BroadcastFactory.EXTRA_REPORT);
+			ExcursionReport report = (ExcursionReport) intent.getParcelableExtra(BroadcastFactory.EXTRA_REPORT);
 			listener.onStopTracking(report);
 		}
 
@@ -47,10 +45,14 @@ public class TrackerReceiver extends BroadcastReceiver {
 		}
 
 		if (action.equals(BroadcastFactory.ACTION_UPDATE)) {
-			String typeName = intent
-					.getStringExtra(BroadcastFactory.EXTRA_UPDATE);
+			String typeName = intent.getStringExtra(BroadcastFactory.EXTRA_UPDATE);
 			UpdateType updateType = UpdateType.valueOf(typeName);
 			listener.onStatusUpdate(updateType);
+		}
+
+		if (action.equals(BroadcastFactory.ACTION_ALTITUDE_GAP)) {
+			int altitude = intent.getExtras().getInt(BroadcastFactory.EXTRA_ALTITUDE_GAP);
+			listener.onAltitudeGapUpdate(altitude);
 		}
 	}
 }
