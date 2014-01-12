@@ -85,5 +85,10 @@
     <string name="altitude_gap_info">Altitude Gap</string>
     <string name="altitude_gap_value">bau</string>
     <string name="walking_activity_altitude">Altitude</string>
+    <string name="FAR_FROM_ROUTE">You\'re moving away from trail!</string>
+    <string name="TRACKING_PROBLEM">There\'s some problem in tracking, please wait!</string>
+    <string name="GOING_BACKWARDS">You\'re going backwards! The trail continues on the other side.</string>
+    <string name="MOVING_WHILE_PAUSED">Have you may forgotten to set the restarting of the walk?</string>
+    <string name="ARRIVED">Congratulation! You\'ve just finished traveling the trail!</string>
 
 </resources>
