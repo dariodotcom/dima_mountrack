@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
+import it.polimi.dima.dacc.mountainroutes.R;
+import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
@@ -7,7 +9,9 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 /**
@@ -37,8 +41,7 @@ public class NotificationsEmitter implements TrackerListener {
 			if (instance == null) {
 				Context appContext = context.getApplicationContext();
 				instance = new NotificationsEmitter(appContext);
-				TrackerListenerManager.getManager(context).registerListener(
-						instance);
+				TrackerListenerManager.getManager(context).registerListener(instance);
 			}
 
 			return instance;
@@ -47,9 +50,20 @@ public class NotificationsEmitter implements TrackerListener {
 
 	private boolean turnedOn;
 	private Context context;
+	private StringRepository notificationTexts;
+	private NotificationManager notificationManager;
 
-	public NotificationsEmitter(Context context) {
+	private NotificationsEmitter(Context context) {
 		this.context = context;
+		this.notificationTexts = new StringRepository(context);
+
+		String svcName = Context.NOTIFICATION_SERVICE;
+		this.notificationManager = (NotificationManager) context.getSystemService(svcName);
+
+		for (Notification n : Notification.values()) {
+			notificationTexts.loadString(n.getTitleId());
+			notificationTexts.loadString(n.getDescriptionId());
+		}
 	}
 
 	/**
@@ -69,8 +83,10 @@ public class NotificationsEmitter implements TrackerListener {
 		}
 
 		this.turnedOn = false;
-		context.getApplicationContext(); // TODO removethis
-		// TODO dismiss sent notifications
+
+		for(Notification n : Notification.values()){
+			notificationManager.cancel(n.ordinal());
+		}
 	}
 
 	@Override
@@ -95,7 +111,7 @@ public class NotificationsEmitter implements TrackerListener {
 			break;
 
 		case GPS_DISABLED:
-			sendNotification(Notification.TRACKING_PROBLEM);
+			// sendNotification(Notification.GPS_DISABLED);
 			break;
 
 		case MOVING_WHILE_PAUSED:
@@ -121,18 +137,41 @@ public class NotificationsEmitter implements TrackerListener {
 	public void onUnregister(LaggardBackup backup) {
 		// Do nothing
 	}
-	
+
 	@Override
 	public void onAltitudeGapUpdate(int altitude) {
-		
+
 	}
+
 	private static enum Notification {
-		FAR_FROM_ROUTE, TRACKING_PROBLEM, GOING_BACKWARDS, QUIT, MOVING_WHILE_PAUSED, ARRIVED
+
+		FAR_FROM_ROUTE(R.string.notifFarFromRouteTitle, R.string.notifFarFromRouteDesc), GOING_BACKWARDS(R.string.notifGoingBackwardsTitle, R.string.notifGoingBackwardsDesc), MOVING_WHILE_PAUSED(R.string.notifMovingWhilePausedTitle, R.string.notifMovingWhilePausedDesc), ARRIVED(R.string.notifArrivedTitle, R.string.notifArrivedDesc);
+
+		private int titleId, descriptionId;
+
+		Notification(int titleId, int descriptionId) {
+			this.titleId = titleId;
+			this.descriptionId = descriptionId;
+		}
+
+		public int getTitleId() {
+			return titleId;
+		}
+
+		public int getDescriptionId() {
+			return descriptionId;
+		}
 	}
 
 	private void sendNotification(Notification notification) {
 		Log.d(TAG, "sent " + notification.name());
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+			.setSmallIcon(android.R.drawable.ic_menu_save)
+			.setContentTitle(notificationTexts.getString(notification.getTitleId()))
+			.setContentText(notificationTexts.getString(notification.getDescriptionId()))
+			.setAutoCancel(true);
+
+		notificationManager.notify(notification.ordinal(), builder.build());
 	}
-
-
 }

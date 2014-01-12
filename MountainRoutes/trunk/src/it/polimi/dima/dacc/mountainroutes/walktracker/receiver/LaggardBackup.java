@@ -17,43 +17,44 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
  */
 public class LaggardBackup implements TrackerListenerBase {
 
-	private boolean isTrackingStarted;
 	private Route routeBeingTracked;
-	private boolean isTrackingPaused;
-	private boolean isTrackingStopped;
+	private ExcursionReport excursionReport;
+	private TrackingStatus trackingStatus;
 	private boolean isFarFromRoute;
 	private boolean isMovingWhilePaused;
 	private boolean isGoingBackwards;
 	private boolean isGpsEnabled;
 	private int altitudeGap;
+	private TrackResult lastTrackResult;
+
 	private CompoundListener timerListeners;
 	private Timer timer;
-	private TrackResult lastTrackResult;
 
 	/* Package */public LaggardBackup() {
 		isGpsEnabled = true;
 		timerListeners = new CompoundListener();
 		timer = new Timer(timerListeners);
+		trackingStatus = TrackingStatus.READY;
 	}
 
 	public boolean amILate() {
-		return isTrackingStarted;
+		return trackingStatus != TrackingStatus.READY;
+	}
+
+	public TrackingStatus getStatus() {
+		return trackingStatus;
 	}
 
 	public Route getRouteBeingTracked() {
 		return routeBeingTracked;
 	}
 
-	public boolean isTrackingPaused() {
-		return isTrackingPaused;
+	public TrackResult getLastTrackResult() {
+		return lastTrackResult;
 	}
 
-	public boolean isTrackingStopped() {
-		return isTrackingStopped;
-	}
-
-	public boolean isTrackingStarted() {
-		return isTrackingStarted;
+	public ExcursionReport getReport() {
+		return excursionReport;
 	}
 
 	public int getAltitudeGap() {
@@ -76,10 +77,6 @@ public class LaggardBackup implements TrackerListenerBase {
 		return isGpsEnabled;
 	}
 
-	public TrackResult getLastTrackResult() {
-		return lastTrackResult;
-	}
-
 	public void registerTimerListener(Listener listener) {
 		timerListeners.register(listener);
 	}
@@ -90,18 +87,16 @@ public class LaggardBackup implements TrackerListenerBase {
 
 	@Override
 	public void onStartTracking(Route route) {
-		this.isTrackingStarted = true;
-		this.isTrackingPaused = false;
-		this.isTrackingStopped = false;
 		this.routeBeingTracked = route;
+		this.trackingStatus = TrackingStatus.TRACKING;
 		timer.start();
 	}
 
 	@Override
 	public void onStopTracking(ExcursionReport report) {
 		this.routeBeingTracked = null;
-		this.isTrackingPaused = false;
-		this.isTrackingStopped = true;
+		this.excursionReport = report;
+		this.trackingStatus = TrackingStatus.FINISHED;
 		timer.stop();
 	}
 
@@ -109,11 +104,11 @@ public class LaggardBackup implements TrackerListenerBase {
 	public void onStatusUpdate(UpdateType update) {
 		switch (update) {
 		case EXCURSION_PAUSED:
-			isTrackingPaused = true;
+			this.trackingStatus = TrackingStatus.PAUSED;
 			timer.pause();
 			break;
 		case EXCURSION_RESUME:
-			isTrackingPaused = false;
+			this.trackingStatus = TrackingStatus.TRACKING;
 			timer.resume();
 			break;
 		case FAR_FROM_ROUTE:
@@ -131,7 +126,7 @@ public class LaggardBackup implements TrackerListenerBase {
 			isMovingWhilePaused = true;
 			break;
 		case FORCE_QUIT:
-			isTrackingStopped = true;
+			this.trackingStatus = TrackingStatus.ABRUPTED;
 			timer.stop();
 			break;
 		default:
@@ -174,5 +169,9 @@ public class LaggardBackup implements TrackerListenerBase {
 	@Override
 	public void onAltitudeGapUpdate(int altitudeGap) {
 		this.altitudeGap = altitudeGap;
+	}
+
+	public static enum TrackingStatus {
+		READY, TRACKING, PAUSED, FINISHED, ABRUPTED
 	}
 }
