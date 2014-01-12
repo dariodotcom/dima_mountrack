@@ -43,7 +43,7 @@
             android:layout_toLeftOf="@+id/button_pan"
             android:drawableTop="@android:drawable/ic_menu_search" />
 
-        <CheckedTextView
+        <TextView
             android:id="@+id/notificationBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
