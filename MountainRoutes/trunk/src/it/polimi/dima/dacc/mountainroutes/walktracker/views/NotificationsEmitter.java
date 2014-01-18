@@ -4,14 +4,18 @@ import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
+import it.polimi.dima.dacc.mountainroutes.walktracker.WalkingActivity;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListenerManager;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 /**
@@ -84,7 +88,7 @@ public class NotificationsEmitter implements TrackerListener {
 
 		this.turnedOn = false;
 
-		for(Notification n : Notification.values()){
+		for (Notification n : Notification.values()) {
 			notificationManager.cancel(n.ordinal());
 		}
 	}
@@ -166,11 +170,12 @@ public class NotificationsEmitter implements TrackerListener {
 	private void sendNotification(Notification notification) {
 		Log.d(TAG, "sent " + notification.name());
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-			.setSmallIcon(android.R.drawable.ic_menu_save)
-			.setContentTitle(notificationTexts.getString(notification.getTitleId()))
-			.setContentText(notificationTexts.getString(notification.getDescriptionId()))
-			.setAutoCancel(true);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.R.drawable.ic_menu_save).setContentTitle(notificationTexts.getString(notification.getTitleId())).setContentText(notificationTexts.getString(notification.getDescriptionId())).setAutoCancel(true);
+
+		Intent resultIntent = new Intent(context, WalkingActivity.class);
+		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, resultIntent, 0);
+		builder.setContentIntent(contentIntent);
 
 		notificationManager.notify(notification.ordinal(), builder.build());
 	}
