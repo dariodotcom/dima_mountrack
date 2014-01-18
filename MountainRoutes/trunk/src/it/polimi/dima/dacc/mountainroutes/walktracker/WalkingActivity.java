@@ -209,6 +209,11 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		}
 	};
 
+	@Override
+	public void onBackPressed() {
+		assureUserWantsToQuit();
+	}
+	
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter).setNegativeButton(android.R.string.cancel, null);
