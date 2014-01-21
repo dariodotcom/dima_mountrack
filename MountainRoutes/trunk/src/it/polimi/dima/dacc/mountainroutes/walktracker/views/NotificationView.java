@@ -63,10 +63,10 @@ public class NotificationView extends TextView implements TrackerListener {
 			showMessageFor(update);
 			break;
 
-		case GPS_ENABLED: {
+		case GPS_ENABLED:
 			removeNotification(UpdateType.GPS_DISABLED);
 			break;
-		}
+
 		default:
 			break; // Yes, those warning are stupid.
 		}

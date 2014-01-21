@@ -9,6 +9,7 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.util.Log;
@@ -19,8 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RouteViewer extends Activity implements
-		LoaderManager.LoaderCallbacks<LoadResult<Route>> {
+public class RouteViewer extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<Route>> {
 
 	private static final String TAG = "route-viewer";
 
@@ -31,6 +31,7 @@ public class RouteViewer extends Activity implements
 	private static final int LOAD_ROUTE_LOADER_ID = 0;
 	private static final int SAVE_ROUTE_LOADER_ID = 1;
 	private static final int DELETE_ROUTE_LOADER_ID = 2;
+	private static final int VERIFY_WALK_START_LOADER_ID = 3;
 
 	private final static int TOAST_DURATION = Toast.LENGTH_SHORT;
 
@@ -67,8 +68,7 @@ public class RouteViewer extends Activity implements
 		gapView = (TextView) findViewById(R.id.gap_value);
 		durationView = (TextView) findViewById(R.id.estimated_time_value);
 		overlay = findViewById(R.id.overlay);
-		fragment = (RouteViewerFragment) getFragmentManager().findFragmentById(
-				R.id.viewer_map);
+		fragment = (RouteViewerFragment) getFragmentManager().findFragmentById(R.id.viewer_map);
 		startButton = (Button) findViewById(R.id.route_viewer_start);
 		saveButton = (Button) findViewById(R.id.route_viewer_save);
 		deleteButton = (Button) findViewById(R.id.route_viewer_delete);
@@ -123,14 +123,54 @@ public class RouteViewer extends Activity implements
 	}
 
 	/* -- START WALKING -- */
-	private OnClickListener startButtonClickListener = new OnClickListener() {
+	private LoaderCallbacks<LoadResult<Boolean>> walkCheckerLoaderCallbacks = new LoaderCallbacks<LoadResult<Boolean>>() {
 
 		@Override
-		public void onClick(View arg0) {
+		public Loader<LoadResult<Boolean>> onCreateLoader(int id, Bundle args) {
+			return new LocationVerifierLoader(displayedRoute, RouteViewer.this);
+		}
+
+		@Override
+		public void onLoadFinished(Loader<LoadResult<Boolean>> loader, LoadResult<Boolean> data) {
+			if (data.getType() == LoadResult.ERROR || data.getResult() == false) {
+				String message;
+
+				if (data.getResult() == false) {
+					message = "Too distant from starting point.";
+				} else {
+					message = "GPS disabled. Please turn on!";
+				}
+
+				Toast.makeText(RouteViewer.this, message, TOAST_DURATION).show();
+				startButton.setEnabled(true);
+				return;
+			}
+
 			Intent i = new Intent();
 			i.putExtra(ROUTE, displayedRoute);
 			setResult(RESULT_OK, i);
 			finish();
+		}
+
+		@Override
+		public void onLoaderReset(Loader<LoadResult<Boolean>> loader) {
+
+		}
+	};
+
+	private OnClickListener startButtonClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			startButton.setEnabled(false);
+			LoaderManager loadMan = getLoaderManager();
+
+			if (loadMan.getLoader(VERIFY_WALK_START_LOADER_ID) != null) {
+				loadMan.restartLoader(VERIFY_WALK_START_LOADER_ID, null, walkCheckerLoaderCallbacks).forceLoad();
+				return;
+			}
+
+			loadMan.initLoader(VERIFY_WALK_START_LOADER_ID, null, walkCheckerLoaderCallbacks);
 		}
 	};
 
@@ -150,7 +190,7 @@ public class RouteViewer extends Activity implements
 		lengthView.setText(route.getLengthInMeters() + " m");
 		durationView.setText(route.getDurationInMinutes() + " min");
 		fragment.showPath(route.getPath());
-		
+
 		// Show save/delete button
 		if (route.getSource() == Route.Source.STORAGE) {
 			deleteButton.setVisibility(View.VISIBLE);
@@ -191,14 +231,11 @@ public class RouteViewer extends Activity implements
 	private void onRouteSaved(LoadResult<Route> loadResult) {
 		switch (loadResult.getType()) {
 		case LoadResult.ERROR:
-			Toast.makeText(this,
-					stringRepo.getString(R.string.error_saving_route),
-					TOAST_DURATION).show();
+			Toast.makeText(this, stringRepo.getString(R.string.error_saving_route), TOAST_DURATION).show();
 			break;
 		case LoadResult.RESULT:
 			// Make tost
-			Toast.makeText(this, stringRepo.getString(R.string.route_saved),
-					TOAST_DURATION).show();
+			Toast.makeText(this, stringRepo.getString(R.string.route_saved), TOAST_DURATION).show();
 
 			// Hide save button
 			saveButton.setVisibility(View.GONE);
@@ -225,14 +262,11 @@ public class RouteViewer extends Activity implements
 	private void onRouteDeleted(LoadResult<Route> loadResult) {
 		switch (loadResult.getType()) {
 		case LoadResult.ERROR:
-			Toast.makeText(this,
-					stringRepo.getString(R.string.error_deleting_route),
-					TOAST_DURATION).show();
+			Toast.makeText(this, stringRepo.getString(R.string.error_deleting_route), TOAST_DURATION).show();
 			break;
 		case LoadResult.RESULT:
 			// Show Toast
-			Toast.makeText(this, stringRepo.getString(R.string.route_deleted),
-					TOAST_DURATION).show();
+			Toast.makeText(this, stringRepo.getString(R.string.route_deleted), TOAST_DURATION).show();
 			// Hide save button
 			saveButton.setVisibility(View.VISIBLE);
 
@@ -257,8 +291,7 @@ public class RouteViewer extends Activity implements
 	}
 
 	@Override
-	public void onLoadFinished(Loader<LoadResult<Route>> loader,
-			LoadResult<Route> result) {
+	public void onLoadFinished(Loader<LoadResult<Route>> loader, LoadResult<Route> result) {
 		switch (loader.getId()) {
 		case LOAD_ROUTE_LOADER_ID:
 			onRouteLoaded(result);
