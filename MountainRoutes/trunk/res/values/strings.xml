@@ -51,7 +51,10 @@
     <string name="error_saving_route">Error saving route</string>
     <string name="route_saved">Route saved</string>
     <string name="route_deleted">Route deleted</string>
+    <string name="msg_gps_disabled">Please turn GPS on</string>
+    <string name="msg_far_from_route">Go closer to route</string>
     <string name="route_list_empty">No route saved</string>
+
 
     <!-- service test -->
     <string name="service_start">Start</string>

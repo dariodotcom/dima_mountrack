@@ -1,15 +1,22 @@
 package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
+import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.Tracker;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.util.Log;
@@ -20,8 +27,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RouteViewer extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<Route>> {
+public class RouteViewer extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<Route>>, LocationListener {
 
+	private static final int LOCATION_UPDATE_DISTANCE = 50;
+	private static final int LOCATION_UPDATE_TIME = 10000;
 	private static final String TAG = "route-viewer";
 
 	public static final int ROUTE_RESULT = 0;
@@ -31,7 +40,6 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 	private static final int LOAD_ROUTE_LOADER_ID = 0;
 	private static final int SAVE_ROUTE_LOADER_ID = 1;
 	private static final int DELETE_ROUTE_LOADER_ID = 2;
-	private static final int VERIFY_WALK_START_LOADER_ID = 3;
 
 	private final static int TOAST_DURATION = Toast.LENGTH_SHORT;
 
@@ -48,12 +56,15 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 	private TextView lengthView;
 	private TextView gapView;
 	private TextView durationView;
+	private View farFromRouteMessage, gpsDisabledMessage;
 
 	// Loader Factory
 	private RouteLoader.Factory loaderFactory;
 
 	// Strings
 	private StringRepository stringRepo;
+
+	private LocationManager locMan;
 
 	@Override
 	protected void onCreate(Bundle savedState) {
@@ -72,6 +83,8 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 		startButton = (Button) findViewById(R.id.route_viewer_start);
 		saveButton = (Button) findViewById(R.id.route_viewer_save);
 		deleteButton = (Button) findViewById(R.id.route_viewer_delete);
+		farFromRouteMessage = findViewById(R.id.messagebox_far_from_route);
+		gpsDisabledMessage = findViewById(R.id.messagebox_gps_disabled);
 
 		// Load strings
 		stringRepo = new StringRepository(this);
@@ -86,6 +99,9 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 			loaderFactory = new RouteLoader.Factory(this, id);
 			getLoaderManager().initLoader(LOAD_ROUTE_LOADER_ID, null, this);
 		}
+
+		String svcName = Context.LOCATION_SERVICE;
+		locMan = (LocationManager) getSystemService(svcName);
 	}
 
 	@Override
@@ -122,85 +138,23 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 		return true;
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		locMan.removeUpdates(this);
+	}
+
 	/* -- START WALKING -- */
-	private LoaderCallbacks<LoadResult<Boolean>> walkCheckerLoaderCallbacks = new LoaderCallbacks<LoadResult<Boolean>>() {
+	private OnClickListener startButtonClickListener = new OnClickListener() {
 
 		@Override
-		public Loader<LoadResult<Boolean>> onCreateLoader(int id, Bundle args) {
-			return new LocationVerifierLoader(displayedRoute, RouteViewer.this);
-		}
-
-		@Override
-		public void onLoadFinished(Loader<LoadResult<Boolean>> loader, LoadResult<Boolean> data) {
-			if (data.getType() == LoadResult.ERROR || data.getResult() == false) {
-				String message;
-
-				if (data.getResult() == false) {
-					message = "Too distant from starting point.";
-				} else {
-					message = "GPS disabled. Please turn on!";
-				}
-
-				Toast.makeText(RouteViewer.this, message, TOAST_DURATION).show();
-				startButton.setEnabled(true);
-				return;
-			}
-
+		public void onClick(View v) {
 			Intent i = new Intent();
 			i.putExtra(ROUTE, displayedRoute);
 			setResult(RESULT_OK, i);
 			finish();
 		}
-
-		@Override
-		public void onLoaderReset(Loader<LoadResult<Boolean>> loader) {
-
-		}
 	};
-
-	private OnClickListener startButtonClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			startButton.setEnabled(false);
-			LoaderManager loadMan = getLoaderManager();
-
-			if (loadMan.getLoader(VERIFY_WALK_START_LOADER_ID) != null) {
-				loadMan.restartLoader(VERIFY_WALK_START_LOADER_ID, null, walkCheckerLoaderCallbacks).forceLoad();
-				return;
-			}
-
-			loadMan.initLoader(VERIFY_WALK_START_LOADER_ID, null, walkCheckerLoaderCallbacks);
-		}
-	};
-
-	/* -- ROUTE DISPLAY -- */
-	private void displayRoute(final Route route) {
-		this.displayedRoute = route;
-
-		// Add save button listener
-		this.saveButton.setOnClickListener(saveButtonClickListener);
-		this.deleteButton.setOnClickListener(deleteButtonClickListener);
-		this.startButton.setOnClickListener(startButtonClickListener);
-
-		// Set infos
-		setTitle(route.getName());
-		difficultyView.setDifficulty(route.getDifficulty());
-		gapView.setText(route.getGapInMeters() + " m");
-		lengthView.setText(route.getLengthInMeters() + " m");
-		durationView.setText(route.getDurationInMinutes() + " min");
-		fragment.showPath(route.getPath());
-
-		// Show save/delete button
-		if (route.getSource() == Route.Source.STORAGE) {
-			deleteButton.setVisibility(View.VISIBLE);
-		} else {
-			saveButton.setVisibility(View.VISIBLE);
-		}
-
-		// Hide overlay
-		overlay.animate().alpha(0).setDuration(250);
-	}
 
 	// Method to call when the route loader has finished loading
 	private void onRouteLoaded(LoadResult<Route> loadResult) {
@@ -243,6 +197,41 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 			// Show delete button
 			deleteButton.setVisibility(View.VISIBLE);
 		}
+	}
+
+	/* -- ROUTE DISPLAY -- */
+	private void displayRoute(final Route route) {
+		this.displayedRoute = route;
+
+		// Add save button listener
+		this.saveButton.setOnClickListener(saveButtonClickListener);
+		this.deleteButton.setOnClickListener(deleteButtonClickListener);
+		this.startButton.setOnClickListener(startButtonClickListener);
+
+		String pvdName = LocationManager.GPS_PROVIDER;
+		if (!locMan.isProviderEnabled(pvdName)) {
+			gpsDisabledMessage.setVisibility(View.VISIBLE);
+		}
+
+		locMan.requestLocationUpdates(pvdName, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, this);
+
+		// Set infos
+		setTitle(route.getName());
+		difficultyView.setDifficulty(route.getDifficulty());
+		gapView.setText(route.getGapInMeters() + " m");
+		lengthView.setText(route.getLengthInMeters() + " m");
+		durationView.setText(route.getDurationInMinutes() + " min");
+		fragment.showPath(route.getPath());
+
+		// Show save/delete button
+		if (route.getSource() == Route.Source.STORAGE) {
+			deleteButton.setVisibility(View.VISIBLE);
+		} else {
+			saveButton.setVisibility(View.VISIBLE);
+		}
+
+		// Hide overlay
+		overlay.animate().alpha(0).setDuration(250);
 	}
 
 	/* -- ROUTE DELETE -- */
@@ -308,5 +297,34 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 	@Override
 	public void onLoaderReset(Loader<LoadResult<Route>> arg0) {
 
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+		boolean canWalk = Tracker.canWalkOn(displayedRoute, latLng);
+		startButton.setEnabled(canWalk);
+		farFromRouteMessage.setVisibility(canWalk ? View.GONE : View.VISIBLE);
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		switch (status) {
+		case LocationProvider.AVAILABLE:
+			gpsDisabledMessage.setVisibility(View.GONE);
+			break;
+		default:
+			gpsDisabledMessage.setVisibility(View.VISIBLE);
+		}
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		gpsDisabledMessage.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		gpsDisabledMessage.setVisibility(View.VISIBLE);
 	}
 }
