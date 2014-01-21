@@ -17,6 +17,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.AltitudeView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.ElapsedMeters;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.MissingTimeView;
+import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationView;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.NotificationsEmitter;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.PauseResumeButton;
 import it.polimi.dima.dacc.mountainroutes.walktracker.views.RouteProgressionController;
@@ -65,6 +66,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
 		ElapsedMeters elapsedMeters = (ElapsedMeters) findViewById(R.id.elapsed_meters_view_fragment);
 		AltitudeView altitudeView = (AltitudeView) findViewById(R.id.altitude_view);
+		NotificationView notificationView = (NotificationView) findViewById(R.id.notificationBar);
 
 		// Buttons
 		Button endWalk = (Button) findViewById(R.id.end_walk);
@@ -83,6 +85,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		listeners.add(missingTimeView);
 		listeners.add(elapsedMeters);
 		listeners.add(altitudeView);
+		listeners.add(notificationView);
 		listeners.add(this);
 
 		// Load components
@@ -213,7 +216,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	public void onBackPressed() {
 		assureUserWantsToQuit();
 	}
-	
+
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter).setNegativeButton(android.R.string.cancel, null);

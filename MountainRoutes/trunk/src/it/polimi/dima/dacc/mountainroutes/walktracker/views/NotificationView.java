@@ -2,9 +2,7 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
 import java.util.ArrayList;
 
-import android.app.Notification;
 import android.content.Context;
-import android.hardware.Camera.Size;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -69,6 +67,8 @@ public class NotificationView extends TextView implements TrackerListener {
 			removeNotification(UpdateType.GPS_DISABLED);
 			break;
 		}
+		default:
+			break; // Yes, those warning are stupid.
 		}
 	}
 
@@ -90,26 +90,38 @@ public class NotificationView extends TextView implements TrackerListener {
 
 	@Override
 	public void onAltitudeGapUpdate(int altitude) {
-		
 
 	}
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		
+		if (!backup.amILate()) {
+			return;
+		}
 
+		if (backup.isGoingBackwards()) {
+			showMessageFor(UpdateType.GOING_BACKWARDS);
+
+		}
+
+		if (backup.isFarFromRoute()) {
+			showMessageFor(UpdateType.FAR_FROM_ROUTE);
+		}
+
+		if (backup.isMovingWhilePaused()) {
+			showMessageFor(UpdateType.MOVING_WHILE_PAUSED);
+		}
 	}
 
 	@Override
 	public void onUnregister(LaggardBackup backup) {
-	
 
 	}
 
 	private void showMessageFor(UpdateType update) {
-
 		notificationList.add(update);
 		setText(getTextFor(update));
+		setAlpha(1);
 
 	}
 

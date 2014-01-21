@@ -53,8 +53,7 @@
         </activity>
         <activity
             android:name="it.polimi.dima.dacc.mountainroutes.walktracker.WalkingActivity"
-            android:label="@string/title_activity_waking"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_waking" >
         </activity>
         <activity
             android:name="it.polimi.dima.dacc.mountainroutes.AboutActivity"
