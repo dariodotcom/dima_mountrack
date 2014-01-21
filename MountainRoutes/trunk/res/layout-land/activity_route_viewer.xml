@@ -12,13 +12,36 @@
         android:padding="@dimen/activity_horizontal_margin"
         tools:context=".RouteViewer" >
 
-        <fragment
-            android:id="@+id/viewer_map"
+        <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
+            android:layout_weight="1" >
+
+            <fragment
+                android:id="@+id/viewer_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="it.polimi.dima.dacc.mountainroutes.routeviewer.RouteViewerFragment" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/messagebox_far_from_route"
+                    style="@style/mapNotificationBar"
+                    android:text="@string/msg_far_from_route"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/messagebox_gps_disabled"
+                    style="@style/mapNotificationBar"
+                    android:text="@string/msg_gps_disabled"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dip"
@@ -116,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:enabled="false"
                     android:text="@string/route_viewer_start" />
 
                 <Button
