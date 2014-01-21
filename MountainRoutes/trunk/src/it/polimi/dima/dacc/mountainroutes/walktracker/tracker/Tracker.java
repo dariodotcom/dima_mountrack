@@ -14,4 +14,7 @@ public abstract class Tracker {
 		return new OldTracker(route.getPath());
 	}
 
+	public static boolean canWalkOn(Route route, LatLng latLng) {
+		return GeomUtils.haversineDistance(route.getPath().getList().get(0), latLng) < 100;
+	}
 }

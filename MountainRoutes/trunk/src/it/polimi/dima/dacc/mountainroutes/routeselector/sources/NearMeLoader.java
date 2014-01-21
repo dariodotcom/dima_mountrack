@@ -1,6 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
+import it.polimi.dima.dacc.mountainroutes.commons.LocationLoader;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;
 import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery.QueryType;
@@ -8,7 +8,6 @@ import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentConnector;
 import it.polimi.dima.dacc.mountainroutes.remote.RemoteContentManager;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -42,27 +41,13 @@ public class NearMeLoader extends RouteSummaryLoader {
 	@Override
 	public LoadResult<RouteSummaryList> loadInBackground() {
 
-		// Create location updater
-		LocationUpdater updater;
-		try {
-			updater = new LocationUpdater(context, this);
-		} catch (IllegalStateException e) {
-			Log.d(TAG, "gps disabled");
-			return new LoadResult<RouteSummaryList>(LoadError.GPS_DISABLED);
+		LoadResult<LatLng> result = new LocationLoader(getContext()).getLocation();
+		
+		if(result.getType() == LoadResult.ERROR){
+			return new LoadResult<RouteSummaryList>(result.getError());
 		}
-
-		new Thread(updater).start();
-
-		synchronized (this) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				return new LoadResult<RouteSummaryList>(
-						LoadError.INTERNAL_ERROR);
-			}
-		}
-
-		LatLng location = updater.getLocation();
+		
+		LatLng location = result.getResult();
 		ContentQuery query = new ContentQuery(QueryType.NEAR);
 		query.getParams().putParcelable(RemoteContentManager.POSITION_PARAM,
 				location);

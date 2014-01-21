@@ -5,6 +5,8 @@ import java.util.List;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
+import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
+import it.polimi.dima.dacc.mountainroutes.persistence.report.ReportPersistence;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
@@ -31,6 +33,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +44,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";
 	private static final String TRACKING_INITIALIZED = "tracking_initialized";
 	public static final String WALKING_REPORT = "walking_report";
+	private static final String TAG = "WalkingActivity";
 
 	private RouteProgressionMapFragment walkFragment;
 	private List<TrackerListener> listeners;
@@ -219,7 +223,8 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	private void assureUserWantsToQuit() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter).setNegativeButton(android.R.string.cancel, null);
+		builder.setMessage(quitMessage).setCancelable(false).setPositiveButton(android.R.string.yes, quitter)
+				.setNegativeButton(android.R.string.cancel, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
@@ -242,6 +247,13 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	public void onStopTracking(ExcursionReport report) {
 		Intent i = new Intent();
 		i.putExtra(WALKING_REPORT, report);
+
+		try {
+			ReportPersistence.create(this).persistExcursionReport(report);
+		} catch (PersistenceException e) {
+			Log.e(TAG, "Error peristing report", e);
+		}
+
 		setResult(RESULT_OK, i);
 		finish();
 	}
