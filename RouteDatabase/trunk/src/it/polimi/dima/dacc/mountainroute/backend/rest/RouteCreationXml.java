@@ -69,7 +69,7 @@ public class RouteCreationXml {
         route.setPath(path);
         route.setDifficulty(difficulty);
         route.setDurationInMinutes(durationInMinutes);
-        route.setLenghtInMeters(Utils.lengthOf(path));
+        route.setLenghtInMeters(Utils.lengthInMeter(path));
         route.setGapInMeters(0);
 
         return route;

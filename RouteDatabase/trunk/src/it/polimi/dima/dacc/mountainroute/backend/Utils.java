@@ -29,26 +29,27 @@ public class Utils {
         return EARTH_RADIUS * c;
     }
 
-    public static int lengthOf(List<GeoPoint> path) {
-        int result = 0;
-        
-        if(path.size() < 2){
-            return result;
+    public static int lengthInMeter(List<GeoPoint> path) {
+        if (path.size() < 2) {
+            return 0;
         }
-        
+
+        double result = 0;
+
         for (int i = 1; i < path.size(); i++) {
             result += haversineDistance(path.get(i - 1), path.get(i));
         }
-        return result;
+
+        return (int) Math.floor(result * 1000);
     }
-    
-    public static List<RouteReviewXml> createReview(List<Route> input){
+
+    public static List<RouteReviewXml> createReview(List<Route> input) {
         List<RouteReviewXml> result = new ArrayList<RouteReviewXml>();
-        
-        for(Route r : input){
+
+        for (Route r : input) {
             result.add(new RouteReviewXml(r));
         }
-        
+
         return result;
     }
 }
