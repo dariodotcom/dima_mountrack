@@ -1,6 +1,7 @@
 package it.polimi.dima.dacc.mountainroute.backend.rest;
 
 import it.polimi.dima.dacc.mountainroute.backend.Utils;
+import it.polimi.dima.dacc.mountainroute.backend.commons.altitude.AltitudeResolver;
 import it.polimi.dima.dacc.mountainroute.backend.model.Difficulty;
 import it.polimi.dima.dacc.mountainroute.backend.model.GeoPoint;
 import it.polimi.dima.dacc.mountainroute.backend.model.Route;
@@ -69,8 +70,8 @@ public class RouteCreationXml {
         route.setPath(path);
         route.setDifficulty(difficulty);
         route.setDurationInMinutes(durationInMinutes);
-        route.setLenghtInMeters(Utils.lengthInMeter(path));
-        route.setGapInMeters(0);
+        route.setLenghtInMeters(Utils.lengthInMeters(path));
+        route.setGapInMeters(AltitudeResolver.altitudeGap(path));
 
         return route;
     }

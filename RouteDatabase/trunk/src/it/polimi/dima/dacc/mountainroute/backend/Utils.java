@@ -29,7 +29,7 @@ public class Utils {
         return EARTH_RADIUS * c;
     }
 
-    public static int lengthInMeter(List<GeoPoint> path) {
+    public static int lengthInMeters(List<GeoPoint> path) {
         if (path.size() < 2) {
             return 0;
         }
