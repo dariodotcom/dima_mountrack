@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class OldTracker extends Tracker {
 
 	private final static String TAG = "tracker";
-	private static final double MAX_DISTANCE_METERS = 100;
+
 	private List<LatLng> path;
 	private PathSegment currentSegment;
 	private int edge, elapsedMeters;
@@ -34,7 +34,7 @@ public class OldTracker extends Tracker {
 		// Check distance from segment
 		double distance = currentSegment.distanceTo(newPoint);
 		Log.d(TAG, "distance from segment: " + distance);
-		if (distance > MAX_DISTANCE_METERS) {
+		if (distance > MAX_DISTANCE_KM) {
 			// The user is too distant
 			throw new TrackerException(TrackerException.Type.FAR_FROM_ROUTE);
 		}
