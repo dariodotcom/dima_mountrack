@@ -44,7 +44,7 @@ import android.util.Log;
 public class TrackingWorker implements Runnable, LocationListener, AltitudeGapResolver.Listener {
 
 	private final static String TAG = "tracking worker";
-	private final static int MIN_DISTANCE_METERS = 50;
+	private final static int MIN_DISTANCE_METERS = 10;
 	private final static int MIN_TIME_MILLIS = 5000;
 
 	private static enum State {
