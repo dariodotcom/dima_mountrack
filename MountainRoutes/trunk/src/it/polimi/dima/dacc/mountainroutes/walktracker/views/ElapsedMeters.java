@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class ElapsedMeters extends TextView implements TrackerListener {
 
-	private int totalMeters;
+	private String routeLength;
 
 	public ElapsedMeters(Context context) {
 		super(context);
@@ -28,8 +28,8 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	@Override
 	public void onStartTracking(Route route) {
-		totalMeters = route.getLengthInMeters();
-		this.setText(String.format("%s/%s", "0", totalMeters));
+		routeLength = represent(route.getLengthInMeters());
+		this.setText(String.format("%s / %s", "0", routeLength));
 	}
 
 	@Override
@@ -44,7 +44,8 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	@Override
 	public void onTrackingUpdate(TrackResult result) {
-		this.setText(String.format("%s/%s", result.getElapsedMeters(), totalMeters));
+		String elapsed = represent(result.getElapsedMeters());
+		this.setText(String.format("%s/%s", elapsed, routeLength));
 	}
 
 	@Override
@@ -69,4 +70,12 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	}
 
+	private String represent(int meters){
+		if(meters < 1000){
+			return meters + "m";
+		}
+		
+		return (meters / 1000) + "km";
+	}
+	
 }

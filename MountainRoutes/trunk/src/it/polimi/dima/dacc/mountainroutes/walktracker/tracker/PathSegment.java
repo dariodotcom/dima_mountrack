@@ -26,7 +26,8 @@ public abstract class PathSegment {
 
 	public final int getLengthInMeters() {
 		if (lengthInMeters == null) {
-			lengthInMeters = (int) GeomUtils.haversineDistance(start, end);
+			double meters = GeomUtils.haversineDistance(start, end) * 1000;
+			lengthInMeters = (int) Math.round(meters);
 		}
 
 		return lengthInMeters;
