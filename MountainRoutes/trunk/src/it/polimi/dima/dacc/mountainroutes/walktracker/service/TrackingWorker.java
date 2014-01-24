@@ -56,7 +56,7 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 		@Override
 		public void onTime(long millis) {
 			int secs = (int) (millis / 1000);
-			report.setElapsedDuration(secs % 60);
+			report.setElapsedDuration(secs);
 		}
 	};
 
@@ -235,12 +235,14 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Log.d(TAG, "provider enabled, " + provider);
+		Intent i = BroadcastFactory.createStatusBroadcast(UpdateType.GPS_ENABLED);
+		sendBroadcast(i);
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Log.d(TAG, "provider disabled, " + provider);
+		Intent i = BroadcastFactory.createStatusBroadcast(UpdateType.GPS_DISABLED);
+		sendBroadcast(i);
 	}
 
 	// Helper methods called from location listener methods, thus running on the
@@ -251,7 +253,8 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 		try {
 			result = tracker.track(newPoint);
 		} catch (TrackerException e) {
-			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS : UpdateType.FAR_FROM_ROUTE;
+			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS
+					: UpdateType.FAR_FROM_ROUTE;
 			Intent i = BroadcastFactory.createStatusBroadcast(update);
 			sendBroadcast(i);
 			return;
@@ -309,7 +312,8 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 		}
 
 		if (!found) {
-			throw new IllegalStateException("Expected worker state of " + Arrays.toString(state) + " but current state is " + currentState);
+			throw new IllegalStateException("Expected worker state of " + Arrays.toString(state)
+					+ " but current state is " + currentState);
 		}
 	}
 

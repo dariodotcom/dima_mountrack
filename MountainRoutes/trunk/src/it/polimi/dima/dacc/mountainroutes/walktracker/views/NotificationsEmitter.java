@@ -32,31 +32,12 @@ public class NotificationsEmitter implements TrackerListener {
 
 	private final static String TAG = "NotificationsEmitter";
 
-	private static NotificationsEmitter instance;
-	private static Object instanceLock;
-
-	static {
-		instanceLock = new Object();
-	}
-
-	public static NotificationsEmitter getEmitter(Context context) {
-		synchronized (instanceLock) {
-			if (instance == null) {
-				Context appContext = context.getApplicationContext();
-				instance = new NotificationsEmitter(appContext);
-				TrackerListenerManager.getManager(context).registerListener(instance);
-			}
-
-			return instance;
-		}
-	}
-
 	private boolean turnedOn;
 	private Context context;
 	private StringRepository notificationTexts;
 	private NotificationManager notificationManager;
 
-	private NotificationsEmitter(Context context) {
+	public NotificationsEmitter(Context context) {
 		this.context = context;
 		this.notificationTexts = new StringRepository(context);
 
@@ -75,6 +56,7 @@ public class NotificationsEmitter implements TrackerListener {
 	 */
 	public void turnOn() {
 		this.turnedOn = true;
+		TrackerListenerManager.getManager(context).registerListener(this);
 	}
 
 	/**
@@ -86,6 +68,7 @@ public class NotificationsEmitter implements TrackerListener {
 		}
 
 		this.turnedOn = false;
+		TrackerListenerManager.getManager(context).unregisterListener(this);
 
 		for (Notification n : Notification.values()) {
 			notificationManager.cancel(n.ordinal());

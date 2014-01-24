@@ -47,12 +47,14 @@ public class TrackerListenerManager {
 	private LocalBroadcastManager lbcMan;
 	private LaggardBackup backup;
 	private TrackerReceiver backupReceiver;
+	private boolean alive;
 
 	private TrackerListenerManager(Context context) {
 		this.lbcMan = LocalBroadcastManager.getInstance(context);
 		this.backup = new LaggardBackup();
 		this.mappings = new HashMap<TrackerListener, TrackerReceiver>();
-
+		this.alive = true;
+		
 		backupReceiver = new TrackerReceiver(backup);
 		lbcMan.registerReceiver(backupReceiver, intentFilter);
 	}
@@ -62,6 +64,10 @@ public class TrackerListenerManager {
 			throw new NullPointerException("Listener must not be null.");
 		}
 
+		if(!alive){
+			return;
+		}
+		
 		if (mappings.keySet().contains(listener)) {
 			return;
 		}
@@ -70,6 +76,10 @@ public class TrackerListenerManager {
 		mappings.put(listener, adapter);
 		lbcMan.registerReceiver(adapter, intentFilter);
 		listener.onRegister(backup);
+	}
+	
+	public boolean isAlive(){
+		return alive;
 	}
 
 	public void unregisterListener(TrackerListener listener) {
@@ -88,6 +98,8 @@ public class TrackerListenerManager {
 	}
 
 	private void clear() {
+		this.alive = false;
+		
 		for (TrackerListener listener : mappings.keySet()) {
 			TrackerReceiver adapter = mappings.get(listener);
 			lbcMan.unregisterReceiver(adapter);

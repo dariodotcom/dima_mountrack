@@ -12,7 +12,7 @@ public class ExcursionReport implements Parcelable {
 	private PointList path;
 	private Date date;
 	private float completionIndex;
-	private int elapsedDuration;
+	private int elapsedDurationSeconds;
 	private int elapsedLenght;
 	private int elapsedGap;
 	private int routeDuration;
@@ -74,11 +74,11 @@ public class ExcursionReport implements Parcelable {
 	}
 
 	public int getElapsedDuration() {
-		return elapsedDuration;
+		return elapsedDurationSeconds;
 	}
 
-	public void setElapsedDuration(int elapsedMinutes) {
-		this.elapsedDuration = elapsedMinutes;
+	public void setElapsedDuration(int elapsedSeconds) {
+		this.elapsedDurationSeconds = elapsedSeconds;
 	}
 
 	public int getElapsedLength() {
@@ -133,7 +133,7 @@ public class ExcursionReport implements Parcelable {
 		path = in.readParcelable(PointList.class.getClassLoader());
 		date = new Date(in.readLong());
 		completionIndex = in.readFloat();
-		elapsedDuration = in.readInt();
+		elapsedDurationSeconds = in.readInt();
 		elapsedLenght = in.readInt();
 		elapsedGap = in.readInt();
 		routeDuration = in.readInt();
@@ -148,7 +148,7 @@ public class ExcursionReport implements Parcelable {
 		dest.writeParcelable(path, 0);
 		dest.writeLong(date.getTime());
 		dest.writeFloat(completionIndex);
-		dest.writeInt(elapsedDuration);
+		dest.writeInt(elapsedDurationSeconds);
 		dest.writeInt(elapsedLenght);
 		dest.writeInt(elapsedGap);
 		dest.writeInt(routeDuration);
