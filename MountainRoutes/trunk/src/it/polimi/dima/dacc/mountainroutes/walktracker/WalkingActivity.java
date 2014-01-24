@@ -49,13 +49,12 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	private RouteProgressionMapFragment walkFragment;
 	private List<TrackerListener> listeners;
 	private TrackerListenerManager trackMan;
-	private TrackingControlWrapper controlWrapper;
+	private TrackingControlWrapper serviceControlWrapper;
 	private NotificationsEmitter emitter;
 
 	private String quitMessage;
 
 	private boolean trackingInitialized = false;
-	private boolean finalizeOnDestroy = false;
 	private Route routeToTrack;
 
 	@Override
@@ -63,14 +62,28 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		super.onCreate(savedState);
 		setContentView(R.layout.activity_walking);
 
+		// Create components
+		trackMan = TrackerListenerManager.getManager(this);
+		emitter = new NotificationsEmitter(this);
+		serviceControlWrapper = new TrackingControlWrapper();
+
 		// Load UI elements
+		listeners = new ArrayList<TrackerListener>();
+
+		listeners.add((TimerView) findViewById(R.id.timer_view));
+		listeners.add((MissingTimeView) findViewById(R.id.time_to_arrive_value));
+		listeners.add((ElapsedMeters) findViewById(R.id.elapsed_meters_view_fragment));
+		listeners.add((AltitudeView) findViewById(R.id.altitude_view));
+		listeners.add((NotificationView) findViewById(R.id.notificationBar));
+
 		walkFragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.walking_map);
-		TimerView timerView = (TimerView) findViewById(R.id.timer_view);
+		listeners.add(new RouteProgressionController(walkFragment));
+
 		PauseResumeButton pauseResumeButton = (PauseResumeButton) findViewById(R.id.pause_resume_button);
-		MissingTimeView missingTimeView = (MissingTimeView) findViewById(R.id.time_to_arrive_value);
-		ElapsedMeters elapsedMeters = (ElapsedMeters) findViewById(R.id.elapsed_meters_view_fragment);
-		AltitudeView altitudeView = (AltitudeView) findViewById(R.id.altitude_view);
-		NotificationView notificationView = (NotificationView) findViewById(R.id.notificationBar);
+		listeners.add(pauseResumeButton);
+		pauseResumeButton.attachToControl(serviceControlWrapper);
+
+		listeners.add(this);
 
 		// Buttons
 		Button endWalk = (Button) findViewById(R.id.end_walk);
@@ -81,23 +94,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		panButton.setOnClickListener(panButtonListener);
 		zoomButton.setOnClickListener(zoomButtonListener);
 
-		// Add listeners to list
-		listeners = new ArrayList<TrackerListener>();
-		listeners.add(timerView);
-		listeners.add(new RouteProgressionController(walkFragment));
-		listeners.add(pauseResumeButton);
-		listeners.add(missingTimeView);
-		listeners.add(elapsedMeters);
-		listeners.add(altitudeView);
-		listeners.add(notificationView);
-		listeners.add(this);
-
-		// Load components
-		trackMan = TrackerListenerManager.getManager(this);
-		emitter = NotificationsEmitter.getEmitter(this);
-		controlWrapper = new TrackingControlWrapper();
-		pauseResumeButton.attachToControl(controlWrapper);
-
+		// Load Strings
 		quitMessage = getResources().getString(R.string.walking_quit_notify);
 
 		// Load state
@@ -146,9 +143,11 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	protected void onPause() {
 		super.onPause();
 
-		emitter.turnOn();
-		for (TrackerListener listener : listeners) {
-			trackMan.unregisterListener(listener);
+		if (trackMan.isAlive()) {
+			emitter.turnOn();
+			for (TrackerListener listener : listeners) {
+				trackMan.unregisterListener(listener);
+			}
 		}
 	}
 
@@ -156,12 +155,6 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	protected void onDestroy() {
 		// Detach this activity from service
 		unbindService(this);
-
-		if (finalizeOnDestroy) {
-			controlWrapper.stop();
-			TrackerListenerManager.unload();
-		}
-
 		super.onDestroy();
 	}
 
@@ -175,7 +168,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		TrackingControl control = (TrackingControl) service;
-		controlWrapper.setControl(control);
+		serviceControlWrapper.setControl(control);
 
 		if (!trackingInitialized) {
 			trackingInitialized = true;
@@ -186,9 +179,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		controlWrapper.setControl(null);
-		trackMan = null;
-		TrackerListenerManager.unload();
+		serviceControlWrapper.setControl(null);
 	}
 
 	// Helpers
@@ -233,7 +224,10 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
 			WalkingActivity activity = WalkingActivity.this;
-			activity.finalizeOnDestroy = true;
+
+			serviceControlWrapper.stop(); // Stops the service;
+			TrackerListenerManager.unload();
+			
 			activity.setResult(RESULT_CANCELED);
 			activity.finish();
 		}
@@ -254,6 +248,9 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 			Log.e(TAG, "Error peristing report", e);
 		}
 
+		TrackerListenerManager.unload();
+		serviceControlWrapper.stop();
+		
 		setResult(RESULT_OK, i);
 		finish();
 	}
