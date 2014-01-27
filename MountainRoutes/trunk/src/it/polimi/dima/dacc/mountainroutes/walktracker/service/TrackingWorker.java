@@ -10,7 +10,6 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.Tracker;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
-import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException.Type;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.remote.AltitudeGap;
 import it.polimi.dima.dacc.mountainroutes.remote.AltitudeGapResolver;
@@ -63,6 +62,7 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 	private Context context;
 	private LocationManager locMan;
 	private Looper looper;
+	private int backwardsCount = 0;
 
 	private State currentState;
 	private Tracker tracker;
@@ -253,8 +253,18 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 		try {
 			result = tracker.track(newPoint);
 		} catch (TrackerException e) {
-			UpdateType update = e.getType() == Type.GOING_BACKWARD ? UpdateType.GOING_BACKWARDS
-					: UpdateType.FAR_FROM_ROUTE;
+			UpdateType update = UpdateType.from(e.getType());
+			
+			if(update == UpdateType.GOING_BACKWARDS){
+				if(backwardsCount < 2){
+					backwardsCount ++;
+					Log.d(TAG, "backwards count: " + backwardsCount);
+					return;
+				}
+				
+				backwardsCount = 0;
+			}
+			
 			Intent i = BroadcastFactory.createStatusBroadcast(update);
 			sendBroadcast(i);
 			return;
@@ -264,7 +274,7 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 
 		report.setCompletionIndex(result.getCompletionIndex());
 		report.setElapsedLength(result.getElapsedMeters());
-
+		backwardsCount = 0;
 		AltitudeGapResolver.resolve(currentPoint, this);
 
 		Intent update = BroadcastFactory.createTrackingBroadcast(result);
@@ -303,7 +313,7 @@ public class TrackingWorker implements Runnable, LocationListener, AltitudeGapRe
 
 	private void assertState(State... state) {
 		boolean found = false;
-		;
+		
 		for (int i = 0; i < state.length; i++) {
 			if (state[i] == currentState) {
 				found = true;
