@@ -65,6 +65,10 @@ public class RouteListFragment extends Fragment implements
 		this.loaderFactory = factory;
 	}
 
+	public void showMessage(String message){
+		controller.showMessage(message);
+	}
+	
 	public void update() {
 		// showPanel(LOADING_VIEW);
 
@@ -120,6 +124,7 @@ public class RouteListFragment extends Fragment implements
 			return;
 		}
 
+		controller.showMessage("");
 		controller.showResult(result);
 	}
 

@@ -1,6 +1,6 @@
 package it.polimi.dima.dacc.mountainroutes.routeselector.sources;
 
-import it.polimi.dima.dacc.mountainroutes.commons.LocationLoader;
+import it.polimi.dima.dacc.mountainroutes.commons.Holder;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery;
 import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery.QueryType;
@@ -21,16 +21,20 @@ public class NearMeLoader extends RouteSummaryLoader {
 	private final static String TAG = "near-me-source";
 
 	private Context context;
+	private Holder<LatLng> locationHolder;
 
 	/**
 	 * Constructs a new instance
-	 *
+	 * 
 	 * @param context
 	 *            - the {@link Context} in which the loader is executing
+	 * @param locationHolder
+	 *            - a {@link Holder} containing current location
 	 */
-	public NearMeLoader(Context context) {
+	public NearMeLoader(Context context, Holder<LatLng> locationHolder) {
 		super(context);
 		this.context = context;
+		this.locationHolder = locationHolder;
 	}
 
 	@Override
@@ -40,19 +44,10 @@ public class NearMeLoader extends RouteSummaryLoader {
 
 	@Override
 	public LoadResult<RouteSummaryList> loadInBackground() {
-
-		LoadResult<LatLng> result = new LocationLoader(getContext()).getLocation();
-		
-		if(result.getType() == LoadResult.ERROR){
-			return new LoadResult<RouteSummaryList>(result.getError());
-		}
-		
-		LatLng location = result.getResult();
+		LatLng location = locationHolder.getValue();
 		ContentQuery query = new ContentQuery(QueryType.NEAR);
-		query.getParams().putParcelable(RemoteContentManager.POSITION_PARAM,
-				location);
-		RemoteContentConnector connector = RemoteContentManager.getInstance()
-				.createConnector(context);
+		query.getParams().putParcelable(RemoteContentManager.POSITION_PARAM, location);
+		RemoteContentConnector connector = RemoteContentManager.getInstance().createConnector(context);
 		return connector.executeQuery(query, RouteSummaryList.class);
 	}
 
@@ -63,15 +58,17 @@ public class NearMeLoader extends RouteSummaryLoader {
 	public static class Factory implements RouteSummaryLoaderFactory {
 
 		private Context context;
+		private Holder<LatLng> locationHolder;
 
-		public Factory(Context context) {
+		public Factory(Context context, Holder<LatLng> locationHolder) {
 			super();
 			this.context = context;
+			this.locationHolder = locationHolder;
 		}
 
 		@Override
 		public RouteSummaryLoader createLoader() {
-			return new NearMeLoader(context);
+			return new NearMeLoader(context, locationHolder);
 		}
 
 	}
