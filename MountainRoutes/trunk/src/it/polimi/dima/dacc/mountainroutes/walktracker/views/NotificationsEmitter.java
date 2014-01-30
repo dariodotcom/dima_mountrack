@@ -36,6 +36,7 @@ public class NotificationsEmitter implements TrackerListener {
 	private Context context;
 	private StringRepository notificationTexts;
 	private NotificationManager notificationManager;
+	private Integer currentNotification;
 
 	public NotificationsEmitter(Context context) {
 		this.context = context;
@@ -71,7 +72,7 @@ public class NotificationsEmitter implements TrackerListener {
 		TrackerListenerManager.getManager(context).unregisterListener(this);
 
 		for (Notification n : Notification.values()) {
-			notificationManager.cancel(n.ordinal());
+			removeNotification(n);
 		}
 	}
 
@@ -87,21 +88,22 @@ public class NotificationsEmitter implements TrackerListener {
 
 	@Override
 	public void onStatusUpdate(UpdateType update) {
+		if (!turnedOn) {
+			return;
+		}
+
 		switch (update) {
 		case FAR_FROM_ROUTE:
-			sendNotification(Notification.FAR_FROM_ROUTE);
-			break;
-
 		case GOING_BACKWARDS:
-			sendNotification(Notification.GOING_BACKWARDS);
-			break;
-
 		case GPS_DISABLED:
-			// sendNotification(Notification.GPS_DISABLED);
+		case MOVING_WHILE_PAUSED:
+		case FORCE_QUIT:
+			Notification notification = Notification.forUpdate(update);
+			sendNotification(notification);
 			break;
 
-		case MOVING_WHILE_PAUSED:
-			sendNotification(Notification.MOVING_WHILE_PAUSED);
+		case GPS_ENABLED:
+			removeNotification(Notification.GPS_DISABLED);
 			break;
 
 		default:
@@ -111,7 +113,7 @@ public class NotificationsEmitter implements TrackerListener {
 
 	@Override
 	public void onTrackingUpdate(TrackResult result) {
-		// Do nothing
+		removeNotification(Notification.FAR_FROM_ROUTE, Notification.GOING_BACKWARDS, Notification.MOVING_WHILE_PAUSED);
 	}
 
 	@Override
@@ -131,7 +133,11 @@ public class NotificationsEmitter implements TrackerListener {
 
 	private static enum Notification {
 
-		FAR_FROM_ROUTE(R.string.notifFarFromRouteTitle, R.string.notifFarFromRouteDesc), GOING_BACKWARDS(R.string.notifGoingBackwardsTitle, R.string.notifGoingBackwardsDesc), MOVING_WHILE_PAUSED(R.string.notifMovingWhilePausedTitle, R.string.notifMovingWhilePausedDesc), ARRIVED(R.string.notifArrivedTitle, R.string.notifArrivedDesc);
+		FAR_FROM_ROUTE(R.string.notifFarFromRouteTitle, R.string.notifFarFromRouteDesc), GOING_BACKWARDS(
+				R.string.notifGoingBackwardsTitle, R.string.notifGoingBackwardsDesc), MOVING_WHILE_PAUSED(
+				R.string.notifMovingWhilePausedTitle, R.string.notifMovingWhilePausedDesc), FORCE_QUIT(
+				R.string.notifForceQuit, R.string.notifForceQuitDesc), ARRIVED(R.string.notifArrivedTitle,
+				R.string.notifArrivedDesc), GPS_DISABLED(R.string.notifGpsDisabled, R.string.notifGpsDisabledDesc);
 
 		private int titleId, descriptionId;
 
@@ -147,18 +153,52 @@ public class NotificationsEmitter implements TrackerListener {
 		public int getDescriptionId() {
 			return descriptionId;
 		}
+
+		public static Notification forUpdate(UpdateType update) {
+			switch (update) {
+			case FAR_FROM_ROUTE:
+				return Notification.FAR_FROM_ROUTE;
+			case FORCE_QUIT:
+				return FORCE_QUIT;
+			case GOING_BACKWARDS:
+				return GOING_BACKWARDS;
+			case GPS_DISABLED:
+				return GPS_DISABLED;
+			case MOVING_WHILE_PAUSED:
+				return MOVING_WHILE_PAUSED;
+			default:
+				return null;
+			}
+		}
+	}
+
+	private void removeNotification(Notification... notifications) {
+		for (Notification n : notifications) {
+			if (currentNotification != null && currentNotification == n.ordinal()) {
+				notificationManager.cancel(n.ordinal());
+				currentNotification = null;
+			}
+		}
 	}
 
 	private void sendNotification(Notification notification) {
 		Log.d(TAG, "sent " + notification.name());
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.R.drawable.ic_menu_save).setContentTitle(notificationTexts.getString(notification.getTitleId())).setContentText(notificationTexts.getString(notification.getDescriptionId())).setAutoCancel(true);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+				.setSmallIcon(android.R.drawable.ic_menu_save)
+				.setContentTitle(notificationTexts.getString(notification.getTitleId()))
+				.setContentText(notificationTexts.getString(notification.getDescriptionId())).setAutoCancel(true);
 
 		Intent resultIntent = new Intent(context, WalkingActivity.class);
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, resultIntent, 0);
 		builder.setContentIntent(contentIntent);
 
+		if (currentNotification != null) {
+			notificationManager.cancel(currentNotification);
+		}
+
 		notificationManager.notify(notification.ordinal(), builder.build());
+		currentNotification = notification.ordinal();
 	}
 }

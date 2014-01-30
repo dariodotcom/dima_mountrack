@@ -37,9 +37,9 @@ public class LaggardBackup implements TrackerListenerBase {
 		trackingStatus = TrackingStatus.READY;
 	}
 
-	public boolean amILate() {
-		return trackingStatus != TrackingStatus.READY;
-	}
+//	public boolean amILate() {
+//		return trackingStatus != TrackingStatus.READY;
+//	}
 
 	public TrackingStatus getStatus() {
 		return trackingStatus;
@@ -78,6 +78,7 @@ public class LaggardBackup implements TrackerListenerBase {
 	}
 
 	public void registerTimerListener(Listener listener) {
+		listener.onTime(timer.getMillis());
 		timerListeners.register(listener);
 	}
 

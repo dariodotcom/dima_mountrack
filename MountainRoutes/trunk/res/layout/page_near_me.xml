@@ -14,13 +14,4 @@
         class="it.polimi.dima.dacc.mountainroutes.routeselector.listfragment.RouteListFragment"
         tools:layout="@layout/route_list_fragment" />
 
-    <Button
-        android:id="@+id/update_button"
-        style="@style/widget_button_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/activity_margin"
-        android:text="@string/page_near_me_update_button" />
-
 </LinearLayout>

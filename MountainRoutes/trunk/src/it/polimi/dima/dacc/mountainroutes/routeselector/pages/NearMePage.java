@@ -30,12 +30,13 @@ public class NearMePage extends Fragment implements LocationListener {
 	private static final float LOCATION_UPDATE_DISTANCE = 50;
 	private RouteListFragment fragment;
 	private Holder<LatLng> locationHolder;
-	private String gpsDisabledMessage = "gps disabled";
+	private String gpsDisabledMessage;
 	private LocationManager locMan;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View inflated = inflater.inflate(R.layout.page_near_me, null);
+		gpsDisabledMessage = getResources().getString(R.string.gps_disabled_message);
 		return inflated;
 	}
 
@@ -44,10 +45,10 @@ public class NearMePage extends Fragment implements LocationListener {
 		super.onActivityCreated(savedInstanceState);
 
 		locationHolder = new Holder<LatLng>();
-		
+
 		fragment = (RouteListFragment) getFragmentManager().findFragmentById(R.id.near_me_list_fragment);
 		fragment.setLoaderFactory(new NearMeLoader.Factory(getActivity(), locationHolder));
-		
+
 		fragment.setOnRouteSelectListener(new OnRouteSelected() {
 
 			@Override
@@ -65,6 +66,11 @@ public class NearMePage extends Fragment implements LocationListener {
 	public void onResume() {
 		super.onResume();
 		String pvdName = LocationManager.GPS_PROVIDER;
+
+		if (!locMan.isProviderEnabled(pvdName)) {
+			fragment.showMessage(gpsDisabledMessage);
+		}
+
 		locMan.requestLocationUpdates(pvdName, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, this);
 	}
 

@@ -184,7 +184,6 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	// Helpers
 	private View.OnClickListener quitButtonListener = new View.OnClickListener() {
-
 		@Override
 		public void onClick(View arg0) {
 			assureUserWantsToQuit();
@@ -223,13 +222,7 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 	private DialogInterface.OnClickListener quitter = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
-			WalkingActivity activity = WalkingActivity.this;
-
-			serviceControlWrapper.stop(); // Stops the service;
-			TrackerListenerManager.unload();
-			
-			activity.setResult(RESULT_CANCELED);
-			activity.finish();
+			terminateWalk(null);
 		}
 	};
 
@@ -239,24 +232,35 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	@Override
 	public void onStopTracking(ExcursionReport report) {
-		Intent i = new Intent();
-		i.putExtra(WALKING_REPORT, report);
+		terminateWalk(report);
+	}
 
-		try {
-			ReportPersistence.create(this).persistExcursionReport(report);
-		} catch (PersistenceException e) {
-			Log.e(TAG, "Error peristing report", e);
+	private void terminateWalk(ExcursionReport report) {
+		if (report != null) {
+			Intent i = new Intent();
+			i.putExtra(WALKING_REPORT, report);
+
+			try {
+				ReportPersistence.create(this).persistExcursionReport(report);
+			} catch (PersistenceException e) {
+				Log.e(TAG, "Error peristing report", e);
+			}
+
+			setResult(RESULT_OK, i);
+		} else {
+			setResult(RESULT_CANCELED);
 		}
 
 		TrackerListenerManager.unload();
 		serviceControlWrapper.stop();
-		
-		setResult(RESULT_OK, i);
 		finish();
 	}
 
 	@Override
 	public void onStatusUpdate(UpdateType update) {
+		if (update == UpdateType.FORCE_QUIT) {
+			terminateWalk(null);
+		}
 	}
 
 	@Override
@@ -265,6 +269,16 @@ public class WalkingActivity extends FragmentActivity implements ServiceConnecti
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
+		switch (backup.getStatus()) {
+		case ABRUPTED:
+			terminateWalk(null);
+			break;
+		case FINISHED:
+			terminateWalk(backup.getReport());
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

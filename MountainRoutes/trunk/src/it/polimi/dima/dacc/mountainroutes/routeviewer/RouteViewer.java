@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.StringRepository;
+import it.polimi.dima.dacc.mountainroutes.commons.Utils;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
@@ -218,7 +219,7 @@ public class RouteViewer extends Activity implements LoaderManager.LoaderCallbac
 		// Set infos
 		setTitle(route.getName());
 		difficultyView.setDifficulty(route.getDifficulty());
-		gapView.setText(route.getGapInMeters() + " m");
+		gapView.setText(Utils.formatGap(route.getGapInMeters()));
 		lengthView.setText(route.getLengthInMeters() + " m");
 		durationView.setText(route.getDurationInMinutes() + " min");
 		fragment.showPath(route.getPath());

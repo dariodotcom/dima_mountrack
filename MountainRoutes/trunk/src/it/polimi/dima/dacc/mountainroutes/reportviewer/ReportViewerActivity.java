@@ -1,5 +1,7 @@
 package it.polimi.dima.dacc.mountainroutes.reportviewer;
 
+import java.text.DateFormat;
+
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment;
 import it.polimi.dima.dacc.mountainroutes.commons.Utils;
@@ -14,9 +16,9 @@ public class ReportViewerActivity extends Activity {
 
 	private ExcursionReport displayedReport;
 	private RouteProgressionMapFragment fragment;
+	private TextView routeName;
+	private TextView excursionDate;
 	private TextView spentTime;
-	private TextView traveledMeters;
-	private TextView gap;
 
 	public static String REPORT_TO_DISPLAY = "report_to_display";
 
@@ -37,9 +39,9 @@ public class ReportViewerActivity extends Activity {
 		}
 
 		fragment = (RouteProgressionMapFragment) getFragmentManager().findFragmentById(R.id.viewer_map);
+		routeName = (TextView) findViewById(R.id.route_name);
 		spentTime = (TextView) findViewById(R.id.spent_time_value);
-		traveledMeters = (TextView) findViewById(R.id.traveled_meters_value);
-		gap = (TextView) findViewById(R.id.gap_value);
+		excursionDate = (TextView) findViewById(R.id.date_info_value);
 	}
 
 	@Override
@@ -56,12 +58,14 @@ public class ReportViewerActivity extends Activity {
 		fragment.setCompletionIndex(displayedReport.getCompletionIndex());
 		fragment.panToPath();
 
+		routeName.setText(displayedReport.getRouteName());
+
+		DateFormat format = android.text.format.DateFormat.getDateFormat(this);
+		excursionDate.setText(format.format(displayedReport.getDate()));
+
 		String total = Utils.formatMinutes(displayedReport.getRouteDuration());
 		String elapsed = Utils.formatSeconds(displayedReport.getElapsedDuration());
-
 		spentTime.setText(String.format("%s" + "/" + "%s", elapsed, total));
-		traveledMeters.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedLength(), displayedReport.getRouteLenght()));
-		gap.setText(String.format("%s" + "/" + "%s", displayedReport.getElapsedGap(), displayedReport.getRouteGap()));
 	}
 
 	@Override

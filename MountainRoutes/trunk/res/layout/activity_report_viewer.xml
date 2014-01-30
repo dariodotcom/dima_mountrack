@@ -7,27 +7,50 @@
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ReportViewerActivity" >
 
-    <fragment
-        android:id="@+id/viewer_map"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
-
     <LinearLayout
+        style="@style/viewFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/route_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="gravity"
+            android:layout_marginTop="8dp"
+            android:textSize="24sp" />
+
         <RelativeLayout
-            style="@style/route_info_entry"
+            style="@style/walkingInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/date_info"
+                style="@style/walkingInfoName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/date_info" />
+
+            <TextView
+                android:id="@+id/date_info_value"
+                style="@style/walkingInfoValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/walkingInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/spent_time_info"
+                style="@style/walkingInfoName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -35,51 +58,18 @@
 
             <TextView
                 android:id="@+id/spent_time_value"
+                style="@style/walkingInfoValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/spent_time_value" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            style="@style/route_info_entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/traveled_meters_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/traveled_meters_info" />
-
-            <TextView
-                android:id="@+id/traveled_meters_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/traveled_meters_value" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            style="@style/route_info_entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/gap_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/altitude_gap_info" />
-
-            <TextView
-                android:id="@+id/gap_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/altitude_gap_info" />
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/viewer_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        class="it.polimi.dima.dacc.mountainroutes.commons.RouteProgressionMapFragment" />
 
 </LinearLayout>

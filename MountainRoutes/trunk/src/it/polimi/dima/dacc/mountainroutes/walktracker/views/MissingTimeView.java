@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.views;
 
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.TrackingStatus;
 import android.content.Context;
 import android.util.AttributeSet;
 
@@ -29,9 +30,17 @@ public class MissingTimeView extends TimerView {
 	
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		if(backup.amILate()){
+		TrackingStatus status = backup.getStatus();
+		
+		switch (status) {
+		case PAUSED:
+		case TRACKING:
 			durationMinutes = backup.getRouteBeingTracked().getDurationInMinutes();
+			break;
+		default:
+			break;
 		}
+		
 		super.onRegister(backup);
 	}
 

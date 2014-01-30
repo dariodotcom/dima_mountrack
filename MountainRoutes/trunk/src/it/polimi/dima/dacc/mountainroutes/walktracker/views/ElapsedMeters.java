@@ -4,6 +4,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.TrackingStatus;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.content.Context;
@@ -50,12 +51,19 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		if (backup.amILate()) {
+		TrackingStatus status = backup.getStatus();
+
+		switch (status) {
+		case PAUSED:
+		case TRACKING:
 			this.onStartTracking(backup.getRouteBeingTracked());
 			TrackResult result = backup.getLastTrackResult();
 			if (result != null) {
 				this.onTrackingUpdate(result);
 			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -70,12 +78,12 @@ public class ElapsedMeters extends TextView implements TrackerListener {
 
 	}
 
-	private String represent(int meters){
-		if(meters < 1000){
+	private String represent(int meters) {
+		if (meters < 1000) {
 			return meters + "m";
 		}
-		
+
 		return (meters / 1000) + "km";
 	}
-	
+
 }

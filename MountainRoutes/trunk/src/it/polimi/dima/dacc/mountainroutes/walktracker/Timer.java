@@ -15,8 +15,7 @@ public class Timer {
 
 		public void assertIs(State value) {
 			if (this != value) {
-				throw new IllegalStateException("Expected state "
-						+ value.name() + " but get " + this.name());
+				throw new IllegalStateException("Expected state " + value.name() + " but get " + this.name());
 			}
 		}
 	}
@@ -30,14 +29,14 @@ public class Timer {
 	private Long lastSampleInstant;
 
 	public Timer(Looper looper, Listener listener) {
-		if(listener == null){
+		if (listener == null) {
 			throw new NullPointerException("listener is null");
 		}
-		
-		if(looper == null){
+
+		if (looper == null) {
 			looper = Looper.getMainLooper();
 		}
-		
+
 		this.handler = new Handler(looper);
 		this.listener = listener;
 		this.currentState = State.READY;
@@ -51,10 +50,9 @@ public class Timer {
 
 	public void start() {
 		currentState.assertIs(State.READY);
-		
+
 		// Start timer
 		handler.post(sampler);
-		
 		currentState = State.RUNNING;
 	}
 
@@ -76,6 +74,10 @@ public class Timer {
 		currentState.assertIs(State.RUNNING);
 		handler.removeCallbacks(sampler);
 		currentState = State.STOPPED;
+	}
+
+	public synchronized long getMillis() {
+		return elapsedMillis;
 	}
 
 	private synchronized void sample() {

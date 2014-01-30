@@ -38,11 +38,11 @@ public class SavedRouteManager extends Activity implements LoaderManager.LoaderC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_saved_route_manager);
-		
+
 		list = (ListView) findViewById(R.id.saved_route_list);
 		adapter = new SavedRouteListAdapter(this);
 		TextView emptyView = (TextView) findViewById(R.id.empty_list_message_text);
-		
+
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 		list.setEmptyView(emptyView);
@@ -74,6 +74,7 @@ public class SavedRouteManager extends Activity implements LoaderManager.LoaderC
 
 	@Override
 	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> arg0, LoadResult<RouteSummaryList> result) {
+		Log.d(TAG, "loader finished");
 		switch (result.getType()) {
 		case LoadResult.ERROR:
 			Log.e(TAG, "ERROR: " + result.getError());
@@ -98,7 +99,7 @@ public class SavedRouteManager extends Activity implements LoaderManager.LoaderC
 	public void onDelete(RouteID id) {
 		Bundle b = new Bundle();
 		b.putParcelable(ROUTE_TO_DELETE, id);
-		getLoaderManager().initLoader(DELETE_LOADER_ID, b, this).forceLoad();
+		getLoaderManager().restartLoader(DELETE_LOADER_ID, b, this).forceLoad();
 	}
 
 	// Handles the click on a Route from the list
