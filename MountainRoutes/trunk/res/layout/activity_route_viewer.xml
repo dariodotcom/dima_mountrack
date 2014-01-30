@@ -5,6 +5,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        style="@style/viewFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/activity_margin"
@@ -49,11 +50,12 @@
             android:orientation="vertical" >
 
             <RelativeLayout
-                style="@style/route_info_entry"
+                style="@style/walkingInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
+                    style="@style/walkingInfoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -61,17 +63,19 @@
 
                 <it.polimi.dima.dacc.mountainroutes.routeviewer.DifficultyView
                     android:id="@+id/difficulty_value"
+                    style="@style/walkingInfoValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
 
             <RelativeLayout
-                style="@style/route_info_entry"
+                style="@style/walkingInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
+                    style="@style/walkingInfoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -79,17 +83,19 @@
 
                 <TextView
                     android:id="@+id/lenght_value"
+                    style="@style/walkingInfoValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
 
             <RelativeLayout
-                style="@style/route_info_entry"
+                style="@style/walkingInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
+                    style="@style/walkingInfoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -97,17 +103,19 @@
 
                 <TextView
                     android:id="@+id/gap_value"
+                    style="@style/walkingInfoValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
 
             <RelativeLayout
-                style="@style/route_info_entry"
+                style="@style/walkingInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
+                    style="@style/walkingInfoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -115,6 +123,7 @@
 
                 <TextView
                     android:id="@+id/estimated_time_value"
+                    style="@style/walkingInfoValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
@@ -124,7 +133,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
 
             <Button
                 android:id="@+id/route_viewer_start"

@@ -5,6 +5,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.TrackingStatus;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
@@ -39,12 +40,21 @@ public class RouteProgressionController implements TrackerListener {
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		if (backup.amILate()) {
-			mapFragment.setPath(backup.getRouteBeingTracked().getPath());
-			TrackResult lastResult = backup.getLastTrackResult();
-			if (lastResult != null) {
-				mapFragment.setCompletionIndex(lastResult.getCompletionIndex());
-			}
+		TrackingStatus status = backup.getStatus();
+
+		switch (status) {
+		case READY:
+		case ABRUPTED:
+		case FINISHED:
+			return;
+		default:
+			break;
+		}
+
+		mapFragment.setPath(backup.getRouteBeingTracked().getPath());
+		TrackResult lastResult = backup.getLastTrackResult();
+		if (lastResult != null) {
+			mapFragment.setCompletionIndex(lastResult.getCompletionIndex());
 		}
 	}
 

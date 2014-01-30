@@ -6,6 +6,7 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.Timer;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.TrackingStatus;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
@@ -68,7 +69,22 @@ public class TimerView extends TextView implements TrackerListener, Timer.Listen
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		backup.registerTimerListener(this);
+		TrackingStatus status = backup.getStatus();
+
+		switch (status) {
+		case ABRUPTED:
+		case FINISHED:
+			return;
+		case PAUSED:
+			setTextColor(pausedColor);
+			backup.registerTimerListener(this);
+			break;
+		case READY:
+		case TRACKING:
+			setTextColor(runningColor);
+			backup.registerTimerListener(this);
+			break;
+		}
 	}
 
 	@Override

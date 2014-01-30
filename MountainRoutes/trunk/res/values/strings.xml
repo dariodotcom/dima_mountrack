@@ -72,22 +72,20 @@
 
     <!-- walking -->
     <string name="walking_activity_time_to_arrive">Time to arrive</string>
-    <string name="walking_activity_hiked_over_metres">Hiked over metres</string>
+    <string name="walking_activity_hiked_over_metres">Travelled metres</string>
     <string name="walking_activity_end_walk">End walk</string>
     <string name="walking_activity_pause">Pause</string>
     <string name="walking_activity_resume">Resume</string>
     <string name="walking_quit_notify">Are you sure you want to quit? You will lose your excursion progress.</string>
 
     <!-- Report viewer -->
-    <string name="title_activity_report_viewer">ReportViewer</string>
+    <string name="title_activity_report_viewer">View Excursion</string>
     <string name="title_activity_report_list">My Excursions</string>
     <string name="report_list_empty">No excursion available.\nGo outside and start walking!</string>
     <string name="spent_time_info">Spent time</string>
-    <string name="spent_time_value">blabla</string>
     <string name="traveled_meters_info">Traveled meters</string>
-    <string name="traveled_meters_value">blaaaa</string>
+    <string name="date_info">Date</string>
     <string name="altitude_gap_info">Altitude Gap</string>
-    <string name="altitude_gap_value">bau</string>
     <string name="walking_activity_altitude">Altitude</string>
     
     <string name="notifFarFromRouteTitle">Away from trail</string>
@@ -98,5 +96,9 @@
     <string name="notifGoingBackwardsDesc">You\'re going backwards! The trail continues on the other side.</string>
     <string name="notifMovingWhilePausedDesc">Have you may forgotten to set the restarting of the walk?</string>
     <string name="notifArrivedDesc">Congratulation! You\'ve just finished traveling the trail!</string>
+    <string name="notifGpsDisabled">Gps is disabled</string>
+    <string name="notifGpsDisabledDesc">Please turn on the GPS on your device.</string>
+    <string name="notifForceQuit">Tracking terminated</string>
+    <string name="notifForceQuitDesc">Tracking was terminated by the device.</string>
     
 </resources>

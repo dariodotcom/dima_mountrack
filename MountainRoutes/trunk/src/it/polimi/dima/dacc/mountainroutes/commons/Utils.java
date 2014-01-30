@@ -2,6 +2,8 @@ package it.polimi.dima.dacc.mountainroutes.commons;
 
 public class Utils {
 
+	private final static int MIN_GAP = 10;
+	
 	public static String formatMillis(long millis) {
 		return formatSeconds((int) millis / 1000);
 	}
@@ -30,5 +32,9 @@ public class Utils {
 
 		String pattern = "%s:%s:%s";
 		return String.format(pattern, pan(hours), pan(minutes), pan(seconds));
+	}
+	
+	public static String formatGap(int gap){
+		return Math.abs(gap) > MIN_GAP ? gap + "m" : "-";
 	}
 }

@@ -11,6 +11,7 @@ import it.polimi.dima.dacc.mountainroutes.StringRepository;
 import it.polimi.dima.dacc.mountainroutes.types.ExcursionReport;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup;
+import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.TrackingStatus;
 import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
@@ -68,7 +69,7 @@ public class NotificationView extends TextView implements TrackerListener {
 			break;
 
 		default:
-			break; // Yes, those warning are stupid.
+			break;
 		}
 	}
 
@@ -79,7 +80,9 @@ public class NotificationView extends TextView implements TrackerListener {
 		if (notificationList.isEmpty()) {
 			setAlpha(0);
 		} else {
-			getTextFor(notificationList.get(notificationList.size() - 1));
+			int size = notificationList.size();
+			UpdateType lastUpdate = notificationList.get(size - 1);
+			setText(getTextFor(lastUpdate));
 		}
 	}
 
@@ -95,13 +98,19 @@ public class NotificationView extends TextView implements TrackerListener {
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		if (!backup.amILate()) {
+		TrackingStatus status = backup.getStatus();
+
+		switch (status) {
+		case ABRUPTED:
+		case FINISHED:
+		case READY:
 			return;
+		default:
+			break;
 		}
 
 		if (backup.isGoingBackwards()) {
 			showMessageFor(UpdateType.GOING_BACKWARDS);
-
 		}
 
 		if (backup.isFarFromRoute()) {
@@ -122,7 +131,6 @@ public class NotificationView extends TextView implements TrackerListener {
 		notificationList.add(update);
 		setText(getTextFor(update));
 		setAlpha(1);
-
 	}
 
 	private String getTextFor(UpdateType update) {

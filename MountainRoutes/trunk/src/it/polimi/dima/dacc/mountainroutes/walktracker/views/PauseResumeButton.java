@@ -85,10 +85,6 @@ public class PauseResumeButton extends Button implements TrackerListener {
 
 	@Override
 	public void onRegister(LaggardBackup backup) {
-		if (!backup.amILate()) {
-			return;
-		}
-
 		switch (backup.getStatus()) {
 		case PAUSED:
 			setState(State.PAUSE);

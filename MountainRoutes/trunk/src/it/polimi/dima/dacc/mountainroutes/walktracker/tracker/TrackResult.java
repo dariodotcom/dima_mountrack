@@ -50,8 +50,8 @@ public class TrackResult implements Parcelable {
 
 	@Override
 	public String toString() {
-		String format = "Track result: %s, onPath: %s, realPoint: %s";
-		return String.format(format, completionIndex, pointOnPath, realPosition);
+		String format = "  Percent: %s\n  Point: %s\n  Real point: %s\n  Elapsed meters: %s";
+		return String.format(format, completionIndex, pointOnPath, realPosition, elapsedMeters);
 	}
 
 	// Parcelable
