@@ -4,6 +4,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 
+/**
+ * Class that counts elapsing time.
+ * 
+ * @author Chiara
+ * 
+ */
 public class Timer {
 
 	public static interface Listener {

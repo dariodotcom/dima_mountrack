@@ -3,6 +3,12 @@ package it.polimi.dima.dacc.mountainroutes;
 import android.content.Context;
 import android.util.SparseArray;
 
+/**
+ * Repository to save strings loaded from resources.
+ * 
+ * @author Chiara
+ * 
+ */
 public class StringRepository {
 
 	private Context context;

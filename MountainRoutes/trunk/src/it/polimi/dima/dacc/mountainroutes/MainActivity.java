@@ -16,6 +16,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * Main activity that displays the menu.
+ * 
+ * @author Chiara
+ * 
+ */
 public class MainActivity extends Activity {
 
 	private static final int SELECT_ROUTE = 0;
@@ -85,18 +91,19 @@ public class MainActivity extends Activity {
 		Button myExcursions = (Button) findViewById(R.id.main_my_excursions_button);
 		myExcursions.setOnClickListener(showMyExcursionsButtonListener);
 
-//		RouteID id = new RouteID("e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
-//		Route dummy;
-//		try {
-//			dummy = RoutePersistence.create(this).loadRoute(id);
-//		} catch (PersistenceException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//
-//		Intent i = new Intent(this, WalkingActivity.class);
-//		i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
-//		startActivityForResult(i, TRACK_WALKING);
+		// RouteID id = new
+		// RouteID("e6brx2:ahlzfmRpbWEtZGFjYy1tb3VudGFpbnJvdXRlcg0LEgVSb3V0ZRiRvwUM");
+		// Route dummy;
+		// try {
+		// dummy = RoutePersistence.create(this).loadRoute(id);
+		// } catch (PersistenceException e) {
+		// e.printStackTrace();
+		// return;
+		// }
+		//
+		// Intent i = new Intent(this, WalkingActivity.class);
+		// i.putExtra(WalkingActivity.TRACKING_ROUTE, dummy);
+		// startActivityForResult(i, TRACK_WALKING);
 	}
 
 	@Override

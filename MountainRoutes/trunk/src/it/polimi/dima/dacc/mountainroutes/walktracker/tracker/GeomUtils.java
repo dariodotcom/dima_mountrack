@@ -6,6 +6,11 @@ import java.util.List;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Helper class for geometric computations
+ * @author Chiara
+ *
+ */
 public class GeomUtils {
 
 	private static final int EARTH_RADIUS = 6371;

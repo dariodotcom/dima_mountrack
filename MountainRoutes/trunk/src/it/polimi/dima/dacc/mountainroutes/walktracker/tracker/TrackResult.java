@@ -5,6 +5,11 @@ import com.google.android.gms.maps.model.LatLng;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Result returned by Tracker.
+ * @author Chiara
+ *
+ */
 public class TrackResult implements Parcelable {
 
 	private float completionIndex;

@@ -6,6 +6,12 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+/**
+ * Service that manages the tracking of the user on a given route.
+ * 
+ * @author Chiara
+ * 
+ */
 public class TrackingService extends Service {
 
 	private TrackingWorker tWorker;
@@ -17,7 +23,7 @@ public class TrackingService extends Service {
 		// Create and start tracking worker thread
 		tWorker = new TrackingWorker(this);
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return START_STICKY;

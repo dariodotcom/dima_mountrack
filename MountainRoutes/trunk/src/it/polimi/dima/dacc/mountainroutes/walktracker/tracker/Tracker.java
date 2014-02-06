@@ -13,7 +13,7 @@ public abstract class Tracker {
 	public abstract boolean isFinished();
 
 	public static Tracker create(Route route) {
-		return new OldTracker(route.getPath());
+		return new TrackerImpl(route.getPath());
 	}
 
 	public static boolean canWalkOn(Route route, LatLng latLng) {

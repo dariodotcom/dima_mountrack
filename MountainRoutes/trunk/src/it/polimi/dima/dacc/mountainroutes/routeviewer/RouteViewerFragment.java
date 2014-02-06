@@ -2,6 +2,7 @@ package it.polimi.dima.dacc.mountainroutes.routeviewer;
 
 import it.polimi.dima.dacc.mountainroutes.R;
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
+import it.polimi.dima.dacc.mountainroutes.types.Route;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -11,42 +12,42 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+/**
+ * Map fragment that displays the track of a specific {@link Route}
+ * @author Chiara
+ *
+ */
 public class RouteViewerFragment extends MapFragment {
 
 	private static final String TAG = RouteViewerFragment.class.getName();
-	private int lineColor;
+	private int lineColor, transparentColor;
 	private boolean canShowPath;
 	private PointList pathToDisplay;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 		// Load color
 		lineColor = getActivity().getResources().getColor(R.color.accent_blue);
-	}
+		transparentColor = getActivity().getResources().getColor(android.R.color.transparent);
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		getView().getViewTreeObserver().addOnGlobalLayoutListener(
-				new OnGlobalLayoutListener() {
+		getView().getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
-					@Override
-					public void onGlobalLayout() {
-						RouteViewerFragment.this.getView()
-								.getViewTreeObserver()
-								.removeOnGlobalLayoutListener(this);
-						canShowPath = true;
-						if (pathToDisplay != null) {
-							mDisplayPath(pathToDisplay);
-						}
-					}
-				});
+			@Override
+			public void onGlobalLayout() {
+				RouteViewerFragment.this.getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				canShowPath = true;
+				if (pathToDisplay != null) {
+					mDisplayPath(pathToDisplay);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -94,9 +95,13 @@ public class RouteViewerFragment extends MapFragment {
 			options.addAll(points).geodesic(true).color(lineColor);
 			map.addPolyline(options);
 
+			LatLng startPoint = points.getList().get(0);
+			map.addCircle(new CircleOptions().fillColor(lineColor).strokeColor(transparentColor).center(startPoint)
+					.radius(5));
+
 			// Center map
 			LatLngBounds bnd = bound(points);
-			CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bnd, 10);
+			CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bnd, 16);
 			getMap().moveCamera(update);
 		} else {
 			Log.e(TAG, "map is not available");

@@ -16,6 +16,11 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.TrackerListener;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
+/**
+ * Displays in-app notification to user.
+ * @author Chiara
+ *
+ */
 public class NotificationView extends TextView implements TrackerListener {
 
 	private ArrayList<UpdateType> notificationList = new ArrayList<UpdateType>();

@@ -6,7 +6,12 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/*Parcelable list of RouteDescription*/
+/**
+ * Parcelable list of RouteDescription
+ * 
+ * @author Chiara
+ *
+ */
 public class RouteSummaryList implements Parcelable {
 	private List<RouteSummary> summaries;
 

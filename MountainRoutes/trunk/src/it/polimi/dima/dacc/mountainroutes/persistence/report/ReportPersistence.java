@@ -16,6 +16,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Persistence for excursion reports
+ * @author Chiara
+ *
+ */
 public class ReportPersistence {
 
 	private static String[] allColumns = { DbHelper.COL_KEY, DbHelper.COL_ROUTE_NAME, DbHelper.COL_PATH, DbHelper.COL_DATE, DbHelper.COL_COMPLETION_INDEX, DbHelper.COL_ELAPSED_DURATION, DbHelper.COL_ELAPSED_GAP, DbHelper.COL_ELAPSED_LENGTH, DbHelper.COL_ROUTE_DURATION, DbHelper.COL_ROUTE_GAP, DbHelper.COL_ROUTE_LENGTH };

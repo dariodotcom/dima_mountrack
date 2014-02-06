@@ -39,6 +39,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * Activity that shows the information of the user's walk on a path.
+ * 
+ * @author Chiara
+ * 
+ */
 public class WalkingActivity extends FragmentActivity implements ServiceConnection, TrackerListener {
 
 	public static final String TRACKING_ROUTE = "TRACKING_ROUTE";

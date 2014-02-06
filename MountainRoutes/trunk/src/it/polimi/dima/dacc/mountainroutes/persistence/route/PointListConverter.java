@@ -10,10 +10,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import it.polimi.dima.dacc.mountainroutes.types.PointList;
 
+/**
+ * Json converter for point lists
+ */
 public class PointListConverter {
 
-	public static String toString(PointList points)
-			throws ConverterException {
+	public static String toString(PointList points) throws ConverterException {
 		JSONArray array = new JSONArray();
 		for (LatLng p : points) {
 			JSONObject obj = new JSONObject();
@@ -28,8 +30,7 @@ public class PointListConverter {
 		return array.toString();
 	}
 
-	public static PointList fromString(String string)
-			throws ConverterException {
+	public static PointList fromString(String string) throws ConverterException {
 		PointList list = new PointList();
 		try {
 			JSONArray array = new JSONArray(string);
@@ -46,7 +47,7 @@ public class PointListConverter {
 		}
 		return list;
 	}
-	
+
 	public static class ConverterException extends Exception {
 
 		private static final long serialVersionUID = -8660084402633727273L;

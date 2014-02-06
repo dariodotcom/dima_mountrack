@@ -12,6 +12,12 @@ import android.content.Intent;
 import android.view.Menu;
 import android.widget.TextView;
 
+/**
+ * Map fragment that shows user progression on a path
+ * 
+ * @author Chiara
+ * 
+ */
 public class ReportViewerActivity extends Activity {
 
 	private ExcursionReport displayedReport;

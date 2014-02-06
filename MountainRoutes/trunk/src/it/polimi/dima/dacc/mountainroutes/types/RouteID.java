@@ -3,6 +3,11 @@ package it.polimi.dima.dacc.mountainroutes.types;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Identifier for a route.
+ * @author Chiara
+ *
+ */
 public class RouteID implements Parcelable {
 
 	private static final String SEPARATOR = ":";

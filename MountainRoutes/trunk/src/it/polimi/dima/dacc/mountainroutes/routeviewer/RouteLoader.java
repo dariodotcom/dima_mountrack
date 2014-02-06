@@ -14,6 +14,11 @@ import it.polimi.dima.dacc.mountainroutes.remote.ContentQuery.QueryType;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 
+/**
+ * Loader that loads a {@link Route} from database given its ID.
+ * @author Chiara
+ *
+ */
 public class RouteLoader extends GenericLoader<Route> {
 
 	private final static String TAG = "route-loader";

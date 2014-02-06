@@ -5,6 +5,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Listener that is triggered when an item listed in a {@link RouteListFragment}
+ * is selected by the user
+ * 
+ * @author Chiara
+ * 
+ */
 public interface OnRouteSelected {
 	public void onRouteSelected(RouteSummary description);
 
@@ -18,10 +25,8 @@ public interface OnRouteSelected {
 		}
 
 		@Override
-		public void onItemClick(AdapterView<?> adapter, View view, int index,
-				long id) {
-			RouteSummary description = (RouteSummary) adapter
-					.getItemAtPosition(index);
+		public void onItemClick(AdapterView<?> adapter, View view, int index, long id) {
+			RouteSummary description = (RouteSummary) adapter.getItemAtPosition(index);
 			this.originalListener.onRouteSelected(description);
 		}
 	}

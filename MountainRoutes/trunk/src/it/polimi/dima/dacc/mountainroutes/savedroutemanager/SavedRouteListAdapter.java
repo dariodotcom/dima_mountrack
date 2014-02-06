@@ -11,8 +11,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * Adapter that displays a list of routes in a {@link ListView}.
+ * @author Chiara
+ *
+ */
 public class SavedRouteListAdapter extends ArrayAdapter<RouteSummary> {
 
 	public SavedRouteListAdapter(Context context) {

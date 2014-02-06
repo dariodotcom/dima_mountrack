@@ -1,92 +1,85 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
-import it.polimi.dima.dacc.mountainroutes.types.Route;
-import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException.Type;
+import it.polimi.dima.dacc.mountainroutes.types.PointList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Tracks the user position on a path given the position retrieved from GPS
+ * 
+ * @author Chiara
+ * 
+ */
 public class TrackerImpl extends Tracker {
 
-	private static final double MAX_DISTANCE = 0;
-	private float currentCompletionIndex;
-	private List<PathSegment> segments;
+	private final static String TAG = "tracker";
 
-	public TrackerImpl(Route route) {
-		this.currentCompletionIndex = 0;
-		this.segments = new ArrayList<PathSegment>();
+	private List<LatLng> path;
+	private PathSegment currentSegment;
+	private int edge, elapsedMeters;
+	private float segPercent;
 
-		List<LatLng> points = route.getPath().getList();
-		for (int i = 0; i < points.size() - 1; i++) {
-			LatLng start = points.get(i);
-			LatLng end = points.get(i + 1);
-			segments.add(PathSegment.create(start, end, i));
-		}
+	public TrackerImpl(PointList path) {
+		this.path = path.getList();
+		this.edge = 0;
+		this.segPercent = 0;
+		this.currentSegment = nextSegment();
 	}
 
-	@Override
 	public TrackResult track(LatLng newPoint) throws TrackerException {
-		SegmentComparator comparator = new SegmentComparator(newPoint);
-		Collections.sort(segments, comparator);
-		PathSegment best = segments.get(0);
-
-		if (best.distanceTo(newPoint) > MAX_DISTANCE) {
-			throw new TrackerException(Type.FAR_FROM_ROUTE);
+		if (isFinished()) {
+			throw new IllegalStateException("Tracking is finished");
 		}
 
-		float newCompletionIndex = computeCompletionIndex(best, newPoint);
+		TrackResult.Builder resultBuilder = new TrackResult.Builder().realPosition(newPoint);
 
-		if (newCompletionIndex < currentCompletionIndex) {
-			throw new TrackerException(Type.GOING_BACKWARD);
+		// Check distance from segment
+		double distance = currentSegment.distanceTo(newPoint);
+		Log.d(TAG, "distance from segment: " + distance);
+		if (distance > MAX_DISTANCE_KM) {
+			// The user is too distant
+			throw new TrackerException(TrackerException.Type.FAR_FROM_ROUTE);
 		}
 
-		currentCompletionIndex = newCompletionIndex;
-		LatLng pointOnPath = best.project(newPoint);
-		return new TrackResult.Builder()
-				.completionIndex(currentCompletionIndex)
-				.pointOnPath(pointOnPath).realPosition(newPoint).build();
+		// Update point
+		LatLng projection = currentSegment.project(newPoint);
+		float percent = currentSegment.percentOf(projection);
+		if (percent < segPercent) {
+			// User is going backwards
+			throw new TrackerException(TrackerException.Type.GOING_BACKWARD);
+		}
+
+		if (percent >= 1) {
+			// Move to the next segment
+			edge++;
+			segPercent = 0;
+			elapsedMeters += currentSegment.getLengthInMeters();
+			if (isFinished()) {
+				return resultBuilder.completionIndex(edge).pointOnPath(path.get(edge)).elapsedMeters(elapsedMeters)
+						.build();
+			}
+
+			Log.d(TAG, "Moving to next segment");
+			currentSegment = nextSegment();
+			return track(newPoint); // Re-track point in new segment
+		}
+
+		segPercent = percent; // Update state;
+		int segmentLength = currentSegment.getLengthInMeters();
+		return resultBuilder.completionIndex(edge + segPercent).pointOnPath(projection)
+				.elapsedMeters((int) (elapsedMeters + segmentLength * percent)).build();
 	}
 
-	@Override
 	public boolean isFinished() {
-		return currentCompletionIndex == segments.size();
+		return edge == this.path.size() - 1;
 	}
 
-	private class SegmentComparator implements Comparator<PathSegment> {
-
-		public LatLng reference;
-
-		private SegmentComparator(LatLng reference) {
-			this.reference = reference;
-		}
-
-		@Override
-		public int compare(PathSegment arg0, PathSegment arg1) {
-			return Double.compare(arg1.distanceTo(reference),
-					arg0.distanceTo(reference));
-		}
+	private PathSegment nextSegment() {
+		return PathSegment.create(path.get(edge), path.get(edge + 1), 0);
 	}
 
-	private float computeCompletionIndex(PathSegment segment, LatLng point) {
-		LatLng projection = segment.project(point);
-		double coeff = segment.percentOf(projection);
-		int index = segment.getIndex();
-
-		if (coeff >= 1) {
-			// If we are ahead the end of the best segment, we are at the
-			// beginning
-			// of the next segment
-			return index + 1;
-		} else if (coeff < 0) {
-			// If we are before the beginning of the best segment, we are at the
-			// beginning of it
-			return index;
-		} else {
-			return index + (float) coeff;
-		}
-	}
 }

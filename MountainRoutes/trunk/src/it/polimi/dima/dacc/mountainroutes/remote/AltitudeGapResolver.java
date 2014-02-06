@@ -21,6 +21,13 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Class that resolves the altitude of a geo point performing a request to
+ * Google Maps API
+ * 
+ * @author Chiara
+ * 
+ */
 public class AltitudeGapResolver extends AsyncTask<LatLng, Void, LoadResult<AltitudeGap>> {
 
 	private static final String RESPONSE_ELEVATION = "elevation";

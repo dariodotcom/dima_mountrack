@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * Adapter that is used to display a list of Routes in a ListView
+ * @author Chiara
+ *
+ */
 public class RouteListAdapter extends ArrayAdapter<RouteSummary> {
 
 	public RouteListAdapter(Context context) {

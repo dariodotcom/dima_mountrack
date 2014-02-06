@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * Controller that handles the state of the list fragment.
+ * @author Chiara
+ *
+ */
 public class FragmentController {
 
 	private final static String STATE = "state";
