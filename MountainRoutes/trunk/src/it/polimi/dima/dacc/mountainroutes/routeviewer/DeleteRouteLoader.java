@@ -9,6 +9,11 @@ import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
 import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 
+/**
+ * Loader that deletes a {@link Route} from database.
+ * @author Chiara
+ *
+ */
 public class DeleteRouteLoader extends GenericLoader<Route> {
 
 	private Route routeToDelete;

@@ -6,6 +6,11 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Parcelable list of {@link ExcursionReport}
+ * @author Chiara
+ *
+ */
 public class ExcursionList implements Parcelable {
 
 	private List<ExcursionReport> reports;

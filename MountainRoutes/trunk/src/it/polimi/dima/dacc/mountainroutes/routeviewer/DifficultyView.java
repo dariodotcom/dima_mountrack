@@ -6,6 +6,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/**
+ * Custom view that displays a value of {@link Difficulty} enumeration.
+ * @author Chiara
+ *
+ */
 public class DifficultyView extends TextView {
 
 	private Context context;

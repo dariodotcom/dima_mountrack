@@ -21,8 +21,14 @@ import it.polimi.dima.dacc.mountainroutes.routeselector.sources.RouteSummaryLoad
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummary;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
-public class RouteListFragment extends Fragment implements
-		LoaderCallbacks<LoadResult<RouteSummaryList>> {
+/**
+ * Fragment that is used to automatically show a list of Routes loaded through a
+ * content loader
+ * 
+ * @author Chiara
+ * 
+ */
+public class RouteListFragment extends Fragment implements LoaderCallbacks<LoadResult<RouteSummaryList>> {
 
 	private static final int LOADER_ID = 0;
 	private ListView listView;
@@ -32,8 +38,7 @@ public class RouteListFragment extends Fragment implements
 	private FragmentController controller;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View inflated = inflater.inflate(R.layout.route_list_fragment_2, null);
 		listView = (ListView) inflated.findViewById(R.id.route_list);
 
@@ -65,10 +70,10 @@ public class RouteListFragment extends Fragment implements
 		this.loaderFactory = factory;
 	}
 
-	public void showMessage(String message){
+	public void showMessage(String message) {
 		controller.showMessage(message);
 	}
-	
+
 	public void update() {
 		// showPanel(LOADING_VIEW);
 
@@ -90,8 +95,7 @@ public class RouteListFragment extends Fragment implements
 
 	// Loader callbacks
 	@Override
-	public Loader<LoadResult<RouteSummaryList>> onCreateLoader(int arg0,
-			Bundle arg1) {
+	public Loader<LoadResult<RouteSummaryList>> onCreateLoader(int arg0, Bundle arg1) {
 		return loaderFactory != null ? loaderFactory.createLoader() : null;
 	}
 
@@ -101,8 +105,7 @@ public class RouteListFragment extends Fragment implements
 	}
 
 	@Override
-	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> loader,
-			LoadResult<RouteSummaryList> result) {
+	public void onLoadFinished(Loader<LoadResult<RouteSummaryList>> loader, LoadResult<RouteSummaryList> result) {
 		switch (result.getType()) {
 		case LoadResult.ERROR:
 			onError(result.getError());

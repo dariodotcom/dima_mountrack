@@ -6,6 +6,12 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+/**
+ * Creates the updates to be sent to registered view components.
+ * 
+ * @author Chiara
+ * 
+ */
 public class BroadcastFactory {
 
 	public static final String PREFIX = "it.polimi.dima.dacc.mountainroutes.tracker.";

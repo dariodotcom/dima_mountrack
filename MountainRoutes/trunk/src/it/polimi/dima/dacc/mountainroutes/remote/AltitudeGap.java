@@ -1,5 +1,8 @@
-package it.polimi.dima.dacc.mountainroutes.remote;
+ package it.polimi.dima.dacc.mountainroutes.remote;
 
+/**
+ * Container that holds the altitude of a geopoint
+ */
 import com.google.android.gms.maps.model.LatLng;
 
 public class AltitudeGap {

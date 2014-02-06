@@ -9,6 +9,13 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.Tra
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.UpdateType;
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
+/**
+ * Controller that manages a {@link RouteProgressionMapFragment} depending on
+ * informations received from tracker service.
+ * 
+ * @author Chiara
+ * 
+ */
 public class RouteProgressionController implements TrackerListener {
 
 	private RouteProgressionMapFragment mapFragment;

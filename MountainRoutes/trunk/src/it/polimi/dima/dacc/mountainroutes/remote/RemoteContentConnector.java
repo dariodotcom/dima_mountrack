@@ -19,6 +19,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ * Implements the communication and handling of the response with a track
+ * provider.
+ * 
+ * @author Chiara
+ * 
+ */
 public class RemoteContentConnector {
 
 	private final static String TAG = "remote-content-connector";
@@ -37,8 +44,7 @@ public class RemoteContentConnector {
 		this.context = context;
 	}
 
-	public <E> LoadResult<E> executeQuery(ContentQuery query,
-			Class<E> resultType) {
+	public <E> LoadResult<E> executeQuery(ContentQuery query, Class<E> resultType) {
 
 		// Check that network is available
 		if (!isNetworkAvailable()) {
@@ -91,13 +97,11 @@ public class RemoteContentConnector {
 	private boolean isNetworkAvailable() {
 		ConnectivityManager connectivityManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
-	private InputStream establishConnection(HttpRequestBase request)
-			throws ProviderException {
+	private InputStream establishConnection(HttpRequestBase request) throws ProviderException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpResponse response;
 

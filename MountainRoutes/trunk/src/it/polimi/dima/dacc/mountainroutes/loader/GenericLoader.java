@@ -3,6 +3,11 @@ package it.polimi.dima.dacc.mountainroutes.loader;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+/**
+ * Abstract class that provides the implementation of a working loader.
+ *
+ * @param <E>
+ */
 public abstract class GenericLoader<E> extends AsyncTaskLoader<LoadResult<E>> {
 
 	private LoadResult<E> result;

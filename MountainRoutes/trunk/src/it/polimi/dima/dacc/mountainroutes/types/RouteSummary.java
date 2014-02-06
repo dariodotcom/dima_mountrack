@@ -3,6 +3,11 @@ package it.polimi.dima.dacc.mountainroutes.types;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Parcelable type that contains essentials informations regarding a route.
+ * @author Chiara
+ *
+ */
 public class RouteSummary implements Parcelable {
 
 	private RouteID id;

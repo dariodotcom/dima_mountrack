@@ -1,5 +1,11 @@
 package it.polimi.dima.dacc.mountainroutes.loader;
 
+/**
+ * Container that holds either the result of a load operation or an error that
+ * occurred.
+ * 
+ * @param <E>
+ */
 public class LoadResult<E> {
 
 	public final static int RESULT = 0;

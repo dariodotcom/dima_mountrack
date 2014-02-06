@@ -8,6 +8,9 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
 /**
  * Base interface for {@link TrackingService} observers.
+ * 
+ * @author Chiara
+ * 
  */
 /* package */interface TrackerListenerBase {
 
@@ -18,7 +21,7 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 	public void onStatusUpdate(UpdateType update);
 
 	public void onTrackingUpdate(TrackResult result);
-	
+
 	public void onAltitudeGapUpdate(int altitude);
 
 }

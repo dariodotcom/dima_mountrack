@@ -11,6 +11,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/**
+ * Automatically displays the altitude information contained in updates from the
+ * tracker.
+ * 
+ * @author Chiara
+ * 
+ */
 public class AltitudeView extends TextView implements TrackerListener {
 
 	private int totalGap;
@@ -71,10 +78,10 @@ public class AltitudeView extends TextView implements TrackerListener {
 	}
 
 	private void updateAltitude(int gap) {
-		if(Math.abs(totalGap) < 10){
+		if (Math.abs(totalGap) < 10) {
 			return;
 		}
-		
+
 		String message = String.format("%sm / %sm", gap, totalGap);
 		setText(message);
 	}

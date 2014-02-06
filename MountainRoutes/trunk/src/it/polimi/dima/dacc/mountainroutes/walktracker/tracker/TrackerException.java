@@ -1,6 +1,12 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
-public class TrackerException extends Exception{
+/**
+ * Exception thrown by tracker.
+ * 
+ * @author Chiara
+ * 
+ */
+public class TrackerException extends Exception {
 
 	private static final long serialVersionUID = 4112850390614019775L;
 
@@ -18,7 +24,5 @@ public class TrackerException extends Exception{
 	public Type getType() {
 		return type;
 	}
-	
-
 
 }

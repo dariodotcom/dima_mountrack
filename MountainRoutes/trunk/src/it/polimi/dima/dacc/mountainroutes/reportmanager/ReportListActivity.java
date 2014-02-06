@@ -21,7 +21,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>, onDeleteExcursionListener {
+/**
+ * Activity that shows report available in the database.
+ * 
+ * @author Chiara
+ * 
+ */
+public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>,
+		onDeleteExcursionListener {
 
 	private static final String DELENDUM_REPORT_ID = "id_to_delete";
 	private final static int LOADER_ID = 1;

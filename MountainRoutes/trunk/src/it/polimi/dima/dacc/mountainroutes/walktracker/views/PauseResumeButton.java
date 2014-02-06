@@ -14,6 +14,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Button to pause/resume the walk
+ * @author Chiara
+ *
+ */
 public class PauseResumeButton extends Button implements TrackerListener {
 
 	private final static String TAG = PauseResumeButton.class.getName();

@@ -1,5 +1,11 @@
 package it.polimi.dima.dacc.mountainroutes.types;
 
+/**
+ * Enumeration that describes the difficulty of a Route.
+ * 
+ * @author Chiara
+ * 
+ */
 public enum Difficulty {
 	TURISTIC, EXCURSIONIST, ADVANCED, EQUIPPED;
 
@@ -14,8 +20,8 @@ public enum Difficulty {
 
 		return -1;
 	}
-	
-	public static Difficulty valueOf(int index){
+
+	public static Difficulty valueOf(int index) {
 		return Difficulty.values()[index];
 	}
 }

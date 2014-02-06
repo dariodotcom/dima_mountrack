@@ -7,9 +7,15 @@ import it.polimi.dima.dacc.mountainroutes.loader.LoadError;
 import it.polimi.dima.dacc.mountainroutes.loader.LoadResult;
 import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
 import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
+import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
+/**
+ * Loader that deletes a {@link Route} from the database and returns the list of available Routes.
+ * @author Chiara
+ *
+ */
 public class SavedRouteDeleteLoader extends GenericLoader<RouteSummaryList> {
 
 	private final static String TAG = "SavedRouteDeleteLoader";

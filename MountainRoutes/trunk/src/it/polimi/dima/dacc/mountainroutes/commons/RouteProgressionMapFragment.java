@@ -26,6 +26,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+/**
+ * Manages maps fragments.
+ */
 public class RouteProgressionMapFragment extends MapFragment {
 
 	private static final int RADIUS = 5;
@@ -158,7 +161,7 @@ public class RouteProgressionMapFragment extends MapFragment {
 		getMap().moveCamera(update);
 
 		if (progressingPath.getCompletionIndex() > 0) {
-			//arrow.setVisible(true);
+			// arrow.setVisible(true);
 			arrow.setPosition(progressingPath.getCurrentEdge());
 			arrow.setRotation(progressingPath.getBearing());
 		}
@@ -173,15 +176,21 @@ public class RouteProgressionMapFragment extends MapFragment {
 		LatLng startPoint = progressingPath.getWalked().getFirst();
 		LatLng endPoint = progressingPath.getPending().getLast();
 
-		map.addCircle(new CircleOptions().fillColor(walkedColor).strokeColor(transparent).center(startPoint).radius(RADIUS));
-		map.addCircle(new CircleOptions().fillColor(pendingColor).strokeColor(transparent).center(endPoint).radius(RADIUS));
+		map.addCircle(new CircleOptions().fillColor(walkedColor).strokeColor(transparent).center(startPoint)
+				.radius(RADIUS));
+		map.addCircle(new CircleOptions().fillColor(pendingColor).strokeColor(transparent).center(endPoint)
+				.radius(RADIUS));
 
 		BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.arrow);
-		arrow = map.addMarker(new MarkerOptions().flat(true).draggable(false).visible(false).anchor(0.5f, 0.5f).position(startPoint).icon(icon));
+		arrow = map.addMarker(new MarkerOptions().flat(true).draggable(false).visible(false).anchor(0.5f, 0.5f)
+				.position(startPoint).icon(icon));
 
 		shapesInitialized = true;
 	}
 
+	/**
+	 * Manages the progression parameters update while walking on a path.
+	 */
 	private static class ProgressingPath {
 		private LinkedList<LatLng> pending, walked;
 		private int maxCompletionIndex;
@@ -226,6 +235,7 @@ public class RouteProgressionMapFragment extends MapFragment {
 				return;
 			}
 
+			// walking backward
 			if (hasInterpolationPoint) {
 				walked.removeLast();
 				pending.removeFirst();
@@ -246,7 +256,7 @@ public class RouteProgressionMapFragment extends MapFragment {
 				currentEdge = edge;
 			}
 
-			if(edge < maxCompletionIndex){
+			if (edge < maxCompletionIndex) {
 				bearing = computeBearing(walked.getLast(), pending.getFirst());
 			}
 

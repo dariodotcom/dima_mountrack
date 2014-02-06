@@ -9,6 +9,11 @@ import it.polimi.dima.dacc.mountainroutes.persistence.PersistenceException;
 import it.polimi.dima.dacc.mountainroutes.persistence.route.RoutePersistence;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 
+/**
+ * Loader that saves a given route in the database.
+ * @author Chiara
+ *
+ */
 public class SaveRouteLoader extends GenericLoader<Route> {
 
 	private Route routeToSave;

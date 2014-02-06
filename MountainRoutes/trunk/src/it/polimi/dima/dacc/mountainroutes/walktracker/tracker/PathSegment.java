@@ -1,7 +1,14 @@
 package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
+import it.polimi.dima.dacc.mountainroutes.types.Route;
+
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Segment of the path of a {@link Route}
+ * @author Chiara
+ *
+ */
 public abstract class PathSegment {
 
 	public static PathSegment create(LatLng start, LatLng end, int index) {

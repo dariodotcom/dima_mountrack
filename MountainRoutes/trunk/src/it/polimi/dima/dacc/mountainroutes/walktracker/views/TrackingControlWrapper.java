@@ -4,6 +4,13 @@ import android.util.Log;
 import it.polimi.dima.dacc.mountainroutes.types.Route;
 import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.TrackingControl;
 
+/**
+ * Wrapper for a {@link TrackingControl} reference that performs nullchecks
+ * before actually calling methods.
+ * 
+ * @author Chiara
+ * 
+ */
 public class TrackingControlWrapper {
 
 	private TrackingControl control;
@@ -49,7 +56,6 @@ public class TrackingControlWrapper {
 	}
 
 	private void notifyControlIsNull() {
-		Log.w(getClass().getName(),
-				"called wrapper method but control is null.");
+		Log.w(getClass().getName(), "called wrapper method but control is null.");
 	}
 }

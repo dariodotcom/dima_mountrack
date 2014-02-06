@@ -28,6 +28,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity that displays information about a specific {@link Route}
+ * @author Chiara
+ *
+ */
 public class RouteViewer extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<Route>>, LocationListener {
 
 	private static final int LOCATION_UPDATE_DISTANCE = 50;

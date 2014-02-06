@@ -5,6 +5,12 @@ import java.util.Date;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Parcelable class that contains the information of a route.
+ * 
+ * @author Chiara
+ * 
+ */
 public class ExcursionReport implements Parcelable {
 
 	private int id;

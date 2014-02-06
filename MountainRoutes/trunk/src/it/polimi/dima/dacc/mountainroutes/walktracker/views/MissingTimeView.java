@@ -6,6 +6,12 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.receiver.LaggardBackup.Tra
 import android.content.Context;
 import android.util.AttributeSet;
 
+/**
+ * Shows how much time it is until the path is completed.
+ * 
+ * @author Chiara
+ * 
+ */
 public class MissingTimeView extends TimerView {
 
 	private Integer durationMinutes;
@@ -27,11 +33,11 @@ public class MissingTimeView extends TimerView {
 		durationMinutes = route.getDurationInMinutes();
 		super.onStartTracking(route);
 	}
-	
+
 	@Override
 	public void onRegister(LaggardBackup backup) {
 		TrackingStatus status = backup.getStatus();
-		
+
 		switch (status) {
 		case PAUSED:
 		case TRACKING:
@@ -40,7 +46,7 @@ public class MissingTimeView extends TimerView {
 		default:
 			break;
 		}
-		
+
 		super.onRegister(backup);
 	}
 
@@ -53,14 +59,14 @@ public class MissingTimeView extends TimerView {
 		int seconds = (int) millis / 1000;
 		int minutes = seconds / 60;
 
-		if (minutes > durationMinutes){
+		if (minutes > durationMinutes) {
 			return "0";
 		}
-		
+
 		int missingMins = durationMinutes - minutes;
-		
-		String hours = pan(missingMins/60);
-		String mins = pan(missingMins%60);
+
+		String hours = pan(missingMins / 60);
+		String mins = pan(missingMins % 60);
 		return String.format("%s:%s", hours, mins);
 	}
 

@@ -2,6 +2,11 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.service;
 
 import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
 
+/**
+ * Type of updates that can be sent to registered listeners.
+ * @author Chiara
+ *
+ */
 public enum UpdateType {
 
 	GPS_ENABLED, GPS_DISABLED, GOING_BACKWARDS, FAR_FROM_ROUTE, EXCURSION_PAUSED, EXCURSION_RESUME, FORCE_QUIT, MOVING_WHILE_PAUSED;
