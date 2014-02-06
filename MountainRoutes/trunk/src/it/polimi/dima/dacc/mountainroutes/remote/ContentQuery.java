@@ -3,7 +3,7 @@ package it.polimi.dima.dacc.mountainroutes.remote;
 import android.os.Bundle;
 
 /**
- * Class to represent a query made to the content provider;
+ * Class to represent a query made to the content provider
  */
 public class ContentQuery {
 

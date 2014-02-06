@@ -6,9 +6,6 @@ import android.os.SystemClock;
 
 /**
  * Class that counts elapsing time.
- * 
- * @author Chiara
- * 
  */
 public class Timer {
 

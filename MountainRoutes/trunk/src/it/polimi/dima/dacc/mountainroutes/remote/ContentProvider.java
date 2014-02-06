@@ -4,9 +4,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 
 /**
  * Interface for track providers
- * 
- * @author Chiara
- * 
  */
 public interface ContentProvider {
 

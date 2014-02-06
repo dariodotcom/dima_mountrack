@@ -13,8 +13,6 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 
 /**
  * Loader that deletes a {@link Route} from the database and returns the list of available Routes.
- * @author Chiara
- *
  */
 public class SavedRouteDeleteLoader extends GenericLoader<RouteSummaryList> {
 

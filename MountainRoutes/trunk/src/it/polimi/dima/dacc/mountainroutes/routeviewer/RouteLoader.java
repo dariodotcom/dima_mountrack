@@ -16,8 +16,6 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteID;
 
 /**
  * Loader that loads a {@link Route} from database given its ID.
- * @author Chiara
- *
  */
 public class RouteLoader extends GenericLoader<Route> {
 

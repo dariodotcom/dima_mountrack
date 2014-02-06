@@ -30,8 +30,6 @@ import android.widget.Toast;
 
 /**
  * Activity that displays information about a specific {@link Route}
- * @author Chiara
- *
  */
 public class RouteViewer extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<Route>>, LocationListener {
 

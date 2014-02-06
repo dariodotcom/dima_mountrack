@@ -11,9 +11,6 @@ import android.content.Context;
 
 /**
  * Loads excursion reports available in the database.
- * 
- * @author Chiara
- * 
  */
 public class ReportLoader extends GenericLoader<ExcursionList> {
 

@@ -23,9 +23,6 @@ import android.widget.ListView;
 
 /**
  * Activity that shows report available in the database.
- * 
- * @author Chiara
- * 
  */
 public class ReportListActivity extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<ExcursionList>>,
 		onDeleteExcursionListener {

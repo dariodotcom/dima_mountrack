@@ -22,9 +22,6 @@ import android.util.Log;
 /**
  * Implements the communication and handling of the response with a track
  * provider.
- * 
- * @author Chiara
- * 
  */
 public class RemoteContentConnector {
 

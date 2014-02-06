@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 /**
  * Identifier for a route.
- * @author Chiara
- *
  */
 public class RouteID implements Parcelable {
 

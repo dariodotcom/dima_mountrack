@@ -10,9 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Controller that handles the state of the list fragment.
- * @author Chiara
- *
+ * Controller that handles the state of the route list fragment.
  */
 public class FragmentController {
 

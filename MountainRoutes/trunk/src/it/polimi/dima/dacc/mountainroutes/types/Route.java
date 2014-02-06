@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 /**
  * Parcelable class that contains the informations of a Route.
- * @author Chiara
- *
  */
 public class Route implements Parcelable {
 

@@ -7,9 +7,6 @@ import android.os.Parcelable;
 
 /**
  * Parcelable class that contains the information of a route.
- * 
- * @author Chiara
- * 
  */
 public class ExcursionReport implements Parcelable {
 

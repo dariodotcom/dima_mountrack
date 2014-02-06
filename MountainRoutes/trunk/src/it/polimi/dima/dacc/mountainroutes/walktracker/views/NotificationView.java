@@ -18,8 +18,6 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackResult;
 
 /**
  * Displays in-app notification to user.
- * @author Chiara
- *
  */
 public class NotificationView extends TextView implements TrackerListener {
 

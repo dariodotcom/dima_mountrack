@@ -8,9 +8,6 @@ import android.util.AttributeSet;
 
 /**
  * Shows how much time it is until the path is completed.
- * 
- * @author Chiara
- * 
  */
 public class MissingTimeView extends TimerView {
 

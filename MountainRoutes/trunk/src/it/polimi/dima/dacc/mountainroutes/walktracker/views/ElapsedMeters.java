@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 /**
  * Displays the number of meters yet to be walked by users.
- * @author Chiara
- *
  */
 public class ElapsedMeters extends TextView implements TrackerListener {
 

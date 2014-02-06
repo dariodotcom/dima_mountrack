@@ -8,8 +8,6 @@ import android.os.Parcelable;
 
 /**
  * Parcelable list of {@link ExcursionReport}
- * @author Chiara
- *
  */
 public class ExcursionList implements Parcelable {
 

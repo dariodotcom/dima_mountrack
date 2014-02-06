@@ -8,9 +8,6 @@ import android.content.Context;
 /**
  * Singleton class that provides an instance of a remote content manager that
  * can be used to query tracks.
- * 
- * @author Chiara
- * 
  */
 public class RemoteContentManager {
 

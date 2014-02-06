@@ -11,8 +11,6 @@ import android.util.Log;
 
 /**
  * Loader that loads the list of available routes from the database.
- * @author Chiara
- *
  */
 public class SavedRouteLoader extends
 		AsyncTaskLoader<LoadResult<RouteSummaryList>> {
