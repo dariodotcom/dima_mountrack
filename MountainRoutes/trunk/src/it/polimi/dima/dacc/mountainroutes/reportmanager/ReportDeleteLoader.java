@@ -10,9 +10,6 @@ import it.polimi.dima.dacc.mountainroutes.types.ExcursionList;
 
 /**
  * Loader that deletes a report from the database and returns available reports.
- * 
- * @author Chiara
- * 
  */
 public class ReportDeleteLoader extends GenericLoader<ExcursionList> {
 

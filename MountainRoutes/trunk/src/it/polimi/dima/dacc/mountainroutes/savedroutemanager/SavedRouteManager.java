@@ -25,9 +25,6 @@ import android.widget.TextView;
 /**
  * Activity that displays the list of available Routes and allows the user to
  * select or delete one.
- * 
- * @author Chiara
- * 
  */
 public class SavedRouteManager extends Activity implements LoaderManager.LoaderCallbacks<LoadResult<RouteSummaryList>>,
 		onDeleteRouteListener, OnItemClickListener {

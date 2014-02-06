@@ -8,9 +8,6 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * Listener that is triggered when an item listed in a {@link RouteListFragment}
  * is selected by the user
- * 
- * @author Chiara
- * 
  */
 public interface OnRouteSelected {
 	public void onRouteSelected(RouteSummary description);

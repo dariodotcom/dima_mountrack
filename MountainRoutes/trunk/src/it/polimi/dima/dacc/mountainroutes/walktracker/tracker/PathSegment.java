@@ -6,8 +6,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Segment of the path of a {@link Route}
- * @author Chiara
- *
  */
 public abstract class PathSegment {
 

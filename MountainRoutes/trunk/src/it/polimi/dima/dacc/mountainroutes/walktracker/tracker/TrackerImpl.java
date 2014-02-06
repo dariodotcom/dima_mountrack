@@ -9,10 +9,7 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Tracks the user position on a path given the position retrieved from GPS
- * 
- * @author Chiara
- * 
+ * Tracks the user position on a path given the position retrieved from GPS 
  */
 public class TrackerImpl extends Tracker {
 

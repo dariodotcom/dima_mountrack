@@ -14,9 +14,6 @@ import android.widget.TextView;
 /**
  * Automatically displays the altitude information contained in updates from the
  * tracker.
- * 
- * @author Chiara
- * 
  */
 public class AltitudeView extends TextView implements TrackerListener {
 

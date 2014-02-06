@@ -11,7 +11,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Parcelable list of LatLng
- * 
  */
 public class PointList implements Parcelable, Iterable<LatLng> {
 

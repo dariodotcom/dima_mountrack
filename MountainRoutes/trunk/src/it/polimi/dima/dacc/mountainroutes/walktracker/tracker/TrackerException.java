@@ -2,9 +2,6 @@ package it.polimi.dima.dacc.mountainroutes.walktracker.tracker;
 
 /**
  * Exception thrown by tracker.
- * 
- * @author Chiara
- * 
  */
 public class TrackerException extends Exception {
 

@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 /**
  * Adapter that is used to display a list of excursion reports in a ListView
- * @author Chiara
- *
  */
 public class ReportListAdapter extends ArrayAdapter<ExcursionReport> {
 

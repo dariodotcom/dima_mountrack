@@ -8,9 +8,6 @@ import android.os.IBinder;
 
 /**
  * Service that manages the tracking of the user on a given route.
- * 
- * @author Chiara
- * 
  */
 public class TrackingService extends Service {
 

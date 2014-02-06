@@ -11,8 +11,6 @@ import it.polimi.dima.dacc.mountainroutes.types.Route;
 
 /**
  * Loader that deletes a {@link Route} from database.
- * @author Chiara
- *
  */
 public class DeleteRouteLoader extends GenericLoader<Route> {
 

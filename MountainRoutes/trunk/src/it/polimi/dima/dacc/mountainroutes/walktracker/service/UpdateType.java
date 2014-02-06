@@ -4,8 +4,6 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.tracker.TrackerException;
 
 /**
  * Type of updates that can be sent to registered listeners.
- * @author Chiara
- *
  */
 public enum UpdateType {
 

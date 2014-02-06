@@ -18,9 +18,6 @@ import android.widget.Button;
 
 /**
  * Main activity that displays the menu.
- * 
- * @author Chiara
- * 
  */
 public class MainActivity extends Activity {
 

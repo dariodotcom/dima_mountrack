@@ -8,9 +8,6 @@ import android.content.IntentFilter;
 
 /**
  * Creates the updates to be sent to registered view components.
- * 
- * @author Chiara
- * 
  */
 public class BroadcastFactory {
 

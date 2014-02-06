@@ -12,9 +12,6 @@ import android.support.v4.view.ViewPager;
 
 /**
  * {@link ViewPager} subclass that handles the paging of {@link RouteSelector}
- * 
- * @author Chiara
- * 
  */
 public class SelectorPagerAdapter extends FragmentStatePagerAdapter {
 

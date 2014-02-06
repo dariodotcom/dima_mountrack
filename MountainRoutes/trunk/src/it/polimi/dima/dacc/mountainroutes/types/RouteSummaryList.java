@@ -8,9 +8,6 @@ import android.os.Parcelable;
 
 /**
  * Parcelable list of RouteDescription
- * 
- * @author Chiara
- *
  */
 public class RouteSummaryList implements Parcelable {
 	private List<RouteSummary> summaries;

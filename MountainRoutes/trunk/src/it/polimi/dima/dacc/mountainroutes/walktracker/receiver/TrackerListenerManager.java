@@ -17,9 +17,6 @@ import android.util.Log;
 /**
  * Handles the registration and deregistration of listeners to receive updates
  * from the tracker service.
- * 
- * @author Chiara
- * 
  */
 public class TrackerListenerManager {
 

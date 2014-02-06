@@ -5,9 +5,6 @@ import android.util.SparseArray;
 
 /**
  * Repository to save strings loaded from resources.
- * 
- * @author Chiara
- * 
  */
 public class StringRepository {
 

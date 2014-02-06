@@ -2,8 +2,6 @@ package it.polimi.dima.dacc.mountainroutes.remote;
 
 /**
  * Exception that is thrown by track providers.
- * @author Chiara
- *
  */
 public class ProviderException extends Exception {
 

@@ -24,9 +24,6 @@ import it.polimi.dima.dacc.mountainroutes.types.RouteSummaryList;
 /**
  * Fragment that is used to automatically show a list of Routes loaded through a
  * content loader
- * 
- * @author Chiara
- * 
  */
 public class RouteListFragment extends Fragment implements LoaderCallbacks<LoadResult<RouteSummaryList>> {
 

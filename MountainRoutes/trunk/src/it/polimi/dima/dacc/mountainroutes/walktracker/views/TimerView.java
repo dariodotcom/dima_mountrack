@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 /**
  * Displays the timer of the walk.
- * @author Chiara
- *
  */
 public class TimerView extends TextView implements TrackerListener, Timer.Listener {
 

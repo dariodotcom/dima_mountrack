@@ -7,9 +7,6 @@ import it.polimi.dima.dacc.mountainroutes.walktracker.service.TrackingService.Tr
 /**
  * Wrapper for a {@link TrackingControl} reference that performs nullchecks
  * before actually calling methods.
- * 
- * @author Chiara
- * 
  */
 public class TrackingControlWrapper {
 

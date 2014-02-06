@@ -8,8 +8,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Helper class for geometric computations
- * @author Chiara
- *
  */
 public class GeomUtils {
 

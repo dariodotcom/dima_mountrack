@@ -19,8 +19,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
  * Map fragment that displays the track of a specific {@link Route}
- * @author Chiara
- *
  */
 public class RouteViewerFragment extends MapFragment {
 
